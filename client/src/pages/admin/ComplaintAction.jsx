@@ -5,7 +5,7 @@ function ComplaintAction () {
     return (
         <div className="">
             <Button variant="link" className="font-bold text-pred-500">Cancel Complaint</Button>
-            <ButtonDemo name="Resolve Complaint"></ButtonDemo>
+            <ButtonDemo>Resolve Complaint</ButtonDemo>
         </div>
     )
 }

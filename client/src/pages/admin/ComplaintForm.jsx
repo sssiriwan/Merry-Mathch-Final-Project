@@ -3,8 +3,8 @@ function ComplaintForm() {
   return (
     <>
       <small>COMPLAINT</small>
-      <TypographyH1 title="If you have any trouble" />
-      <TypographyH1 title="Don't be afraid to tell us!" />
+      <TypographyH1>If you have any trouble</TypographyH1>
+      <TypographyH1>Don't be afraid to tell us!</TypographyH1>
     </>
   );
 }
