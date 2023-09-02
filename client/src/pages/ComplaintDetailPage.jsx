@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ComplaintAction from "./ComplaintAction";
-import ComplaintDetail from "./ComplaintDetail";
-import AdminControlPanel from "./AdminControlPanel";
+import ComplaintAction from "./admin/ComplaintAction";
+import ComplaintDetail from "./admin/ComplaintDetail";
+import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
 import BadgeDemo from "@/components/base/button/Badge";
 
@@ -32,7 +32,7 @@ function ComplaintDetailPage() {
               </svg>
             </Button>
             <div className="text-lg font-semibold ml-5">{issueTitle}</div>
-            <BadgeDemo status="resolved" className={resolveStatus} />
+            <BadgeDemo className={resolveStatus}>resolved</BadgeDemo>
           </div>
           <ComplaintAction />
         </div>

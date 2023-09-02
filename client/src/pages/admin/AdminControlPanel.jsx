@@ -13,11 +13,11 @@ function AdminControlPanel() {
         <h6 className="text-pgray-600">Admin Panel Control</h6>
       </div>
       <div className="w-full h-2/3">
-        <ButtonGhostAdminPanel title="Merry Package" imgSrc={packageImg} />
-        <ButtonGhostAdminPanel title="Complaint" imgSrc={complaintImg} />
+        <ButtonGhostAdminPanel imgSrc={packageImg} >Merry Package</ButtonGhostAdminPanel>
+        <ButtonGhostAdminPanel imgSrc={complaintImg} >Complaint</ButtonGhostAdminPanel>
       </div>
       <div className="border-t">
-        <ButtonGhostAdminPanel title="Log out" imgSrc={logoutIcon} />
+        <ButtonGhostAdminPanel imgSrc={logoutIcon}>Log out</ButtonGhostAdminPanel>
       </div>
     </div>
   );
