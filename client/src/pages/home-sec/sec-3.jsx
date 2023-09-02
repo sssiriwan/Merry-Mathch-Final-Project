@@ -1,5 +1,6 @@
+import Cards from "@/components/base/cards/Cards";
 import React from "react";
-import Cards from "@/components/Cards";
+
 
 const Sec3 = () => {
   return (
