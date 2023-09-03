@@ -1,4 +1,5 @@
 import React from "react";
+import { ButtonPrimary } from "./button/Button";
 
 const Navbar = () => {
   return (
@@ -14,9 +15,9 @@ const Navbar = () => {
           <a href="#sec4">
             <span className=" mx-[24px] text-xl">How to Merry</span>
           </a>
-          <button className="w-[100px] h-[50px] ml-[32px] text-xl text-white rounded-full bg-red-600">
+          <ButtonPrimary>
             Login
-          </button>
+          </ButtonPrimary>
         </div>
       </div>
     </nav>
