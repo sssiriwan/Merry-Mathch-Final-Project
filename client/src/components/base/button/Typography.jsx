@@ -126,9 +126,9 @@ export function TypographyH1(props) {
     );
   }
   
-  export function TypographySmall() {
+  export function TypographySmall(props) {
     return (
-      <small className="text-sm font-medium leading-none">Email address</small>
+      <small className="text-sm font-medium leading-none">{props.children}</small>
     );
   }
   
