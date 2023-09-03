@@ -13,6 +13,7 @@ function App() {
         <Route path="/aaaa" element={<Package />} />
         <Route path="/" element={<Payment />} />
         <Route path="/admin" element={<ComplaintDetailPage />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

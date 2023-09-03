@@ -15,7 +15,9 @@ const Navbar = () => {
           <a href="#sec4">
             <span className=" mx-[24px] text-xl">How to Merry</span>
           </a>
-          <ButtonPrimary>Login</ButtonPrimary>
+          <ButtonPrimary>
+            Login
+          </ButtonPrimary>
         </div>
       </div>
     </nav>
