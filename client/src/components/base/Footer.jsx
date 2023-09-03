@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="w-screen h-[371px] bg-pgray-100 flex flex-col justify-center items-center">
+    <footer className="w-full h-[371px] bg-pgray-100 flex flex-col justify-center items-center">
       <div className="w-[1120px] h-[275px] flex flex-col items-center">
         <img src="./imgs/logo.png" alt="Merry-Match" />
         <div className="text-xl text-pgray-700">

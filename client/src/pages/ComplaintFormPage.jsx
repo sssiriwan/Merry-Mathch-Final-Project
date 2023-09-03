@@ -28,14 +28,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
-import Navbar from "@/components/base/Navbar";
+import { NavbarRegistered } from "@/components/base/Navbar";
 import Footer from "@/components/base/Footer";
 
 function ComplaintFormPage() {
   const [date, setDate] = React.useState(Date);
   return (
-    <div className="overflow-hidden">
-    <Navbar />
+    <div className="">
+    <NavbarRegistered />
       <section className="flex h-screen justify-center items-center">
         {/* <small>COMPLAINT</small> */}
         <Card className="w-1/2 border-hidden">
