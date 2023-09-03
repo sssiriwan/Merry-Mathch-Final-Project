@@ -30,16 +30,17 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { NavbarRegistered } from "@/components/base/Navbar";
 import Footer from "@/components/base/Footer";
+import { ButtonDemo } from "@/components/base/button/Button";
 
 function ComplaintFormPage() {
   const [date, setDate] = React.useState(Date);
   return (
-    <div className="">
+    <>
     <NavbarRegistered />
       <section className="flex h-screen justify-center items-center">
         {/* <small>COMPLAINT</small> */}
-        <Card className="w-1/2 border-hidden">
-          <CardHeader>
+        <Card className="w-1/2 h-[90%] mr-5 border-hidden flex flex-col justify-evenly py-20 ">
+          <CardHeader className="">
             <CardTitle className="text-pbeige-700">
               <TypographySmall>COMPLAINT</TypographySmall>
             </CardTitle>
@@ -91,13 +92,13 @@ function ComplaintFormPage() {
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button>Submit</Button>
+            <ButtonDemo>Submit</ButtonDemo>
           </CardFooter>
         </Card>
         <img src={boy} />
       </section>
       <Footer />
-    </div>
+    </>
   );
 }
 
