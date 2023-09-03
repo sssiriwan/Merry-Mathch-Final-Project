@@ -8,11 +8,13 @@ const Sec4 = () => {
       className="w-[1440px] h-[570px] flex justify-center items-center"
     >
       <div className="w-[1120px] h-[370px] flex flex-col justify-center items-center bg-bg-2 rounded-4xl">
-        <p className="text-5xl text-white">Let’s start finding</p>
-        <p className="text-5xl text-white">and matching someone new</p>
-        <ButtonSecondary>
-          Start Matching!
-        </ButtonSecondary>
+        <p className="text-5xl text-white font-bold">Let’s start finding</p>
+        <p className="text-5xl text-white font-bold">
+          and matching someone new
+        </p>
+        <div className="mt-[40px]">
+          <ButtonSecondary>Start Matching!</ButtonSecondary>
+        </div>
       </div>
     </section>
   );

@@ -19,6 +19,9 @@ function App() {
         <Route path="/register" element={<Form />} />
         <Route path="/aaaa" element={<Package />} />
         <Route path="/rrrrr" element={<Payment />} />
+        <Route path="/aaaa" element={<Home />} />
+        <Route path="/aaa" element={<Package />} />
+        <Route path="/" element={<Payment />} />
         <Route path="/admin" element={<ComplaintDetailPage />} />
         <Route path="/complaint" element={<ComplaintFormPage />} />
         <Route path="/login" element={<LoginPage />} />
