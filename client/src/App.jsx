@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import ComplaintDetailPage from "./pages/ComplaintDetailPage";
 import Package from "./pages/Package";
 import Payment from "./pages/Payment";
+import ComplaintFormPage from "./pages/ComplaintFormPage";
 
 function App() {
   return (

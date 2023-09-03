@@ -15,7 +15,7 @@ function ComplaintDetailPage() {
     <div className="flex">
       <AdminControlPanel />
       <div className="w-full flex flex-col bg-pgray-200 items-center">
-        <div className="w-full flex flex-row bg-white h-20 justify-between items-center px-20 border-b">
+        <div className="w-full flex bg-white h-20 justify-between items-center px-20 border-b">
           <div className="flex items-center">
             <Button variant="ghost">
               <svg

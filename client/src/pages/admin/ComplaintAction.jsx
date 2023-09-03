@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 function ComplaintAction () {
     return (
-        <div className="">
+        <div>
             <Button variant="link" className="font-bold text-pred-500">Cancel Complaint</Button>
             <ButtonDemo>Resolve Complaint</ButtonDemo>
         </div>
