@@ -1,3 +1,4 @@
+import { ButtonPrimary } from "@/components/base/button/Button";
 import React from "react";
 
 const Sec1 = () => {
@@ -16,9 +17,9 @@ const Sec1 = () => {
           <p>Dont’t forget to get Merry with us</p>
         </div>
         <div className="text-center">
-          <button className="w-[163px] h-[48px] text-lg text-white rounded-full bg-pred-500">
+          <ButtonPrimary>
             Start matching!
-          </button>
+          </ButtonPrimary>
         </div>
       </div>
     </section>
