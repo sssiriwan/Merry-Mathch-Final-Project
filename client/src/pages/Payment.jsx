@@ -31,7 +31,7 @@ const Payment = () => {
               </div>
             </div>
           </div>
-          <form className="w-[548px] h-[554px] z-50 bg-pgray-100 border rounded-3xl border-pgray-400">
+          <form className="w-[548px] h-[554px] bg-pgray-100 border rounded-3xl border-pgray-400">
             <div className="w-[548px] h-[78px] flex justify-center items-center">
               <div className="w-[500px] h-[30px] flex justify-between items-center">
                 <p className="text-xl text-pgray-700">Credit Card</p>
@@ -41,9 +41,10 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[548px] h-[372px] bg-white border">
+            <div className="w-full h-[372px] bg-white ">
               <p>asdfw</p>
             </div>
+            <div className="w-full h-[104px] bg-white ">asdasd</div>
           </form>
         </div>
       </div>
