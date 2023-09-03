@@ -20,7 +20,7 @@ export function LoginPage() {
   return (
     <>
       <Navbar />
-      <div className="flex h-screen justify-center items-center ">
+      <div className="flex h-screen justify-center items-center space-x-2 ">
         {/* กล่องด้านขวา */}
         <img src={boy} />
         {/* กล่องด้านซ้าย */}
@@ -52,9 +52,10 @@ export function LoginPage() {
               />
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <ButtonPrimary>Submit</ButtonPrimary>
-          </CardFooter>
+          <div className="grid w-full max-w-sm items-center gap-1.5 pb-2 pr-5">
+            <ButtonPrimary>Login</ButtonPrimary>
+          </div>
+
           <CardTitle className="text-black mr-5 ">
             <TypographySmall>Don’t have an account?</TypographySmall>
           </CardTitle>
