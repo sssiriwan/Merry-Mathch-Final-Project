@@ -7,6 +7,7 @@ import Payment from "./pages/Payment";
 import ComplaintFormPage from "./pages/ComplaintFormPage";
 import ComplaintListPage from "./pages/ComplaintListPage";
 import PackageAddPage from "./pages/PackageAddPage";
+import MatchingPage from "./pages/MatchingPage";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/aaa" element={<Home />} />
         <Route path="/aaaa" element={<Package />} />
-        <Route path="/" element={<Payment />} />
+        <Route path="/" element={<MatchingPage />} />
         <Route path="/admin" element={<ComplaintDetailPage />} />
         <Route path="/complaint" element={<ComplaintFormPage />} />
         <Route path="/complaint-list" element={<ComplaintListPage />} />
