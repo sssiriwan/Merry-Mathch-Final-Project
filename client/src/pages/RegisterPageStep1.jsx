@@ -1,19 +1,7 @@
-import {
-  TypographyH1,
-  TypographySmall,
-} from "@/components/base/button/Typography";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import boy from "../../public/imgs/boy-complaint-form-page.png";
-import { ButtonPrimary } from "@/components/base/button/Button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
+import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/base/Navbar";
 
 export function RegisterPageStep1() {

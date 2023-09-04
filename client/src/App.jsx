@@ -6,6 +6,7 @@ import Package from "./pages/Package";
 import Payment from "./pages/Payment";
 import ComplaintFormPage from "./pages/ComplaintFormPage";
 import { LoginPage } from "./pages/LoginPage";
+import { RegisterPageStep1 } from "./pages/RegisterPageStep1";
 
 function App() {
   return (
@@ -13,11 +14,12 @@ function App() {
       <Routes>
         <Route path="/aaa" element={<Home />} />
         <Route path="/aaaa" element={<Package />} />
-        <Route path="/" element={<Payment />} />
+        <Route path="/rrrrr" element={<Payment />} />
         <Route path="/admin" element={<ComplaintDetailPage />} />
         <Route path="/complaint" element={<ComplaintFormPage />} />
-        <Route path="/complaint-list" element={<ComplaintListPage />} />
-        <Route path="/" element={<LoginPage/>} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/" element={<RegisterPageStep1/>}/>
+
       </Routes>
     </BrowserRouter>
   );
