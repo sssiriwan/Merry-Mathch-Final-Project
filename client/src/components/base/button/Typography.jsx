@@ -6,18 +6,18 @@ export function TypographyH1(props) {
     );
   }
   
-  export function TypographyH2() {
+  export function TypographyH2(props) {
     return (
-      <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-        The People of the Kingdom
+      <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 text-pred-600">
+        {props.children}
       </h2>
     );
   }
   
-  export function TypographyH3() {
+  export function TypographyH3(props) {
     return (
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-        The Joke Tax
+        {props.children}
       </h3>
     );
   }
@@ -111,11 +111,10 @@ export function TypographyH1(props) {
     );
   }
   
-  export function TypographyLead() {
+  export function TypographyLead(props) {
     return (
       <p className="text-xl text-muted-foreground">
-        A modal dialog that interrupts the user with important content and expects
-        a response.
+        {props.children}
       </p>
     );
   }
