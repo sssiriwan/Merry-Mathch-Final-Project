@@ -5,9 +5,8 @@ import ComplaintDetailPage from "./pages/ComplaintDetailPage";
 import Package from "./pages/Package";
 import Payment from "./pages/Payment";
 import ComplaintFormPage from "./pages/ComplaintFormPage";
-import ComplaintListPage from "./pages/ComplaintListPage";
-import PackageAddPage from "./pages/PackageAddPage";
-import MatchingPage from "./pages/MatchingPage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPageStep1 } from "./pages/RegisterPageStep1";
 
 function App() {
   return (
@@ -15,11 +14,12 @@ function App() {
       <Routes>
         <Route path="/aaa" element={<Home />} />
         <Route path="/aaaa" element={<Package />} />
-        <Route path="/" element={<MatchingPage />} />
+        <Route path="/rrrrr" element={<Payment />} />
         <Route path="/admin" element={<ComplaintDetailPage />} />
         <Route path="/complaint" element={<ComplaintFormPage />} />
-        <Route path="/complaint-list" element={<ComplaintListPage />} />
-        <Route path="/packageadd" element={<PackageAddPage />} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/" element={<RegisterPageStep1/>}/>
+
       </Routes>
     </BrowserRouter>
   );
