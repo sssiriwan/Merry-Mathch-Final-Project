@@ -30,7 +30,7 @@ function Form() {
     SexualPreferences: "1",
     RacialPreferences: "0",
     MeetingInterests: "0",
-    tags: "",
+    tags: "Music",
     email: "",
   };
 
@@ -57,7 +57,10 @@ function Form() {
           <Identities
             formValues={values}
             onChange={onChange}
+            option={states}
             updateTags={updateTags}
+            option1={states1}
+            option2={states2}
           />
         );
       }
@@ -73,6 +76,26 @@ function Form() {
         return null;
     }
   };
+
+  const states = [
+    { id: "0", name: "Male" },
+    { id: "1", name: "Female" },
+    { id: "2", name: "Non-Binary" },
+  ];
+
+  const states1 = [
+    { id: "0", name: "Asian" },
+    { id: "1", name: "Caucasoid" },
+    { id: "2", name: "Negriod" },
+    { id: "3", name: "Others" },
+  ];
+
+  const states2 = [
+    { id: "0", name: "Friend" },
+    { id: "1", name: "Boyfriend/Grilfriend" },
+    { id: "2", name: "Casual" },
+    { id: "3", name: "Others" },
+  ];
 
   const handleSubmit = () => {
     console.log("Submitting form data:", values);

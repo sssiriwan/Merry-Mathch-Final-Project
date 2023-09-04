@@ -10,7 +10,14 @@ import {
 import ListText from "./text";
 import { useForm } from "react-hook-form";
 
-function Identities({ formValues, onChange, updateTags }) {
+function Identities({
+  formValues,
+  onChange,
+  updateTags,
+  option,
+  option1,
+  option2,
+}) {
   return (
     <>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
@@ -23,54 +30,42 @@ function Identities({ formValues, onChange, updateTags }) {
         </div>
 
         <div className="flex">
-          <Select
-            onChange={onChange}
-            value={formValues.SexualIdentities}
-            id="SexualIdentities"
-            name="SexualIdentities"
-          >
-            <SelectTrigger className="w-[453px]">
-              <SelectValue placeholder="Male" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem id="0" value="0">
-                  Male
-                </SelectItem>
-                <SelectItem id="1" value="1">
-                  Female
-                </SelectItem>
-                <SelectItem id="2" value="2">
-                  Non-binary
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <div className="mb-6">
+            <select
+              className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+              id="SexualIdentities"
+              name="SexualIdentities"
+              onChange={onChange}
+              value={formValues.SexualIdentities}
+            >
+              {option &&
+                option.map((states) => {
+                  return (
+                    <option key={states.id} value={states.id}>
+                      {states.name}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
 
           <div className="ml-[24px]">
-            <Select
-              onChange={onChange}
-              value={formValues.SexualPreferences}
+            <select
+              className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
               id="SexualPreferences"
               name="SexualPreferences"
+              onChange={onChange}
+              value={formValues.SexualPreferences}
             >
-              <SelectTrigger className="w-[453px]">
-                <SelectValue placeholder="Female" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem id="0" value="Male">
-                    Male
-                  </SelectItem>
-                  <SelectItem id="1" value="Female">
-                    Female
-                  </SelectItem>
-                  <SelectItem id="2" value="Non-binary">
-                    Non-binary
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+              {option &&
+                option.map((states) => {
+                  return (
+                    <option key={states.id} value={states.id}>
+                      {states.name}
+                    </option>
+                  );
+                })}
+            </select>
           </div>
         </div>
         <div className="flex mt-[40px]">
@@ -79,54 +74,40 @@ function Identities({ formValues, onChange, updateTags }) {
         </div>
 
         <div className="flex">
-          <Select
-            onChange={onChange}
-            value={formValues.RacialPreferences}
+          <select
+            className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
             id="RacialPreferences"
             name="RacialPreferences"
+            onChange={onChange}
+            value={formValues.RacialPreferences}
           >
-            <SelectTrigger className="w-[453px]">
-              <SelectValue placeholder="Asian" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem id="0" value="Asian">
-                  Asian
-                </SelectItem>
-                <SelectItem id="1" value="Caucasoid">
-                  Caucasoid
-                </SelectItem>
-                <SelectItem id="2" value="Negriod">
-                  Negriod
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            {option1 &&
+              option1.map((states) => {
+                return (
+                  <option key={states.id} value={states.id}>
+                    {states.name}
+                  </option>
+                );
+              })}
+          </select>
 
           <div className="ml-[24px]">
-            <Select
-              onChange={onChange}
-              value={formValues.MeetingInterests}
+            <select
+              className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
               id="MeetingInterests"
               name="MeetingInterests"
+              onChange={onChange}
+              value={formValues.MeetingInterests}
             >
-              <SelectTrigger className="w-[453px]">
-                <SelectValue placeholder="Friends" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem id="0" value="Friends">
-                    Friends
-                  </SelectItem>
-                  <SelectItem id="1" value="Boyfriend/girlfriend">
-                    Boyfriend/girlfriend
-                  </SelectItem>
-                  <SelectItem id="2" value="Casual">
-                    Casual
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+              {option2 &&
+                option2.map((states) => {
+                  return (
+                    <option key={states.id} value={states.id}>
+                      {states.name}
+                    </option>
+                  );
+                })}
+            </select>
           </div>
         </div>
         <div className="">
