@@ -6,6 +6,7 @@ import Package from "./pages/Package";
 import Payment from "./pages/Payment";
 import ComplaintFormPage from "./pages/ComplaintFormPage";
 import ComplaintListPage from "./pages/ComplaintListPage";
+import PackageAddPage from "./pages/PackageAddPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/admin" element={<ComplaintDetailPage />} />
         <Route path="/complaint" element={<ComplaintFormPage />} />
         <Route path="/complaint-list" element={<ComplaintListPage />} />
+        <Route path="/packageadd" element={<PackageAddPage />} />
       </Routes>
     </BrowserRouter>
   );
