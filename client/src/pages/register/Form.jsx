@@ -11,6 +11,25 @@ function Form() {
   const formLength = formList.length;
 
   const [page, setPage] = useState(0);
+  const [avatars, setAvatars] = useState({});
+
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    const newAvatars = { ...avatars };
+
+    for (let i = 0; i < files.length; i++) {
+      if (Object.keys(newAvatars).length < maxUploads) {
+        const uniqueId = Date.now() + i;
+        newAvatars[uniqueId] = files[i];
+      }
+    }
+
+    updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
+  };
+
+  const updateAvatars = (newAvatars) => {
+    setAvatars(newAvatars);
+  };
 
   const handlePrev = () => {
     setPage(page === 0 ? formLength - 1 : page - 1);
@@ -26,12 +45,21 @@ function Form() {
 
   const initialValues = {
     name: "",
+    location: "",
     SexualIdentities: "0",
     SexualPreferences: "1",
     RacialPreferences: "0",
     MeetingInterests: "0",
     tags: "Music",
+
+    username: "",
+    password: "",
+    Date: "",
     email: "",
+    city: "",
+    ConfirmPassword: "",
+
+    img: "",
   };
 
   const [values, setValues] = useState(initialValues);
@@ -69,6 +97,8 @@ function Form() {
           <ProfilePictures
             formValues={values}
             onChange={onChange}
+            avatars={avatars}
+            updateAvatars={updateAvatars}
           ></ProfilePictures>
         );
       }
@@ -217,7 +247,7 @@ function Form() {
                   className="mr-3 ml-1 border border-pgray-300 rounded-2xl w-[80px] h-[80px] flex justify-left items-center"
                 >
                   <div className="bg-pgray-200 h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
-                    2
+                    3
                   </div>
                 </button>
               )}

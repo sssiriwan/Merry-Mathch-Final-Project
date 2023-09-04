@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import ListText from "./text";
 import { useForm } from "react-hook-form";
 

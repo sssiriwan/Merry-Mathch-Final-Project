@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-function ProfilePictures({ formValues, onChange }) {
-  const [avatars, setAvatars] = useState({});
+function ProfilePictures({ avatars, updateAvatars }) {
   const maxUploads = 5;
 
   const handleFileChange = (event) => {
@@ -15,14 +14,14 @@ function ProfilePictures({ formValues, onChange }) {
       }
     }
 
-    setAvatars(newAvatars);
+    updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
   };
 
   const handleRemoveImage = (event, avatarKey) => {
     event.preventDefault();
     const newAvatars = { ...avatars };
     delete newAvatars[avatarKey];
-    setAvatars(newAvatars);
+    updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
   };
 
   return (
@@ -74,9 +73,9 @@ function ProfilePictures({ formValues, onChange }) {
                     <path
                       d="M12.5 4.5V19.5M20 12H5"
                       stroke="#7D2262"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </div>
