@@ -10,7 +10,7 @@ import {
 import ListText from "./text";
 import { useForm } from "react-hook-form";
 
-function Identities() {
+function Identities({ formValues, onChange, updateTags }) {
   return (
     <>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
@@ -24,8 +24,8 @@ function Identities() {
 
         <div className="flex">
           <Select
-            // onChange={onChange}
-            // value={formValues.SexualIdentities}
+            onChange={onChange}
+            value={formValues.SexualIdentities}
             id="SexualIdentities"
             name="SexualIdentities"
           >
@@ -34,17 +34,23 @@ function Identities() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="Male">Male</SelectItem>
-                <SelectItem value="Female">Female</SelectItem>
-                <SelectItem value="Non-binary">Non-binary</SelectItem>
+                <SelectItem id="0" value="0">
+                  Male
+                </SelectItem>
+                <SelectItem id="1" value="1">
+                  Female
+                </SelectItem>
+                <SelectItem id="2" value="2">
+                  Non-binary
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
 
           <div className="ml-[24px]">
             <Select
-              // onChange={onChange}
-              // value={formValues.SexualPreferences}
+              onChange={onChange}
+              value={formValues.SexualPreferences}
               id="SexualPreferences"
               name="SexualPreferences"
             >
@@ -53,9 +59,15 @@ function Identities() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
-                  <SelectItem value="Non-binary">Non-binary</SelectItem>
+                  <SelectItem id="0" value="Male">
+                    Male
+                  </SelectItem>
+                  <SelectItem id="1" value="Female">
+                    Female
+                  </SelectItem>
+                  <SelectItem id="2" value="Non-binary">
+                    Non-binary
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -68,8 +80,8 @@ function Identities() {
 
         <div className="flex">
           <Select
-            // onChange={onChange}
-            // value={formValues.RacialPreferences}
+            onChange={onChange}
+            value={formValues.RacialPreferences}
             id="RacialPreferences"
             name="RacialPreferences"
           >
@@ -78,17 +90,23 @@ function Identities() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="Asian">Asian</SelectItem>
-                <SelectItem value="Caucasoid">Caucasoid</SelectItem>
-                <SelectItem value="Negriod">Negriod</SelectItem>
+                <SelectItem id="0" value="Asian">
+                  Asian
+                </SelectItem>
+                <SelectItem id="1" value="Caucasoid">
+                  Caucasoid
+                </SelectItem>
+                <SelectItem id="2" value="Negriod">
+                  Negriod
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
 
           <div className="ml-[24px]">
             <Select
-              // onChange={onChange}
-              // value={formValues.MeetingInterests}
+              onChange={onChange}
+              value={formValues.MeetingInterests}
               id="MeetingInterests"
               name="MeetingInterests"
             >
@@ -97,18 +115,22 @@ function Identities() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="Friends">Friends</SelectItem>
-                  <SelectItem value="Boyfriend/girlfriend">
+                  <SelectItem id="0" value="Friends">
+                    Friends
+                  </SelectItem>
+                  <SelectItem id="1" value="Boyfriend/girlfriend">
                     Boyfriend/girlfriend
                   </SelectItem>
-                  <SelectItem value="Casual">Casual</SelectItem>
+                  <SelectItem id="2" value="Casual">
+                    Casual
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
         </div>
         <div className="">
-          <ListText />
+          <ListText onChange={updateTags} tags={formValues.tags.split(",")} />
         </div>
       </div>
     </>

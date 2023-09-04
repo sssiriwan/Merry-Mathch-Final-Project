@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-const ListText = () => {
+const ListText = ({ onChange, tags }) => {
   const [maxTags, setMaxTags] = useState(10);
-  const [tags, setTags] = useState(["Top", "Unique", "Coding"]);
+  //   const [tags, setTags] = useState(["Top", "Unique", "Coding"]);
   const [inputValue, setInputValue] = useState("");
 
   const countTags = () => {
@@ -11,12 +11,11 @@ const ListText = () => {
 
   const removeTag = (tagToRemove) => {
     const updatedTags = tags.filter((tag) => tag !== tagToRemove);
-    setTags(updatedTags);
+    onChange(updatedTags);
   };
-
   const addTag = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // ป้องกันการส่งแบบฟอร์มในกรณีนี้
+      e.preventDefault();
       const newTags = e.target.value
         .split(",")
         .map((tag) => tag.trim())
@@ -25,8 +24,8 @@ const ListText = () => {
 
       if (newTags.length > 0) {
         const updatedTags = [...tags, ...newTags];
-        setTags(updatedTags);
-        setInputValue(""); // อัปเดต inputValue ให้ตรงกับ tags ที่มีอยู่
+        onChange(updatedTags);
+        setInputValue(""); // ตั้งค่า inputValue เป็นค่าว่างหลังจากเพิ่ม tags สำเร็จ
       }
     }
   };

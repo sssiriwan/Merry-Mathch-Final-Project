@@ -26,15 +26,19 @@ function Form() {
 
   const initialValues = {
     name: "",
-    SexualIdentities: "",
-    SexualPreferences: "",
-    RacialPreferences: "",
-    MeetingInterests: "",
+    SexualIdentities: "0",
+    SexualPreferences: "1",
+    RacialPreferences: "0",
+    MeetingInterests: "0",
     tags: "",
     email: "",
   };
 
   const [values, setValues] = useState(initialValues);
+
+  const updateTags = (updatedTags) => {
+    setValues({ ...values, tags: updatedTags.join(", ") }); // รวม tags ใหม่เป็น string และอัปเดตใน initialValues
+  };
 
   const handleForms = () => {
     switch (page) {
@@ -49,7 +53,13 @@ function Form() {
         );
       }
       case 1: {
-        return <Identities formValues={values} onChange={onChange} />;
+        return (
+          <Identities
+            formValues={values}
+            onChange={onChange}
+            updateTags={updateTags}
+          />
+        );
       }
       case 2: {
         return (
