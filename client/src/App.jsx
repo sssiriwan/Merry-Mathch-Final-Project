@@ -17,14 +17,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/register" element={<Form />} />
-        <Route path="/aaaa" element={<Home />} />
-        <Route path="/aaa" element={<Package />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/package" element={<Package />} />
         <Route path="/payment_1" element={<Payment_1 />} />
         <Route path="/payment_2" element={<Payment_2 />} />
         <Route path="/admin" element={<ComplaintDetailPage />} />
         <Route path="/complaint" element={<ComplaintFormPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<RegisterPageStep1 />} />
+        <Route path="/aaaa" element={<RegisterPageStep1 />} />
       </Routes>
     </BrowserRouter>
   );
