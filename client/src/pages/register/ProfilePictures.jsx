@@ -40,7 +40,7 @@ function ProfilePictures({ avatars, updateAvatars }) {
             return (
               <div key={avatarKey} className="mr-[24px] relative">
                 <img
-                  className="image-preview"
+                  className="rounded-[12px]"
                   src={URL.createObjectURL(file)}
                   alt={file.name}
                 />
