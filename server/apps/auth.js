@@ -8,6 +8,71 @@ const authRouter = Router();
 // const multerUpload = multer({ dest: "uploads/"});
 // const avatarUpload = multerUpload.fields([{name: "avatar", maxCount:5 }]);
 
+authRouter.post("/register", async (req, res) => {
+  const user = {
+    username: req.body.username,
+    password: req.body.password,
+    // avatar_url: req.files.avatar,
+    fullname: req.body.fullname,
+    role: "Users",
+    email: req.body.email,
+    location: req.body.location,
+    age: req.body.age,
+    hobbies: req.body.hobbies,
+    created_at: new Date(),
+  };
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  await supabase
+    .from("users")
+    .insert([
+      {
+        username: user.username,
+        password: user.password,
+        fullname: user.fullname,
+        role: user.role,
+        email: user.email,
+        age: user.age,
+        created_at: user.created_at,
+        // location: user.location,
+      },
+    ])
+    .select();
+  return res.json({
+    message: `Created new account successfully`,
+  });
+});
+
+authRouter.post("/login", async (req,res) => {
+  const {data: user, error} = await supabase.from('users').select('*').eq('username', req.body.username);
+  if(!user[0]) {
+    return res.status(404).json({
+      message: "User not found"
+    })
+  }
+  const isValidPassword = await bcrypt.compare(req.body.password, user[0].password)
+  if(!isValidPassword) {
+    return res.status(401).json({
+      message: "Password is invalid"
+    })
+  }
+  return res.json({
+    message: user[0],
+  })
+})
+
+
+authRouter.get("/", async (req, res) => {
+  const result = await supabase.from("users").select("*");
+  return res.json({
+    data: result,
+  });
+});
+
+
+export default authRouter;
+
+// ไม่ใช้แล้วค่ะ POST METHOD: REGISTER USER
 // authRouter.post("/register", async (req,res) => {
 //     // const avatarUrl = await
 //     const user = {
@@ -36,69 +101,28 @@ const authRouter = Router();
 //     })
 // })
 
-authRouter.post("/login", async (req, res) => {
-  const user = await pool.query("select * from users where username=$1", [
-    req.body.username,
-  ]);
-  if (!user.rows[0]) {
-    return res.json({
-      message: "User not found: ไปสมัครก่อน!!!",
-    });
-  }
+// POST METHOD: LOGIN
 
-  const isValidPassword = await bcrypt.compare(
-    req.body.password,
-    user.rows[0].password
-  );
-  if (!isValidPassword) {
-    return res.status(401).json({
-      message: "ไปใส่รหัสมาใหม่!!",
-    });
-  }
-  return res.json({
-    message: "Login successfully: แกรอด",
-  });
-});
+// authRouter.post("/login", async (req, res) => {
+//   const user = await pool.query("select * from users where username=$1", [
+//     req.body.username,
+//   ]);
+//   if (!user.rows[0]) {
+//     return res.json({
+//       message: "User not found: ไปสมัครก่อน!!!",
+//     });
+//   }
 
-authRouter.get("/", async (req, res) => {
-  const result = await supabase.from("users").select("*");
-  return res.json({
-    data: result,
-  });
-});
-
-authRouter.post("/register", async (req, res) => {
-    const user = {
-      username: req.body.username,
-      password: req.body.password,
-      // avatar_url: req.files.avatar,
-      fullname: req.body.fullname,
-      role: "Users",
-      email: req.body.email,
-      // location: req.body.location,
-      age: req.body.age,
-      hobbies: req.body.hobbies,
-      created_at: new Date(),
-    };
-    const result = await supabase
-      .from("users")
-      .insert([
-        {
-          username: user.username,
-          password: user.password,
-          fullname: user.fullname,
-          role: user.role,
-          email: user.email,
-          age: user.age,
-          created_at: user.created_at,
-        },
-      ])
-      .select();
-    return res.json({
-      message: "created yeah",
-    });
-  });
-
-export default authRouter;
-
-
+//   const isValidPassword = await bcrypt.compare(
+//     req.body.password,
+//     user.rows[0].password
+//   );
+//   if (!isValidPassword) {
+//     return res.status(401).json({
+//       message: "ไปใส่รหัสมาใหม่!!",
+//     });
+//   }
+//   return res.json({
+//     message: "Login successfully: แกรอด",
+//   });
+// });
