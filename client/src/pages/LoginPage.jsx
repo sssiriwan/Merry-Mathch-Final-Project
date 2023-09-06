@@ -18,27 +18,31 @@ import Navbar from "@/components/base/Navbar";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/authentication";
+import { Button } from "@/components/ui/button";
+import Home from "./Home";
 
 export function LoginPage() {
-  const [username, setUsername] = useState("ploy");
-  const [password, setPassword] = useState("1234");
-  const {login} = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const auth = useAuth();
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(username,password)
     login({
-      username: username || email,
+      username,
       password
     })
-    console.log(username,password)
+    
   }
   return (
     <>
-      <Navbar />
+      {auth.isAuthenticated ? <Home /> : <Navbar />}
       <div className="flex h-screen justify-center items-center space-x-2 ">
         {/* กล่องด้านขวา */}
         <img src={boy} />
         {/* กล่องด้านซ้าย */}
-        <Card className="w-1/2 h-[90%] mr-5 border-hidden flex flex-col justify-evenly py-20 ">
+        <form className="w-1/2 h-[90%] mr-5 border-hidden flex flex-col justify-evenly py-20" onSubmit={handleSubmit}>
           <CardHeader className="">
             <CardTitle className="text-pbeige-700">
               <TypographySmall>LOGIN</TypographySmall>
@@ -50,11 +54,13 @@ export function LoginPage() {
           </CardHeader>
           <CardContent>
             <div className="grid w-full max-w-sm items-center gap-1.5 pb-2">
-              <Label htmlFor="email">Username or Email</Label>
+              <Label htmlFor="username">Username or Email</Label>
               <Input
-                type="email"
-                id="email"
+                type="username"
+                id="username"
                 placeholder="Enter Username or Email"
+                value={username}
+                onChange={(event) => { setUsername(event.target.value) }}
               />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5 pb-2">
@@ -63,23 +69,23 @@ export function LoginPage() {
                 type="password"
                 id="password"
                 placeholder="Enter Password"
+                value={password}
+                onChange={(event) => { setPassword(event.target.value) }}
               />
             </div>
           </CardContent>
           <div className="grid w-full max-w-sm items-center gap-1.5 pb-2 pr-5">
-            {/* <ButtonPrimary>Login</ButtonPrimary> */}
-            <button onSubmit={handleSubmit}>Login</button>
+            <Button>Login</Button>
           </div>
-
             <div className="h-[32px] flex items-center">
               <CardTitle className="text-black mr-2 text-base">
                 <TypographySmall>Don’t have an account?</TypographySmall>
               </CardTitle>
-              <span className="text-base text-pred-500 cursor-pointer hover:text-pred-400 active:text-pred-200"><Link to='/register'>
-                register</Link>
+              <span className="text-base text-pred-500 cursor-pointer hover:text-pred-400 active:text-pred-200">
+                register
               </span>
             </div>
-          </Card>
+          </form>
         </div>
     </>
   );
