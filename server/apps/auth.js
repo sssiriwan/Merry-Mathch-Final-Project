@@ -15,22 +15,37 @@ authRouter.post("/register", async (req, res) => {
       username: req.body.username,
       password: req.body.password,
       // avatar_url: req.files.avatar,
-      fullname: req.body.fullname,
+      fullname: req.body.name,
       role: "Users",
       email: req.body.email,
       location: req.body.location,
+      city: req.body.city,
       age: req.body.age,
       hobbies: req.body.hobbies,
+      date_of_birth: req.body.Date,
+
       created_at: new Date(),
+
+      sexual_identity: req.body.SexualIdentities,
+      sexual_preference: req.body.SexualPreferences,
+      racial_preference: req.body.RacialPreferences,
+      meeting_interest: req.body.MeetingInterests,
     };
     // const avatarFile = req.files.avatar
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
+    console.log(user)
     await supabase
       .from("users")
       .insert([
         {
-          user,
+          username: user.username,
+          password: user.password,
+          fullname: user.fullname,
+          role: user.role,
+          email: user.email,
+          age: user.age,
+          created_at: user.created_at,
         },
       ])
       .select();
@@ -54,10 +69,6 @@ authRouter.post("/login", async (req, res) => {
     if (error) {
       console.log(error);
     }
-    // const { data: email } = await supabase
-    //   .from("users")
-    //   .select("*")
-    //   .eq("email", req.body.email);
 
     if (!user[0]) {
       return res.status(404).json({

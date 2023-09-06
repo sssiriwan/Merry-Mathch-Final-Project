@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const ListText = ({ onChange, tags }) => {
   const [maxTags, setMaxTags] = useState(10);
   //   const [tags, setTags] = useState(["Top", "Unique", "Coding"]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(null);
 
   const countTags = () => {
     return maxTags - tags.length;

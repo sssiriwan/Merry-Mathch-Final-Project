@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 
 function BasicInformation({ formValues, onChange }) {
   return (
-    <>
+    <form>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
         <h1>Basic Information</h1>
       </div>
@@ -117,7 +117,7 @@ function BasicInformation({ formValues, onChange }) {
           </Label>
         </div>
       </div>
-    </>
+    </form>
   );
 }
 

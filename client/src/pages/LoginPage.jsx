@@ -83,7 +83,9 @@ export function LoginPage() {
                 <TypographySmall>Don’t have an account?</TypographySmall>
               </CardTitle>
               <span className="text-base text-pred-500 cursor-pointer hover:text-pred-400 active:text-pred-200">
+                <a href="/register">
                 register
+                </a>
               </span>
             </div>
           </form>

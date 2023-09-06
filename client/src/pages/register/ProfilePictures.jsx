@@ -47,7 +47,7 @@ function ProfilePictures({ avatars, updateAvatars }) {
   };
 
   return (
-    <>
+    <form>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
         <h1>Profile pictures</h1>
       </div>
@@ -117,7 +117,7 @@ function ProfilePictures({ avatars, updateAvatars }) {
           )}
         </div>
       </div>
-    </>
+    </form>
   );
 }
 
