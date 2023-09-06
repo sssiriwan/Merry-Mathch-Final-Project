@@ -4,7 +4,7 @@ import React from "react";
 const Sec1 = () => {
   return (
     <section className="w-[1366px] h-[768px] bg-bg-1 flex justify-center items-center">
-      <div className="h-[380px] w-[450px] flex flex-col justify-between">
+      <div className="h-[380px] w-[450px] flex flex-col justify-between items-center">
         <span className="text-6xl text-white font-black text-center">
           Make the
         </span>
@@ -17,9 +17,7 @@ const Sec1 = () => {
           <p>Dont’t forget to get Merry with us</p>
         </div>
         <div className="text-center">
-          <ButtonPrimary>
-            Start matching!
-          </ButtonPrimary>
+          <ButtonPrimary>Start matching!</ButtonPrimary>
         </div>
       </div>
     </section>

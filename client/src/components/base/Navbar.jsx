@@ -64,7 +64,7 @@ function NavbarRegistered() {
         </Button>
         {/* Notification's Menu */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild >
+          <DropdownMenuTrigger asChild>
             <Avatar className="bg-pgray-100 flex justify-center items-center ml-14">
               <svg
                 width="20"
@@ -167,7 +167,7 @@ function NavbarRegistered() {
               </DropdownMenuItem>
               <hr className="border-hidden h-2" />
               <DropdownMenuItem>
-              <div className="relative">
+                <div className="relative">
                   <svg
                     className="absolute bottom-1 right-0"
                     width="17"
@@ -302,7 +302,9 @@ function NavbarRegistered() {
                     fill="#FFE1EA"
                   />
                 </svg>
-                <span className="ml-2 text-pgray-700"><a href="/complaint">Complaint</a></span>
+                <span className="ml-2 text-pgray-700">
+                  <a href="/complaint">Complaint</a>
+                </span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
