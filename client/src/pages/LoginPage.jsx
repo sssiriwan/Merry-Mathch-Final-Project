@@ -78,7 +78,6 @@ export function LoginPage() {
             </div>
           </Card>
         </div>
-      </div>
     </>
   );
 }
