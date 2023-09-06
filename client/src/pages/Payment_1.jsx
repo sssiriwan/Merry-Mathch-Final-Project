@@ -3,8 +3,12 @@ import Navbar from "@/components/base/Navbar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ButtonPrimary } from "@/components/base/button/Button.jsx";
+import { useForm } from "react-hook-form";
 
 const Payment_1 = () => {
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => console.log(data);
+
   return (
     <div>
       <Navbar />
@@ -36,7 +40,10 @@ const Payment_1 = () => {
           </div>
 
           {/* form of register credit card */}
-          <form className="w-[548px] h-[554px]">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-[548px] h-[554px]"
+          >
             <div>
               {/* head */}
               <div className="w-full h-[78px] flex justify-center items-center bg-pgray-100 border-t border-x border-pgray-400 rounded-t-3xl ">
@@ -57,14 +64,14 @@ const Payment_1 = () => {
                   {/* card number */}
                   <div className="w-[500px] h-[76px]">
                     <div className="h-[24px] flex">
-                      <Label htmlFor="CardNumber" class="text-base">
+                      <Label htmlFor="number" class="text-base">
                         Card number <span class="text-putility-300">*</span>
                       </Label>
                     </div>
                     <Input
                       class="w-full h-[48px] border rounded-xl pl-[10px]"
-                      type="CardNumber"
-                      id="CardNumber"
+                      type="number"
+                      id="number"
                       placeholder="Number of number"
                     />
                   </div>
@@ -88,27 +95,27 @@ const Payment_1 = () => {
                   <div className="w-[500px] h-[76px] flex justify-between">
                     <div className="w-[239px]">
                       <div className="h-[24px] flex">
-                        <Label htmlFor="CardNumber" class="text-base">
+                        <Label htmlFor="Payment Method" class="text-base">
                           Expiry date <span class="text-putility-300">*</span>
                         </Label>
                       </div>
                       <Input
                         class="w-[239px] h-[48px] border rounded-xl pl-[10px]"
-                        type="CardNumber"
-                        id="CardNumber"
+                        type="Payment Method"
+                        id="Payment Method"
                         placeholder="MM/YY"
                       />
                     </div>
                     <div className="w-[239px]">
                       <div className="h-[24px] flex">
-                        <Label htmlFor="CardNumber" class="text-base">
+                        <Label htmlFor="number" class="text-base">
                           CVC/CVV <span class="text-putility-300">*</span>
                         </Label>
                       </div>
                       <Input
                         class="w-[239px] h-[48px] border rounded-xl pl-[10px]"
-                        type="CardNumber"
-                        id="CardNumber"
+                        type="number"
+                        id="number"
                         placeholder="x x x"
                       />
                     </div>
