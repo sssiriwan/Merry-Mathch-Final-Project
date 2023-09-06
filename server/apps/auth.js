@@ -74,7 +74,7 @@ authRouter.post("/login", async (req, res) => {
       { expiresIn: "900000" }
     );
     return res.json({
-      message: user[0],
+      data: user[0],
       token,
     });
   } catch (error) {

@@ -1,14 +1,15 @@
 import express from "express";
 import authRouter from "./apps/auth.js";
-//db.pauqbkgvjpahoowveuka.supabase.co
+import cors from "cors"
+import bodyParser from "body-parser";
 
 async function init() {
     
   const app = express();
   const port = 4000;
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(cors())
+  app.use(bodyParser.json())
 
   app.use("/auth", authRouter);
 
