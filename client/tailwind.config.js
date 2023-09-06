@@ -19,6 +19,7 @@ module.exports = {
       backgroundImage: {
         "bg-1": "url('./imgs/bg-1.jpeg')",
         "bg-2": "url('./imgs/bg-2.jpeg')",
+        "bg-3": "url('./imgs/bg-3.png')",
       },
       borderRadius: {
         "4xl": "2.5rem",
