@@ -20,7 +20,7 @@ export function LoginPage() {
   return (
     <>
       <Navbar />
-      <div className="flex h-screen justify-center items-center space-x-2 ">
+      <div className="flex h-screen w-screen justify-center items-center space-x-2 ">
         {/* กล่องด้านขวา */}
         <img src={boy} />
         {/* กล่องด้านซ้าย */}
