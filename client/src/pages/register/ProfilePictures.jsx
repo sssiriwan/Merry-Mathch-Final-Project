@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import ProfileImage from "./ProfileImage";
 
 function ProfilePictures({ avatars, updateAvatars }) {
   const maxUploads = 5;
+
+  const countTags = () => {
+    return maxUploads - Object.keys(avatars).length;
+  };
 
   const handleFileChange = (event) => {
     const files = event.target.files;
@@ -14,45 +19,64 @@ function ProfilePictures({ avatars, updateAvatars }) {
       }
     }
 
-    updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
+    updateAvatars(newAvatars);
   };
 
-  const handleRemoveImage = (event, avatarKey) => {
-    event.preventDefault();
+  const handleRemoveImage = (avatarKey) => {
     const newAvatars = { ...avatars };
     delete newAvatars[avatarKey];
-    updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
+    updateAvatars(newAvatars);
+  };
+
+  const handleDragStartImage = (e, avatarKey) => {
+    e.dataTransfer.setData("text/plain", avatarKey);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedAvatarKey = e.dataTransfer.getData("text/plain");
+    const targetAvatarKey = e.currentTarget.getAttribute("data-key");
+
+    const newAvatars = { ...avatars };
+    const droppedFile = newAvatars[droppedAvatarKey];
+
+    newAvatars[droppedAvatarKey] = avatars[targetAvatarKey];
+    newAvatars[targetAvatarKey] = droppedFile;
+
+    updateAvatars(newAvatars);
   };
 
   return (
     <>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
-        <h1>Basic Information</h1>
+        <h1>Profile pictures</h1>
       </div>
       <div className="font-[400] text-[16px] text-pgray-800">
-        Upload at least 2 photos (up to 5)
+        Upload at least {countTags()} photos.
       </div>
 
       <div className="input-container relative">
         <div className="flex mb-[347px]">
-          {Object.keys(avatars).map((avatarKey) => {
-            const file = avatars[avatarKey];
-            return (
-              <div key={avatarKey} className="mr-[24px] relative">
-                <img
-                  className="rounded-[12px]"
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
-                />
-                <button
-                  className="image-remove-button bg-[#AF2758] text-white rounded-full p-2 absolute top-0 right-0"
-                  onClick={(event) => handleRemoveImage(event, avatarKey)}
-                >
-                  x
-                </button>
-              </div>
-            );
-          })}
+          {Object.keys(avatars).map((avatarKey, index) => (
+            <div
+              key={avatarKey}
+              className="mr-[24px] relative"
+              draggable="true"
+              onDragStart={(e) => handleDragStartImage(e, avatarKey)}
+              onDrop={handleDrop}
+              onDragOver={(e) => {
+                e.preventDefault();
+              }}
+              data-key={avatarKey}
+            >
+              <ProfileImage
+                file={avatars[avatarKey]}
+                onDragStartImage={(e) => handleDragStartImage(e, avatarKey)}
+                onDragEnd={() => {}}
+                onRemoveImage={() => handleRemoveImage(avatarKey)}
+              />
+            </div>
+          ))}
 
           {[...Array(maxUploads - Object.keys(avatars).length)].map(
             (_, index) => (

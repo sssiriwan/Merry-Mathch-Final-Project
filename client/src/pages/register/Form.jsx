@@ -177,7 +177,7 @@ function Form() {
                   onClick={() => setForm("BasicInformation")}
                   className={`mr-3 ml-1 border border-ppurple-500 rounded-2xl w-[246px] h-[80px] flex justify-left items-center bg-white`}
                 >
-                  <div className="bg-pgray-200 h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
+                  <div className="bg-pgray-200 text-ppurple-500 font-[700] text-[24px] h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
                     1
                   </div>
                   <div className="text-left ml-[16px]">
@@ -193,7 +193,7 @@ function Form() {
                   onClick={() => setForm("BasicInformation")}
                   className="mr-3 ml-1 border border-pgray-300 rounded-2xl w-[80px] h-[80px] flex justify-left items-center"
                 >
-                  <div className="bg-pgray-200 h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
+                  <div className="bg-pgray-200 text-pgray-600 font-[700] text-[24px]  h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
                     1
                   </div>
                 </button>
@@ -204,7 +204,7 @@ function Form() {
                   onClick={() => setForm("Identities")}
                   className="mr-3 ml-1 border border-ppurple-500 rounded-2xl w-[288px] h-[80px] flex justify-left items-center"
                 >
-                  <div className="bg-pgray-200 h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
+                  <div className="bg-pgray-200 text-ppurple-500 font-[700] text-[24px]  h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
                     2
                   </div>
 
@@ -220,7 +220,7 @@ function Form() {
                   onClick={() => setForm("Identities")}
                   className="mr-3 ml-1 border border-pgray-300 rounded-2xl w-[80px] h-[80px] flex justify-left items-center"
                 >
-                  <div className="bg-pgray-200 h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
+                  <div className="bg-pgray-200 text-pgray-600 font-[700] text-[24px] h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
                     2
                   </div>
                 </button>
@@ -231,7 +231,7 @@ function Form() {
                   onClick={() => setForm("ProfilePictures")}
                   className="bg-white ml-1 border border-ppurple-500 rounded-2xl w-[225px] h-[80px] flex justify-left items-center"
                 >
-                  <div className="bg-pgray-200 h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
+                  <div className="bg-pgray-200 text-ppurple-500 font-[700] text-[24px] h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
                     3
                   </div>
                   <div className="text-left ml-[16px]">
@@ -246,7 +246,7 @@ function Form() {
                   onClick={() => setForm("ProfilePictures")}
                   className="mr-3 ml-1 border border-pgray-300 rounded-2xl w-[80px] h-[80px] flex justify-left items-center"
                 >
-                  <div className="bg-pgray-200 h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
+                  <div className="bg-pgray-200 text-pgray-600 font-[700] text-[24px] h-[48px] w-[48px] rounded-2xl flex justify-center items-center ml-[16px]">
                     3
                   </div>
                 </button>
