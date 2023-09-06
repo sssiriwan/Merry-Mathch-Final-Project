@@ -14,17 +14,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Navbar from "@/components/base/Navbar";
+import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/authentication";
 import { Button } from "@/components/ui/button";
 import Home from "./Home";
+import ComplaintListPage from "./ComplaintListPage";
 
 export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, state } = useAuth();
   const auth = useAuth();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,11 +34,11 @@ export function LoginPage() {
       username,
       password
     })
-    
+    console.log(state)
   }
   return (
     <>
-      {auth.isAuthenticated ? <Home /> : <Navbar />}
+      {!auth.isAuthenticated ? <Navbar/> : state.user.role === 'Admin' ? <ComplaintListPage/> : <Home /> }
       <div className="flex h-screen justify-center items-center space-x-2 ">
         {/* กล่องด้านขวา */}
         <img src={boy} />

@@ -19,6 +19,7 @@ function AuthProvider(props) {
     console.log(data)
     const result = await axios.post("http://localhost:4000/auth/login", data);
     const token = result.data.token;
+    // console.log(result)
     localStorage.setItem("token", token);
     const userDataFromToken = jwtDecode(token);
     setState({ ...state, user: userDataFromToken });
