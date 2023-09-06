@@ -16,6 +16,16 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        "bg-1": "url('./imgs/bg-1.jpeg')",
+        "bg-2": "url('./imgs/bg-2.jpeg')",
+      },
+      borderRadius: {
+        "4xl": "2.5rem",
+      },
+      boxShadow: {
+        "3xl": " 2px 2px 12px 0px rgba(64, 50, 133, 0.12)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
