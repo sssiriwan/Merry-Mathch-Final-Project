@@ -11,10 +11,12 @@ import { RegisterPageStep1 } from "./pages/RegisterPageStep1";
 import ComplaintListPage from "./pages/ComplaintListPage";
 import PackageAddPage from "./pages/PackageAddPage";
 import Form from "./pages/register/Form";
+import LoginPageTest from "./pages/LoginPageTest";
+import { useAuth } from "./contexts/authentication";
+import HomePageAuthen from "./pages/HomePageAuthen";
 
 function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/register" element={<Form />} />
         <Route path="/" element={<Home />} />
@@ -25,8 +27,8 @@ function App() {
         <Route path="/complaint" element={<ComplaintFormPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/aaaa" element={<RegisterPageStep1 />} />
+        <Route path="/test" element={<LoginPageTest />} />
       </Routes>
-    </BrowserRouter>
   );
 }
 
