@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 export function ButtonDemo(props) {
   return (
@@ -10,7 +9,7 @@ export function ButtonDemo(props) {
 }
 export function ButtonPrimary(props) {
   return (
-    <Button className=" text-white font-semibold rounded-full bg-pred-500 hover:bg-pred-400 active:bg-pred-600  focus:bg-pgray-300 ">
+    <Button onSubmit={props.onSubmit} className=" text-white font-semibold rounded-full bg-pred-500 hover:bg-pred-400 active:bg-pred-600  focus:bg-pgray-300 ">
       {props.children}
     </Button>
   );

@@ -34,7 +34,7 @@ authRouter.post("/register", async (req, res) => {
         },
       ])
       .select();
-      // ต้องเปลี่ยนชื่อ file ตรง upload
+    // ต้องเปลี่ยนชื่อ file ตรง upload
     // const { data,error } = await supabase.storage.from('avatars').upload('public/avatar1.png', avatarFile);
     return res.json({
       message: `Created new account successfully`,
@@ -54,9 +54,14 @@ authRouter.post("/login", async (req, res) => {
     if (error) {
       console.log(error);
     }
+    // const { data: email } = await supabase
+    //   .from("users")
+    //   .select("*")
+    //   .eq("email", req.body.email);
+
     if (!user[0]) {
       return res.status(404).json({
-        message: "User not found",
+        message: "username or email not found",
       });
     }
     const isValidPassword = await bcrypt.compare(
@@ -69,12 +74,12 @@ authRouter.post("/login", async (req, res) => {
       });
     }
     const token = jwt.sign(
-      { id: user[0].id, username: user[0].username },
+      { id: user[0].id, username: user[0].username, role: user[0].role },
       process.env.SUPABASE_JWT_KEY,
       { expiresIn: "900000" }
     );
     return res.json({
-      message: user[0],
+      data: user[0],
       token,
     });
   } catch (error) {

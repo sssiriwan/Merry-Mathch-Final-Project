@@ -27,14 +27,13 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/authentication";
 
 const Navbar = () => {
   return (
     <nav className=" w-screen h-[80px] flex justify-between items-center shadow-3xl">
-      <div className="">
-        <a href="/">
-          <MerryLogo />
-        </a>
+      <div>
+        <MerryLogo />
       </div>
       <div className="menuBar">
         <div className="mr-[160px] h-[60px] w-[550px] flex items-center">
@@ -44,7 +43,9 @@ const Navbar = () => {
           <a href="#sec4">
             <span className=" mx-[24px] text-xl">How to Merry</span>
           </a>
-          <ButtonPrimary>Login</ButtonPrimary>
+          <ButtonPrimary>
+            <a href="/login">Login</a>
+          </ButtonPrimary>
         </div>
       </div>
     </nav>
@@ -52,6 +53,7 @@ const Navbar = () => {
 };
 
 function NavbarRegistered() {
+  const { logout } = useAuth();
   return (
     <nav className="w-full h-20 flex justify-around items-center shadow-md">
       <MerryLogo />
@@ -325,7 +327,9 @@ function NavbarRegistered() {
                   stroke-linejoin="round"
                 />
               </svg>
-              <span className="ml-2 text-pgray-700">Log out</span>
+              <span className="ml-2 text-pgray-700">
+                <button onClick={logout}>Log out</button>
+              </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
