@@ -44,7 +44,7 @@ const Navbar = () => {
           <a href="#sec4">
             <span className=" mx-[24px] text-xl">How to Merry</span>
           </a>
-          <ButtonPrimary>Login</ButtonPrimary>
+          <ButtonPrimary><a href="/login">Login</a></ButtonPrimary>
         </div>
       </div>
     </nav>

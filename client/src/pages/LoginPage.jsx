@@ -16,18 +16,21 @@ import {
 } from "@/components/ui/card";
 import Navbar from "@/components/base/Navbar";
 import { useState } from "react";
-// import { login } from "@/contexts/authentication.jsx"
+import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/authentication";
 
 export function LoginPage() {
   const [username, setUsername] = useState("ploy");
   const [password, setPassword] = useState("1234");
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   // login({
-  //   //   username,
-  //   //   password
-  //   // })
-  // }
+  const {login} = useAuth();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    login({
+      username: username || email,
+      password
+    })
+    console.log(username,password)
+  }
   return (
     <>
       <Navbar />
@@ -64,16 +67,16 @@ export function LoginPage() {
             </div>
           </CardContent>
           <div className="grid w-full max-w-sm items-center gap-1.5 pb-2 pr-5">
-            <ButtonPrimary>Login</ButtonPrimary>
-            {/* <button onSubmit={handleSubmit}>Login</button> */}
+            {/* <ButtonPrimary>Login</ButtonPrimary> */}
+            <button onSubmit={handleSubmit}>Login</button>
           </div>
 
             <div className="h-[32px] flex items-center">
               <CardTitle className="text-black mr-2 text-base">
                 <TypographySmall>Don’t have an account?</TypographySmall>
               </CardTitle>
-              <span className="text-base text-pred-500 cursor-pointer hover:text-pred-400 active:text-pred-200">
-                register
+              <span className="text-base text-pred-500 cursor-pointer hover:text-pred-400 active:text-pred-200"><Link to='/register'>
+                register</Link>
               </span>
             </div>
           </Card>
