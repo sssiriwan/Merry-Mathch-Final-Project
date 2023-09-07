@@ -24,6 +24,13 @@ authRouter.post("/register", async (req, res) => {
       created_at: new Date(),
     };
     // const avatarFile = req.files.avatar
+    const checkUser = await supabase.from('users').select('*').eq('username', user.username);
+    if (checkUser.data[0]) {
+      return res.json({
+        message: "User already in used",
+      })
+    }
+    console.log(checkUser)
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     await supabase

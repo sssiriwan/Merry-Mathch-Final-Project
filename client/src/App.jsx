@@ -12,23 +12,25 @@ import ComplaintListPage from "./pages/ComplaintListPage";
 import PackageAddPage from "./pages/PackageAddPage";
 import Form from "./pages/register/Form";
 import LoginPageTest from "./pages/LoginPageTest";
+import MatchingPage from "./pages/MatchingPage";
 import PackageListPage from "./pages/PackageListPage";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/register" element={<Form />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/package" element={<Package />} />
-      <Route path="/payment_1" element={<Payment_1 />} />
-      <Route path="/payment_2" element={<Payment_2 />} />
-      <Route path="/admin" element={<ComplaintListPage />} />
-      <Route path="/complaint" element={<ComplaintFormPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/pack" element={<PackageListPage />} />
-      {/* <Route path="/aaaa" element={<RegisterPageStep1 />} /> */}
-      <Route path="/test" element={<LoginPageTest />} />
-    </Routes>
+      <Routes>
+        <Route path="/register" element={<Form />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/package" element={<Package />} />
+        <Route path="/payment_1" element={<Payment_1 />} />
+        <Route path="/payment_2" element={<Payment_2 />} />
+        <Route path="/admin" element={<PackageListPage />} />
+        <Route path="/admin/package" element={<PackageAddPage />} />
+        <Route path="/admin/complain" element={<ComplaintListPage />} />
+        <Route path="/admin/complain/complainId" element={<ComplaintDetailPage />} />
+        <Route path="/complaint" element={<ComplaintFormPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/matching" element={<MatchingPage />} />
+      </Routes>
   );
 }
 

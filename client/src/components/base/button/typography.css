@@ -1,0 +1,7 @@
+.merry-stroke {
+  text-shadow:
+   -2px -2px 0 #fff,  
+    2px -2px 0 #fff,
+    -2px 2px 0 #fff,
+     2px 2px 0 #fff;
+}
