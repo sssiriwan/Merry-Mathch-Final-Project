@@ -11,6 +11,7 @@ const authRouter = Router();
 // const {data, error} = await supabase.storage.from('users').download(path)
 authRouter.post("/register", async (req, res) => {
   try {
+    console.log("ASDL",req)
     const user = {
       username: req.body.username,
       password: req.body.password,

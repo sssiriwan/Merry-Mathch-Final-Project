@@ -38,7 +38,8 @@ export function LoginPage() {
   }
   return (
     <>
-      {!auth.isAuthenticated ? <Navbar/> : state.user.role === 'Admin' ? <ComplaintListPage/> : <Home /> }
+    {/* state.user.role === 'Admin' ? <ComplaintListPage/> : <Home />  */}
+      {!auth.isAuthenticated ? <Navbar/> : state.user.role === 'Admin' ? window.location.replace('/admin') : window.location.replace('/')}
       <div className="flex h-screen justify-center items-center space-x-2 ">
         {/* กล่องด้านขวา */}
         <img src={boy} />

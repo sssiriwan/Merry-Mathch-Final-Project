@@ -10,22 +10,26 @@ import { LoginPage } from "./pages/LoginPage";
 import ComplaintListPage from "./pages/ComplaintListPage";
 import PackageAddPage from "./pages/PackageAddPage";
 import Form from "./pages/register/Form";
+
 import LoginPageTest from "./pages/LoginPageTest";
 import RegisterPageMock from "./pages/RegisterPageMock";
+import ComplaintSearch from "./pages/admin/ComplaintSearch";
 
 function App() {
   return (
       <Routes>
-        <Route path="/register" element={<Form />} />
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Form />} />
         <Route path="/package" element={<Package />} />
         <Route path="/payment_1" element={<Payment_1 />} />
         <Route path="/payment_2" element={<Payment_2 />} />
         <Route path="/admin/complain" element={<ComplaintListPage />} />
+        <Route path="/admin/complain/:complainId" element={<ComplaintDetailPage />} />
         <Route path="/admin" element={<PackageAddPage />} />
         <Route path="/complaint" element={<ComplaintFormPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/test" element={<RegisterPageMock />} />
+        {/* <Route path="/check" element={<ComplaintSearch />} /> */}
       </Routes>
   );
 }

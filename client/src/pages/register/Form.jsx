@@ -150,11 +150,14 @@ function Form() {
   };
 
   const handleSubmit = () => {
-    console.log("Submitting form data:", values);
-    register({
-      ...values,
-    })
-    // ทำการส่งข้อมูลไปยังเซิร์ฟเวอร์หรือประมวลผลข้อมูลตามที่คุณต้องการ
+    // console.log("Submitting form data:", values);
+    // const formData = new FormData();
+    // formData.append('username', values.username);
+    // formData.append('password', values.password);
+    // formData.append('fullname', values.name);
+    // formData.append('age',25);
+    register(values)
+    ทำการส่งข้อมูลไปยังเซิร์ฟเวอร์หรือประมวลผลข้อมูลตามที่คุณต้องการ
   };
 
   return (
@@ -270,6 +273,7 @@ function Form() {
         handleNext={handleNext}
         handleSubmit={handleSubmit}
       />
+      <div></div>
     </>
   );
 }

@@ -5,8 +5,12 @@ function FooterSection({
   formLength,
   handlePrev,
   handleNext,
-  handleSubmit,
+  // handleSubmit,
+  props
 }) {
+  const handleSubmit2 = () => {
+    console.log(props.formData)
+  }
   return (
     <div className="flex bg-white border border-pgray-300 h-[112px] justify-between items-center px-4">
       <div>
@@ -42,7 +46,7 @@ function FooterSection({
           </button>
         ) : (
           <button
-            onClick={handleSubmit}
+            onClick={handleSubmit2}
             className="bg-pred-500 text-white h-[48px] w-[150px] rounded-[99px] text-[16px] font-[700]"
           >
             Submit

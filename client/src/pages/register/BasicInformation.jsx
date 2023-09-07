@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function BasicInformation({ formValues, onChange }) {
+function BasicInformation({ formValues, onChange, }) {
   return (
     <form>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">

@@ -19,7 +19,7 @@ function AuthProvider(props) {
     console.log(data)
     const result = await axios.post("http://localhost:4000/auth/login", data);
     const token = result.data.token;
-    // console.log(result)
+    console.log(result)
     localStorage.setItem("token", token);
     const userDataFromToken = jwtDecode(token);
     setState({ ...state, user: userDataFromToken });
@@ -29,8 +29,13 @@ function AuthProvider(props) {
   // register the user
   const register = async (data) => {
     console.log(data)
-    const result = await axios.post("http://localhost:4000/auth/register", data);
-    console.log(result)
+    const result = await axios.post("http://localhost:4000/auth/register", data,
+    // {
+    //   headers: {"Content-Type": "multipart/form-data"},
+    // }
+    );
+    console.log(data)
+    console.log("เทส2",result)
     // navigate("/login");
   };
 
@@ -38,6 +43,7 @@ function AuthProvider(props) {
   const logout = () => {
     localStorage.removeItem("token");
     setState({ ...state, user: null, error: null });
+    window.location.replace('/')
   };
 
   const isAuthenticated = Boolean(localStorage.getItem("token"));
