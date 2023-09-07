@@ -28,14 +28,8 @@ function AuthProvider(props) {
 
   // register the user
   const register = async (data) => {
-    console.log(data)
-    const result = await axios.post("http://localhost:4000/auth/register", data,
-    // {
-    //   headers: {"Content-Type": "multipart/form-data"},
-    // }
-    );
-    console.log(data)
-    console.log("เทส2",result)
+    console.log("เข้ามา authen front",data)
+    await axios.post("http://localhost:4000/auth/register", data);
     // navigate("/login");
   };
 

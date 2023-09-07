@@ -44,9 +44,8 @@ authRouter.post("/register", async (req, res) => {
           password: user.password,
           fullname: user.fullname,
           role: user.role,
-          email: user.email,
-          age: user.age,
           created_at: user.created_at,
+          age: 22
         },
       ])
       .select();
