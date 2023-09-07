@@ -12,7 +12,7 @@ function Identities({
   option2,
 }) {
   return (
-    <form>
+    <>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
         <h1>Identities and Interests</h1>
       </div>
@@ -107,7 +107,7 @@ function Identities({
           <ListText onChange={updateTags} tags={formValues.tags.split(",")} />
         </div>
       </div>
-    </form>
+    </>
   );
 }
 
