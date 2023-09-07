@@ -4,10 +4,10 @@ import BasicInformation from "./BasicInformation";
 import ProfilePictures from "./ProfilePictures";
 import FooterSection from "./Footer";
 import Navbar from "@/components/base/Navbar";
+import { useAuth } from "@/contexts/authentication";
 
 function Form() {
   const formList = ["BasicInformation", "Identities", "ProfilePictures"];
-
   const formLength = formList.length;
 
   const [page, setPage] = useState(0);
@@ -23,7 +23,6 @@ function Form() {
         newAvatars[uniqueId] = files[i];
       }
     }
-
     updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
   };
 
@@ -72,12 +71,10 @@ function Form() {
     switch (page) {
       case 0: {
         return (
-          <div>
             <BasicInformation
               formValues={values}
               onChange={onChange}
             ></BasicInformation>
-          </div>
         );
       }
       case 1: {
@@ -127,8 +124,11 @@ function Form() {
     { id: "3", name: "Others" },
   ];
 
+  const { register } = useAuth();
+
   const handleSubmit = () => {
     console.log("Submitting form data:", values);
+    register(values)
     // ทำการส่งข้อมูลไปยังเซิร์ฟเวอร์หรือประมวลผลข้อมูลตามที่คุณต้องการ
   };
 
@@ -266,6 +266,7 @@ function Form() {
         handleNext={handleNext}
         handleSubmit={handleSubmit}
       />
+      <div></div>
     </>
   );
 }

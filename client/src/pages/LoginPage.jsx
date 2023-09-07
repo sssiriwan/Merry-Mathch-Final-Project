@@ -38,7 +38,8 @@ export function LoginPage() {
   }
   return (
     <>
-      {!auth.isAuthenticated ? <Navbar/> : state.user.role === 'Admin' ? <ComplaintListPage/> : <Home /> }
+    {/* state.user.role === 'Admin' ? <ComplaintListPage/> : <Home />  */}
+      {!auth.isAuthenticated ? <Navbar/> : state.user.role === 'Admin' ? window.location.replace('/admin') : window.location.replace('/')}
       <div className="flex h-screen justify-center items-center space-x-2 ">
         {/* กล่องด้านขวา */}
         <img src={boy} />
@@ -83,7 +84,9 @@ export function LoginPage() {
                 <TypographySmall>Don’t have an account?</TypographySmall>
               </CardTitle>
               <span className="text-base text-pred-500 cursor-pointer hover:text-pred-400 active:text-pred-200">
+                <a href="/register">
                 register
+                </a>
               </span>
             </div>
           </form>

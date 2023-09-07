@@ -2,6 +2,7 @@ import express from "express";
 import authRouter from "./apps/auth.js";
 import cors from "cors"
 import bodyParser from "body-parser";
+import adminRouter from "./apps/admin.js";
 
 async function init() {
     
@@ -12,6 +13,7 @@ async function init() {
   app.use(bodyParser.json())
 
   app.use("/auth", authRouter);
+  app.use('/admin', adminRouter)
 
   app.get("/", (req,res) => {
     res.send("hi sawasdee")

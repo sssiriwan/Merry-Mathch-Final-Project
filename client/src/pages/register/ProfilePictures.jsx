@@ -1,7 +1,14 @@
 import React from "react";
 import ProfileImage from "./ProfileImage";
+import { useAuth } from "@/contexts/authentication";
 
-function ProfilePictures({ avatars, updateAvatars }) {
+function ProfilePictures({ avatars, updateAvatars,props }) {
+  const { register } = useAuth();
+  const handleSubmit = () => {
+    // console.log(props)
+    // register({
+    // })
+  }
   const maxUploads = 5;
 
   const countTags = () => {
@@ -115,6 +122,7 @@ function ProfilePictures({ avatars, updateAvatars }) {
               </label>
             )
           )}
+          <button onClick={handleSubmit}>ลองจ้า</button>
         </div>
       </div>
     </>

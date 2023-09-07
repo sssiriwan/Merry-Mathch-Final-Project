@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = (props) => {
   return (
     <footer className="w-full h-[371px] bg-pgray-100 flex flex-col justify-center items-center">
       <div className="w-[1120px] h-[275px] flex flex-col items-center">
@@ -17,6 +17,7 @@ const Footer = () => {
           <img src="./icons/tw.png" className="p-[8px]" alt="twiiter-icon" />
         </div>
       </div>
+      {props.children}
     </footer>
   );
 };
