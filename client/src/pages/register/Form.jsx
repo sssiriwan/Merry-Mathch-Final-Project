@@ -4,6 +4,7 @@ import BasicInformation from "./BasicInformation";
 import ProfilePictures from "./ProfilePictures";
 import FooterSection from "./Footer";
 import Navbar from "@/components/base/Navbar";
+import { useAuth } from "@/contexts/authentication";
 
 function Form() {
   const formList = ["BasicInformation", "Identities", "ProfilePictures"];
@@ -127,8 +128,11 @@ function Form() {
     { id: "3", name: "Others" },
   ];
 
+  const { register } = useAuth();
+
   const handleSubmit = () => {
     console.log("Submitting form data:", values);
+    register(values)
     // ทำการส่งข้อมูลไปยังเซิร์ฟเวอร์หรือประมวลผลข้อมูลตามที่คุณต้องการ
   };
 

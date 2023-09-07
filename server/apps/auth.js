@@ -30,7 +30,12 @@ authRouter.post("/register", async (req, res) => {
       .from("users")
       .insert([
         {
-          user,
+          username: user.username,
+          password: user.password,
+          fullname: user.fullname,
+          role: user.role,
+          created_at: user.created_at,
+          age: 22
         },
       ])
       .select();

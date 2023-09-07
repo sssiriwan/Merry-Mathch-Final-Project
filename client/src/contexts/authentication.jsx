@@ -28,6 +28,7 @@ function AuthProvider(props) {
 
   // register the user
   const register = async (data) => {
+    console.log("เข้ามา authen front",data)
     await axios.post("http://localhost:4000/auth/register", data);
     // navigate("/login");
   };
