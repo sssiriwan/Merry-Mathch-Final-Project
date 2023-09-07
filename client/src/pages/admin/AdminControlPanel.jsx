@@ -4,7 +4,9 @@ import complaintImg from "../../../public/icons/ComplaintIcon.png";
 import ButtonGhostAdminPanel from "@/components/base/button/ButtonGhostAdminPanel";
 import MerryLogo from "@/components/base/button/MerryLogo";
 import logoutIcon from "../../../public/icons/LogoutIcon.png"
+import { useAuth } from "@/contexts/authentication";
 function AdminControlPanel() {
+  const {logout} = useAuth();
   return (
     <div className="w-[240px] h-screen border-r">
       <div className="flex flex-col items-center justify-center my-5">
@@ -16,7 +18,7 @@ function AdminControlPanel() {
         <ButtonGhostAdminPanel imgSrc={complaintImg} >Complaint</ButtonGhostAdminPanel>
       </div>
       <div className="border-t">
-        <ButtonGhostAdminPanel imgSrc={logoutIcon}>Log out</ButtonGhostAdminPanel>
+        <ButtonGhostAdminPanel imgSrc={logoutIcon}><button onClick={logout}>Log out</button></ButtonGhostAdminPanel>
       </div>
     </div>
   );
