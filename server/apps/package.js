@@ -11,9 +11,10 @@ adminRouter.post("/package", async (req, res) => {
      
       package_name: req.body.package_name,
       package_limit: req.body.package_limit,
+      package_icon: req.body.package_icon,
       price: req.body.price,
-      // created_at: new Date(),
-      // update_at: new Date(),
+      created_at: new Date(),
+      update_at: new Date(),
     };
 
     await supabase
@@ -22,9 +23,10 @@ adminRouter.post("/package", async (req, res) => {
         
         package_name: packageItem.package_name,
         package_limit: packageItem.package_limit,
+        package_icon: packageItem.package_icon,
         price: packageItem.price,
-        // created_at: packageItem.created_at,
-        // update_at: packageItem.update_at,
+        created_at: packageItem.created_at,
+        update_at: packageItem.update_at,
       },
     ]);
     return res.json({
