@@ -5,7 +5,7 @@ const adminRouter = Router();
 
 adminRouter.get('/package', async (req,res) => {
     try {
-        const result = await supabase.from('merry_packages').select('*');
+        const result = await supabase.from('merry_packages').select('*').order('package_id', {ascending: true});
         return res.json({
             data: result.data,
         })

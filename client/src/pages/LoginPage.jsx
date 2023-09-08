@@ -43,6 +43,7 @@ export function LoginPage() {
       ) : state.user.role === "Admin" ? (
         window.location.replace("/admin")
       ) : (
+        // <></>
         window.location.replace("/")
       )}
       <div className="flex h-screen justify-center items-center space-x-2 ">

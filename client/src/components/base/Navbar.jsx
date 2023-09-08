@@ -59,7 +59,9 @@ function NavbarRegistered() {
       <MerryLogo />
       <div className="flex">
         <Button variant="link" className="font-bold text-[#191C77]">
+          <a href="/matching">
           Start Matching!
+          </a>
         </Button>
         <Button variant="link" className="font-bold text-[#191C77]">
           Merry Membership

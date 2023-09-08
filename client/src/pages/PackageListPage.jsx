@@ -121,7 +121,7 @@ function PackageListPage() {
                           />
                         </svg>
                       </TableCell>
-                      <TableCell>{packagedetail.package_id}</TableCell>
+                      <TableCell>{index+1}</TableCell>
                       <TableCell>
                       <img src={merryicon} className="w-10 h-10" />
                       </TableCell>
