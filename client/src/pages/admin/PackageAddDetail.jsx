@@ -34,9 +34,10 @@ function PackageAddDetail() {
       package_limit: limit,
       price: 2000,
     }
+    console.log(newPackage)
     const result = await axios.post('http://localhost:4000/admin/package', newPackage);
     console.log(result)
-    navigate("/")
+    navigate("/admin")
   }
 
   return (
@@ -111,7 +112,7 @@ function PackageAddDetail() {
         </div>
       </div>
       <div className="flex h-20 justify-start items-start">
-        <button onClick={handleSubmit} className="border">+Add detail</button>
+        <button onClick={handleSubmit} className="border bg-pred-500 px-7 py-3 text-white rounded-full">+ Add detail</button>
       </div>
     </CardContent>
   );

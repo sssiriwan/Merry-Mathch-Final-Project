@@ -53,14 +53,14 @@ adminRouter.post('/package', async (req,res) => {
         const packageItem = {
             package_name: req.body.package_name,
             package_icon: req.body.package_icon,
-            merry_limit: req.body.merry_limit,
+            package_limit: req.body.package_limit,
             created_at: new Date(),
             admin_id: req.body.admin_id,
             price: req.body.price
         }
         const result =  await supabase.from('merry_packages').insert([{
             package_name: packageItem.package_name,
-            package_limit: packageItem.merry_limit,
+            package_limit: packageItem.package_limit,
             price: packageItem.price,
             created_at: packageItem.created_at,
             // admin_id: packageItem.admin_id,
