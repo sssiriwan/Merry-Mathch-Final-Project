@@ -1,8 +1,10 @@
 import PackageAddAction from "./admin/PackageAddAction";
 import PackageAddDetail from "./admin/PackageAddDetail";
 import AdminControlPanel from "./admin/AdminControlPanel";
+import axios from "axios";
 
 function PackageAddPage() {
+
   return (
     <div className="flex">
       <AdminControlPanel />

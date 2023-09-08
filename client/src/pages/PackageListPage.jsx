@@ -1,3 +1,4 @@
+import axios from "axios";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import PackageSearch from "./admin/PackageSearch";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState, useEffect } from "react";
+import merryicon from "../../public/icons/merry.png"
 
 const packagedetail = [
   {
@@ -30,6 +33,18 @@ const packagedetail = [
 ];
 
 function PackageListPage() {
+  const [items, setItems] = useState([]);
+
+  const fetchPackage = async () => {
+    const result = await axios.get('http://localhost:4000/admin/package');
+    console.log(result.data.data)
+    setItems(result.data.data)
+  }
+
+  useEffect(()=> {
+    fetchPackage();
+  }, [])
+
   return (
     <div className="flex">
       <AdminControlPanel />
@@ -57,7 +72,7 @@ function PackageListPage() {
                 </TableHeader>
 
                 <TableBody>
-                  {packagedetail.map((packagedetail, index) => (
+                  {items.map((packagedetail, index) => (
                     <TableRow key={index}>
                       <TableCell class=" flex flex-row m-2">
                         <svg
@@ -106,12 +121,14 @@ function PackageListPage() {
                           />
                         </svg>
                       </TableCell>
-                      <TableCell>{packagedetail.no}</TableCell>
-                      <TableCell>{packagedetail.icon}</TableCell>
-                      <TableCell>{packagedetail.Packagename}</TableCell>
-                      <TableCell>{packagedetail.MerryLimit}</TableCell>
-                      <TableCell>{packagedetail.Createddate}</TableCell>
-                      <TableCell>{packagedetail.Updatedate}</TableCell>
+                      <TableCell>{packagedetail.package_id}</TableCell>
+                      <TableCell>
+                      <img src={merryicon} className="w-10 h-10" />
+                      </TableCell>
+                      <TableCell>{packagedetail.package_name}</TableCell>
+                      <TableCell>{packagedetail.package_limit}</TableCell>
+                      <TableCell>{packagedetail.created_at}</TableCell>
+                      <TableCell>{packagedetail.updated_at}</TableCell>
                       <TableCell>
                         <Button class="bg-white">
                           <svg
