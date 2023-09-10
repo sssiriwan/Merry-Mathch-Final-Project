@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/authentication";
 import axios from "axios";
 import AdminAuthenticatedApp from "./AdminAuthenticatedApp";
 import { useEffect, useState } from "react";
+import ComplaintFormPage from "../ComplaintFormPage";
 
 function AuthenticatedApp() {
   return (
@@ -14,6 +15,7 @@ function AuthenticatedApp() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/matching" element={<MatchingPage />} />
+          <Route path="/complaint" element={<ComplaintFormPage />} />
           <Route path="*" element={<Home />} />
         </Routes>
     </>
