@@ -1,10 +1,19 @@
 import { Router } from "express";
 import { supabase } from "../utils/supabaseClient.js";
+import { protect } from "../middlewares/protect.js";
 
 const adminRouter = Router();
 
+adminRouter.use(protect)
+
 adminRouter.get('/package', async (req,res) => {
     try {
+        if(req.user.role === 'Users') {
+            return res.json({
+                message: "Only Admin can access"
+            })
+        }
+        console.log(req.user.role)
         const result = await supabase.from('merry_packages').select('*').order('package_id', {ascending: true});
         return res.json({
             data: result.data,
@@ -25,6 +34,7 @@ adminRouter.get('/package/:packageId', async (req,res) => {
     }
 })
 
+// TABLE เก่า
 // adminRouter.post('/package', async (req,res) => {
 //     try {
 //         const packageItem = {

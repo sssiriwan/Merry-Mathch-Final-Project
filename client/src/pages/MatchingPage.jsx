@@ -15,8 +15,17 @@ import heart from "../../public/icons/icon_vector.png";
 import dislike from "../../public/icons/x.png";
 import glass from "../../public/icons/Frame.png"
 import { Badge } from "@/components/ui/badge";
+import axios from "axios";
+import { useEffect } from "react";
 
 function MatchingPage() {
+  const getData = async () => {
+    const result = await axios.get('http://localhost:4000/admin/package');
+    console.log(result)
+  }
+  useEffect(()=> {
+    getData();
+  })
   return (
     <>
       <NavbarRegistered />

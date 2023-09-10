@@ -26,9 +26,11 @@ function AdminControlPanel() {
         </a>
       </div>
       <div className="border-t">
-        <ButtonGhostAdminPanel imgSrc={logoutIcon}>
-          <button onClick={logout}>Log out</button>
-        </ButtonGhostAdminPanel>
+        <div onClick={logout}>
+          <ButtonGhostAdminPanel imgSrc={logoutIcon}>
+            Log out
+          </ButtonGhostAdminPanel>
+        </div>
       </div>
     </div>
   );

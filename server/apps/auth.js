@@ -89,6 +89,7 @@ authRouter.post("/login", async (req, res) => {
       process.env.SUPABASE_JWT_KEY,
       { expiresIn: "900000" }
     );
+    console.log(req.user)
     return res.json({
       data: user[0],
       token,

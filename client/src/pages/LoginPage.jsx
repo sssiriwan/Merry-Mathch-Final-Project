@@ -15,12 +15,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/authentication";
 import { Button } from "@/components/ui/button";
-import Home from "./Home";
-import ComplaintListPage from "./ComplaintListPage";
 
 export function LoginPage() {
   const [username, setUsername] = useState("");
@@ -40,11 +38,9 @@ export function LoginPage() {
     <>
       {!auth.isAuthenticated ? (
         <Navbar />
-      ) : state.user.role === "Admin" ? (
-        window.location.replace("/admin")
-      ) : (
-        // <></>
-        window.location.replace("/")
+      ) : 
+      ( <NavbarRegistered />
+      // ( window.location.replace('/') ,<checkAuthenticateUser /> 
       )}
       <div className="flex h-screen justify-center items-center space-x-2 ">
         {/* กล่องด้านขวา */}
@@ -74,6 +70,7 @@ export function LoginPage() {
                 onChange={(event) => {
                   setUsername(event.target.value);
                 }}
+                required
               />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5 pb-2 mt-5">
@@ -86,6 +83,7 @@ export function LoginPage() {
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
+                required
               />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5 pb-2 mt-10">
