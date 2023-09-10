@@ -37,10 +37,10 @@ const Navbar = () => {
       </div>
       <div className="menuBar">
         <div className=" h-[60px] w-[550px] flex items-center">
-          <a href="#sec2">
+          <a href="/#sec2">
             <span className=" mx-[24px] text-xl">Why Merry Match?</span>
           </a>
-          <a href="#sec4">
+          <a href="/#sec4">
             <span className=" mx-[24px] text-xl">How to Merry</span>
           </a>
           <ButtonPrimary>
@@ -312,7 +312,7 @@ function NavbarRegistered() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
               {/* <LogOut className="mr-2 h-4 w-4" /> */}
               <svg
                 width="16"
@@ -330,7 +330,7 @@ function NavbarRegistered() {
                 />
               </svg>
               <span className="ml-2 text-pgray-700">
-                <button onClick={logout}>Log out</button>
+                <button>Log out</button>
               </span>
             </DropdownMenuItem>
           </DropdownMenuContent>
