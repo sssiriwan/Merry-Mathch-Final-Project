@@ -4,6 +4,7 @@ import cors from "cors"
 import bodyParser from "body-parser";
 import adminRouter from "./apps/admin.js";
 import postRouter from "./apps/posts.js";
+//  import complaintRouter from "./apps/complaint.js";
 
 async function init() {
     
@@ -16,6 +17,8 @@ async function init() {
   app.use("/auth", authRouter);
   app.use('/admin', adminRouter)
   app.use('/post', postRouter )
+  // app.use('/complaint', complaintRouter)
+  
 
   app.get("/", (req,res) => {
     res.send("hi sawasdee")

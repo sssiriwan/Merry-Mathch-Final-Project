@@ -85,4 +85,23 @@ adminRouter.post('/package', async (req,res) => {
     }
 })
 
+  // Admin สามารถดู Complaint Page ได้
+  adminRouter.get('/complaint', async (req,res) => {
+    try {
+        if(req.user.role === 'Users') {
+            return res.json({
+                message: "Only Admin can access"
+            })
+        }
+        console.log(req.user.role)
+        const result = await supabase.from('complaints').select('*').order('complaint_id', {ascending: true});
+        return res.json({
+            data: result.data,
+        })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
 export default adminRouter
