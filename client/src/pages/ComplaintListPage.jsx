@@ -60,6 +60,16 @@ const complaints = [
   },
 ];
 
+// Convert date format from (created_at) column into dd/mm/yy form
+function formatDate(inputDate) {
+  const date = new Date(inputDate);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString().slice(-2);
+
+  return `${day}/${month}/${year}`;
+}
+
 function ComplaintListPage() {
   const newStatus = "h-7 ml-2 rounded-lg bg-pbeige-100 text-black";
   const pendingStatus = "h-7 ml-2 rounded-lg bg-pyellow-100 text-black";
@@ -105,7 +115,7 @@ function ComplaintListPage() {
                     <TableCell>{complaints.user}</TableCell>
                     <TableCell>{complaints.issue}</TableCell>
                     <TableCell>{complaints.description}</TableCell>
-                    <TableCell>{complaints.date}</TableCell>
+                    <TableCell>{formatDate(complaints.created_at)}</TableCell>
                     <TableCell>
                       <BadgeDemo className={newStatus}>{complaints.status}</BadgeDemo>
                     </TableCell>
