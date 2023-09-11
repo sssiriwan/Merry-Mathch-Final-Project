@@ -17,7 +17,7 @@ const Sec1 = () => {
           <p>Dont’t forget to get Merry with us</p>
         </div>
         <div className="text-center">
-          <ButtonPrimary>Start matching!</ButtonPrimary>
+          <ButtonPrimary><a href="/matching">Start matching!</a></ButtonPrimary>
         </div>
       </div>
     </section>

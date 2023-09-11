@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import ComplaintSearch from "./admin/ComplaintSearch";
 import BadgeDemo from "@/components/base/button/Badge";
@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import axios from "axios";
 
 
 // Mock data
@@ -65,6 +66,20 @@ function ComplaintListPage() {
   const resolveStatus = "h-7 ml-2 rounded-lg bg-pgreen-100 text-pgreen-500";
   const cancelStatus = "h-7 ml-2 rounded-lg bg-pgray-200 text-pgray-700";
 
+  const [items, setItems] = useState([]);
+
+  const fetchPackage = async () => {
+    const result = await axios.get('http://localhost:4000/admin/package');
+    console.log(result.data.data)
+    setItems(result.data.data)
+  }
+
+  useEffect(()=> {
+    fetchPackage();
+  }, [])
+
+
+
   return (
     <div className="flex">
       <AdminControlPanel />
@@ -85,7 +100,7 @@ function ComplaintListPage() {
               </TableHeader>
 
               <TableBody>
-                {complaints.map((complaints, index) => (
+                {items.map((complaints, index) => (
                   <TableRow key={index}>
                     <TableCell>{complaints.user}</TableCell>
                     <TableCell>{complaints.issue}</TableCell>

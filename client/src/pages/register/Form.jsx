@@ -5,6 +5,7 @@ import ProfilePictures from "./ProfilePictures";
 import FooterSection from "./Footer";
 import Navbar from "@/components/base/Navbar";
 import { useAuth } from "@/contexts/authentication";
+import { useNavigate } from "react-router-dom";
 
 function Form() {
   const formList = ["BasicInformation", "Identities", "ProfilePictures"];
@@ -129,9 +130,11 @@ function Form() {
   ];
 
   const { register} = useAuth();
+  const navigate = useNavigate();
   const handleSubmit = () => {
     register(values)
     console.log("Submitting form data:", values);
+    navigate("/")
     // ทำการส่งข้อมูลไปยังเซิร์ฟเวอร์หรือประมวลผลข้อมูลตามที่คุณต้องการ
   };
 

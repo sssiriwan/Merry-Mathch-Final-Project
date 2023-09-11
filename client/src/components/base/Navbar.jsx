@@ -31,16 +31,16 @@ import { useAuth } from "@/contexts/authentication";
 
 const Navbar = () => {
   return (
-    <nav className=" w-screen h-[80px] flex justify-between items-center shadow-3xl">
+    <nav className="h-20 flex justify-around items-center shadow-3xl">
       <div>
         <MerryLogo />
       </div>
       <div className="menuBar">
-        <div className="mr-[160px] h-[60px] w-[550px] flex items-center">
-          <a href="#sec2">
+        <div className=" h-[60px] w-[550px] flex items-center">
+          <a href="/#sec2">
             <span className=" mx-[24px] text-xl">Why Merry Match?</span>
           </a>
-          <a href="#sec4">
+          <a href="/#sec4">
             <span className=" mx-[24px] text-xl">How to Merry</span>
           </a>
           <ButtonPrimary>
@@ -59,7 +59,9 @@ function NavbarRegistered() {
       <MerryLogo />
       <div className="flex">
         <Button variant="link" className="font-bold text-[#191C77]">
+          <a href="/matching">
           Start Matching!
+          </a>
         </Button>
         <Button variant="link" className="font-bold text-[#191C77]">
           Merry Membership
@@ -310,7 +312,7 @@ function NavbarRegistered() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
               {/* <LogOut className="mr-2 h-4 w-4" /> */}
               <svg
                 width="16"
@@ -328,7 +330,7 @@ function NavbarRegistered() {
                 />
               </svg>
               <span className="ml-2 text-pgray-700">
-                <button onClick={logout}>Log out</button>
+                <button>Log out</button>
               </span>
             </DropdownMenuItem>
           </DropdownMenuContent>

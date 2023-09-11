@@ -6,3 +6,13 @@
   box-sizing: border-box;
 }
 
+.shadowcss {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  bottom: 0px;
+  left: 0px;
+  background-image: linear-gradient(hsla(0, 0%, 100%, 0), #390741);
+  border-radius: 1.5rem;
+  z-index: 1;
+}

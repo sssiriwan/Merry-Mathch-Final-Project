@@ -10,27 +10,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function PackageAddDetail() {
+  const [name, setName] = useState("");
+  const [limit, setLimit] = useState(0);
+  const [icon, setIcon] = useState("https://files.vogue.co.th/uploads/makeup_steps_to_natural_look3.jpg");
+  const [detail, setDetail] = useState("");
+  console.log(limit)
+  const navigate = useNavigate();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addPackage();
+  }
+
+  const addPackage = async () => {
+    const newPackage = {
+      package_icon: icon,
+      package_name: name,
+      package_limit: limit,
+      price: 2000,
+    }
+    console.log(newPackage)
+    const result = await axios.post('http://localhost:4000/admin/package', newPackage);
+    console.log(result)
+    navigate("/admin")
+  }
+
   return (
     <CardContent className="grid gap-6 p-5">
+      {/* <select value={limit} onChange={(event) => { setLimit(event.target.value)}}>
+        <option value={25}>25</option>
+        <option value={45}>45</option>
+      </select> */}
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="subject">Package name *</Label>
-          <Input id="Package" placeholder="" />
+          <Input id="Package" placeholder="" onChange={(event) => { setName(event.target.value)}} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="area">Merry limit *</Label>
-          <Select defaultValue="billing">
+          {/* <Select defaultValue="billing">
             <SelectTrigger id="limit">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Basic">25</SelectItem>
-              <SelectItem value="Platinum">45</SelectItem>
-              <SelectItem value="Premium">75</SelectItem>
-            </SelectContent>
-          </Select>
+          </Select> */}
+          <select  value={limit} onChange={(event) => { setLimit(event.target.value)}} >
+              <option value={0} disabled></option>
+              <option value={25}>25</option>
+              <option value={45}>45</option>
+              <option value={75}>75</option>
+            </select>
         </div>
       </div>
       <Label htmlFor="subject">Icon *</Label>
@@ -74,12 +107,12 @@ function PackageAddDetail() {
               fill="#C8CCDB"
             />
           </svg>
-          <Input id="Package" placeholder="" />
-          <Button className="bg-white text-pgray-500">Submit</Button>
+          <Input id="Package" placeholder="" value={detail} onChange={(event) => { setDetail(event.target.value)}} />
+          <Button className="bg-white text-pgray-500">Delete</Button>
         </div>
       </div>
       <div className="flex h-20 justify-start items-start">
-        <ButtonSecondary>+Add detail</ButtonSecondary>
+        <button onClick={handleSubmit} className="border bg-pred-500 px-7 py-3 text-white rounded-full">+ Add detail</button>
       </div>
     </CardContent>
   );

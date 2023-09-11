@@ -1,3 +1,5 @@
+import "./typography.css"
+
 export function TypographyH1(props) {
     return (
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-ppurple-500">
@@ -119,9 +121,9 @@ export function TypographyH1(props) {
     );
   }
   
-  export function TypographyLarge() {
+  export function TypographyLarge(props) {
     return (
-      <div className="text-lg font-semibold">Are you sure absolutely sure?</div>
+      <div className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-pred-400 merry-stroke">{props.children}</div>
     );
   }
   

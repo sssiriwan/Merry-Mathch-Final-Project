@@ -13,7 +13,7 @@ const Sec4 = () => {
           and matching someone new
         </p>
         <div className="mt-[40px]">
-          <ButtonSecondary>Start Matching!</ButtonSecondary>
+          <ButtonSecondary><a href="/matching">Start Matching!</a></ButtonSecondary>
         </div>
       </div>
     </section>
