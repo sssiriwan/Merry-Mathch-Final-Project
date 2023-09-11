@@ -44,7 +44,7 @@ function ComplaintListPage() {
   const [selectedStatus, setSelectedStatus] = useState("All status");
 
   const fetchComplaints = async () => {
-    const result = await axios.get("http://localhost:4000/admin/package");
+    const result = await axios.get("http://localhost:4000/admin/complaint");
     console.log(result.data.data);
     setFilteredComplaints(result.data.data);
   };
