@@ -20,8 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-
-
 // Convert date format from (created_at) column into dd/mm/yy form
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -33,20 +31,25 @@ function formatDate(inputDate) {
 }
 
 function ComplaintListPage() {
-  const newStatus = "h-7 ml-2 rounded-lg bg-pbeige-100 text-black";
-  const pendingStatus = "h-7 ml-2 rounded-lg bg-pyellow-100 text-black";
-  const resolveStatus = "h-7 ml-2 rounded-lg bg-pgreen-100 text-pgreen-500";
-  const cancelStatus = "h-7 ml-2 rounded-lg bg-pgray-200 text-pgray-700";
-
 
   const [filteredComplaints, setFilteredComplaints] = useState([]);
   const [searchInput, setSearchInput] = useState("Search...");
   const [selectedStatus, setSelectedStatus] = useState("All status");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchComplaints = async () => {
-    const result = await axios.get("http://localhost:4000/admin/complaint");
-    console.log(result.data.data);
-    setFilteredComplaints(result.data.data);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await axios.get("http://localhost:4000/admin/complaint");
+      setFilteredComplaints(result.data.data);
+    } catch (error) {
+      setError("An error occurred while fetching data");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSearchInput = (e) => {
@@ -81,10 +84,10 @@ function ComplaintListPage() {
             <div>
               <Select>
                 <SelectTrigger className="w-[200px] flex p-3  items-start gap-8  rounded-md border border-gray-400 bg-neutral-0">
-                  <SelectValue 
-                  placeholder="All status"
-                  value={selectedStatus}
-                  onChange={handleSelectedStatus}
+                  <SelectValue
+                    placeholder="All status"
+                    value={selectedStatus}
+                    onChange={handleSelectedStatus}
                   />
                 </SelectTrigger>
                 <SelectContent>
@@ -120,7 +123,22 @@ function ComplaintListPage() {
                     <TableCell>{complaint.description}</TableCell>
                     <TableCell>{formatDate(complaint.created_at)}</TableCell>
                     <TableCell>
-                      <BadgeDemo className={newStatus}>{complaint.status}</BadgeDemo>
+                      <BadgeDemo
+                        className={
+                          "rounded-lg " +
+                          (complaint.complaint_status.toLowerCase() === "new"
+                            ? "bg-pbeige-100 text-black"
+                            : complaint.complaint_status.toLowerCase()  === "pending"
+                            ? "bg-pyellow-100 text-black"
+                            : complaint.complaint_status.toLowerCase()  === "resolved"
+                            ? "bg-pgreen-100 text-pgreen-500"
+                            : complaint.complaint_status.toLowerCase()  === "cancel"
+                            ? "bg-pgray-200 text-pgray-700"
+                            : "")
+                        }
+                      >
+                        {complaint.complaint_status.toUpperCase()}
+                      </BadgeDemo>
                     </TableCell>
                   </TableRow>
                 ))}
