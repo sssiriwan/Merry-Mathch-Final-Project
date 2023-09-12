@@ -16,3 +16,41 @@
   border-radius: 1.5rem;
   z-index: 1;
 }
+
+/* .container {
+  --container-padding-horizontal: 32px;
+  position: relative;
+  padding-inline: var(--container-padding-horizontal);
+  display: grid;
+  place-items: center;
+  height: 100%;
+}
+.carousel {
+  pointer-events: none;
+  position: absolute;
+  -webkit-padding-before: 67px;
+          padding-block-start: 67px;
+  -webkit-padding-after: max(24px, calc(29px + var(--font-size-md)));
+          padding-block-end: max(24px, calc(29px + var(--font-size-md)));
+  perspective: 100px;
+  width: 100%;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  overflow-y: hidden;
+}
+.carousel__wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 61.2vh;
+}
+.carousel .item {
+  position: absolute;
+  max-width: 418px;
+  height: 100%;
+  margin-inline: var(--container-padding-horizontal);
+  opacity: 0;
+  will-change: transform, opacity;
+  -webkit-animation: carousel-animate 27s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+          animation: carousel-animate 27s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+} */
