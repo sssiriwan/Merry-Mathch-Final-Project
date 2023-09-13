@@ -17,7 +17,7 @@ export function ButtonPrimary(props) {
 
 export function ButtonSecondary(props) {
   return (
-    <Button className=" text-pred-600 font-semibold rounded-full bg-pred-100 hover:bg-pred-200 active:bg-pred-300  focus:bg-pgray-300 ">
+    <Button onClick={props.onClick} className=" text-pred-600 font-semibold rounded-full bg-pred-100 hover:bg-pred-200 active:bg-pred-300  focus:bg-pgray-300 ">
       {props.children}
     </Button>
   );

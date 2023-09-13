@@ -13,8 +13,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import PreviewCard from "./PreviewCard";
+
 function ProfileEditPage() {
   const navigate = useNavigate();
+  const [clicked, setClicked] = useState(false)
   // state สำหรับ update
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
@@ -71,6 +74,7 @@ function ProfileEditPage() {
   return (
     <div className="grid place-items-center">
       <NavbarRegistered />
+        { clicked && <PreviewCard />}
       <section className=" w-[930px]">
         <article className="flex items-end justify-between mt-14">
           <div>
@@ -79,7 +83,7 @@ function ProfileEditPage() {
             <TypographyH1>to let others know you</TypographyH1>
           </div>
           <div className="w-[260px] flex justify-between">
-            <ButtonSecondary>Preview Profile</ButtonSecondary>
+            <ButtonSecondary onClick={() => { setClicked(!clicked) }}>Preview Profile</ButtonSecondary>
             <ButtonDemo onClick={handleUpdateProfile}>
               Update Profile
             </ButtonDemo>
@@ -208,9 +212,9 @@ function ProfileEditPage() {
                   }}
                   value={sexId}
                 >
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="non-binary">Non-binary</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Non-binary">Non-binary</option>
                 </select>
               </div>
 
@@ -224,9 +228,9 @@ function ProfileEditPage() {
                   }}
                   value={sexPrefer}
                 >
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="non-binary">Non-binary</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Non-binary">Non-binary</option>
                 </select>
               </div>
             </div>
@@ -245,10 +249,10 @@ function ProfileEditPage() {
                 }}
                 value={racialPrefer}
               >
-                <option value="asian">Asian</option>
-                <option value="caucasoid">Caucasoid</option>
-                <option value="negriod">Negroid</option>
-                <option value="others">Others</option>
+                <option value="Asian">Asian</option>
+                <option value="Caucasoid">Caucasoid</option>
+                <option value="Negriod">Negroid</option>
+                <option value="Others">Others</option>
               </select>
 
               <div className="ml-[24px]">
@@ -261,12 +265,12 @@ function ProfileEditPage() {
                   }}
                   value={meetingInterest}
                 >
-                  <option value="friend">Friend</option>
-                  <option value="boyfriend-girlfriend">
+                  <option value="Friend">Friend</option>
+                  <option value="Boyfriend-Girlfriend">
                     Boyfriend / GirlFriend
                   </option>
-                  <option value="casual">Casual</option>
-                  <option value="others">Others</option>
+                  <option value="Casual">Casual</option>
+                  <option value="Others">Others</option>
                 </select>
               </div>
             </div>
@@ -275,7 +279,7 @@ function ProfileEditPage() {
             </div>
             <div>
                 <div>About Me (Maximum 150 characters)</div>
-                <Textarea value={aboutMe} onChange={(e) => { setAboutMe(e.target.value) }} />
+                <Textarea value={aboutMe} maxlength="150" onChange={(e) => { setAboutMe(e.target.value) }} />
             </div>
           </div>
         </section>
