@@ -1,0 +1,331 @@
+import Footer from "@/components/base/Footer";
+import { NavbarRegistered } from "@/components/base/Navbar";
+import { ButtonDemo, ButtonSecondary } from "@/components/base/button/Button";
+import {
+  TypographyH1,
+  TypographySmall,
+} from "@/components/base/button/Typography";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+function ProfileEditPage() {
+    const navigate = useNavigate();
+  // state สำหรับ update
+  const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState(null);
+  const [location, setLocation] = useState("");
+  const [city, setCity] = useState("");
+  
+  const handleUpdateProfile = async () => {
+    const updatedProfile = {
+        fullname,
+        username,
+        email,
+        date_of_birth: dateOfBirth,
+        location,
+        city,
+    }
+    const result = await axios.put("http://localhost:4000/post/profile", updatedProfile);
+    console.log(result)
+    navigate('/matching')
+  }
+
+  const getMyProfile = async () => {
+    const result = await axios.get("http://localhost:4000/post/profile");
+    console.log(result.data.data);
+    setFullname(result.data.data.fullname);
+    setUsername(result.data.data.username);
+    setEmail(result.data.data.email);
+    setDateOfBirth(result.data.data.date_of_birth);
+    setLocation(result.data.data.location);
+    setCity(result.data.data.city)
+  };
+  useEffect(() => {
+    getMyProfile();
+  }, []);
+  return (
+    <div className="grid place-items-center">
+      <NavbarRegistered />
+      <section className=" w-[930px]">
+        <article className="flex items-end justify-between mt-14">
+          <div>
+            <TypographySmall>PROFILE</TypographySmall>
+            <TypographyH1>Let's make profile</TypographyH1>
+            <TypographyH1>to let others know you</TypographyH1>
+          </div>
+          <div className="w-[260px] flex justify-between">
+            <ButtonSecondary>Preview Profile</ButtonSecondary>
+            <ButtonDemo onClick={handleUpdateProfile}>Update Profile</ButtonDemo>
+          </div>
+        </article>
+        <section className="flex flex-col items-center">
+          <div className="font-bold text-2xl text-ppurple-500 mt-14 w-full">
+            <h1>Basic Information</h1>
+          </div>
+          <div className="flex my-5">
+            <div>
+              <Label>
+                Name
+                <Input
+                  className="w-[453px] mb-[40px]"
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Jone Snow"
+                  onChange={(e) => { setFullname(e.target.value) }}
+                  value={fullname}
+                />
+              </Label>
+
+              <Label>
+                Location
+                <Input
+                  className="w-[453px] mb-[40px]"
+                  type="text"
+                  name="location"
+                  id="location"
+                  placeholder="Thailand"
+                  onChange={(e) => { setLocation(e.target.value) }}
+                  value={location}
+                />
+              </Label>
+
+              <Label>
+                Username
+                <Input
+                  className="mb-[40px]"
+                  type="text"
+                  name="username"
+                  id="username"
+                  placeholder="At least 6 charactor"
+                  value={username}
+                  onChange={(e) => { setUsername(e.target.value) }}
+                />
+              </Label>
+            </div>
+
+            <div className="ml-[24px]">
+              <Label>
+                Date of birth
+                <Input
+                  className="w-[453px] mb-[40px]"
+                  placeholder="01/01/2022"
+                  type="date"
+                  id="Date"
+                  name="Date"
+                  defaultValue="2022-01-01"
+                  value={dateOfBirth}
+                  onChange={(e) => { setDateOfBirth(e.target.value) }}
+                />
+              </Label>
+
+              <Label>
+                City
+                <Input
+                  className="mb-[40px]"
+                  type="city"
+                  id="city"
+                  name="city"
+                  placeholder="Bangkok"
+                  value={city}
+                  onChange={(e) => { setCity(e.target.value) }}
+                />
+              </Label>
+
+              <Label>
+                Email
+                <Input
+                  className="mb-[40px]"
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="name@website.com"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value) }}
+                />
+              </Label>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="font-bold text-2xl text-ppurple-500 mt-5">
+            <h1>Identities and Interests</h1>
+          </div>
+          <div className="">
+            <div className="flex mt-[24px]">
+              <div className="w-[453px]">Sexual identities</div>
+              <div className="ml-[24px]">Sexual preferences</div>
+            </div>
+
+            <div className="flex">
+              <div className="mb-6">
+                <select
+                  className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                  id="SexualIdentities"
+                  name="SexualIdentities"
+                  onChange=""
+                  value=""
+                >
+                  {/* {option &&
+                option.map((states) => {
+                  return (
+                    <option key={states.id} value={states.id}>
+                      {states.name}
+                    </option>
+                  );
+                })} */}
+                </select>
+              </div>
+
+              <div className="ml-[24px]">
+                <select
+                  className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                  id="SexualPreferences"
+                  name="SexualPreferences"
+                  onChange=""
+                  value=""
+                >
+                  {/* {option &&
+                option.map((states) => {
+                  return (
+                    <option key={states.id} value={states.id}>
+                      {states.name}
+                    </option>
+                  );
+                })} */}
+                </select>
+              </div>
+            </div>
+            <div className="flex mt-[40px]">
+              <div className="w-[453px]">Racial preferences</div>
+              <div className="ml-[24px]">Meeting interests</div>
+            </div>
+
+            <div className="flex">
+              <select
+                className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                id="RacialPreferences"
+                name="RacialPreferences"
+                onChange=""
+                value=""
+              >
+                {/* {option1 &&
+              option1.map((states) => {
+                return (
+                  <option key={states.id} value={states.id}>
+                    {states.name}
+                  </option>
+                );
+              })} */}
+              </select>
+
+              <div className="ml-[24px]">
+                <select
+                  className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                  id="MeetingInterests"
+                  name="MeetingInterests"
+                  onChange=""
+                  value=""
+                >
+                  {/* {option2 &&
+                option2.map((states) => {
+                  return (
+                    <option key={states.id} value={states.id}>
+                      {states.name}
+                    </option>
+                  );
+                })} */}
+                </select>
+              </div>
+            </div>
+            <div className="">
+              {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="font-bold text-2xl text-ppurple-500 mt-14">
+            <h1>Profile pictures</h1>
+          </div>
+          <div className="font-[400] text-[16px] text-pgray-800">
+            Upload at least photos. {/* {countTags()} */}
+          </div>
+
+          <div className="input-container relative">
+            <div className="flex mb-[347px]">
+              {/* {Object.keys(avatars).map((avatarKey, index) => (
+                <div
+                  key={avatarKey}
+                  className="mr-[24px] relative"
+                  draggable="true"
+                  onDragStart={(e) => handleDragStartImage(e, avatarKey)}
+                  onDrop={handleDrop}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                  }}
+                  data-key={avatarKey}
+                >
+                  <ProfileImage
+                    file={avatars[avatarKey]}
+                    onDragStartImage={(e) => handleDragStartImage(e, avatarKey)}
+                    onDragEnd={() => {}}
+                    onRemoveImage={() => handleRemoveImage(avatarKey)}
+                  />
+                </div>
+              ))} */}
+
+              {/* {[...Array(maxUploads - Object.keys(avatars).length)].map(
+                (_, index) => (
+                  <label
+                    key={index}
+                    className={`button-avatar mr-[24px] bg-pgray-200 w-[167px] h-[167px] rounded-[12px] flex flex-col justify-center items-center relative ${
+                      Object.keys(avatars).length >= maxUploads ? "hidden" : ""
+                    }`}
+                  >
+                    <div className="text-ppurple-600 text-lg">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="25"
+                        height="24"
+                        viewBox="0 0 25 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M12.5 4.5V19.5M20 12H5"
+                          stroke="#7D2262"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                    <div className="text-ppurple-600 text-lg">Upload</div>
+
+                    <input
+                      //   id={`avatar${index}`}
+                      //   name={`avatar${index}`}
+                      type="file"
+                      onChange=""
+                      hidden
+                    />
+                  </label>
+                )
+              )} */}
+            </div>
+          </div>
+        </section>
+      </section>
+      <Footer />
+    </div>
+  );
+}
+
+export default ProfileEditPage;

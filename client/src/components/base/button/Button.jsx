@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export function ButtonDemo(props) {
   return (
-    <Button className="bg-pred-500 rounded-full font-semibold">
+    <Button className="bg-pred-500 rounded-full font-semibold" onClick={props.onClick}>
       {props.children}
     </Button>
   );

@@ -256,7 +256,7 @@ function NavbarRegistered() {
                     fill="#FFE1EA"
                   />
                 </svg>
-                <span className="ml-2 text-pgray-700">Profile</span>
+                <span className="ml-2 text-pgray-700"><a href="/profile">Profile</a></span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <svg
