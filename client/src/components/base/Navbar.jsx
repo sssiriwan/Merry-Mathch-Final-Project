@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonMerryPackageProfile, ButtonPrimary } from "./button/Button";
 import MerryLogo from "./button/MerryLogo";
 import { Button } from "../ui/button";
@@ -28,6 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/authentication";
+import axios from "axios";
 
 const Navbar = () => {
   return (
@@ -53,6 +54,15 @@ const Navbar = () => {
 };
 
 function NavbarRegistered() {
+  const [userImg, setUserImg] = useState("")
+
+  const getMyProfile = async () => {
+    const result = await axios.get('http://localhost:4000/post/profile');
+    setUserImg(result.data.data.avatar_url)
+  }
+  useEffect(()=>{
+    getMyProfile();
+  }, [])
   const { logout } = useAuth();
   return (
     <nav className="w-full h-20 flex justify-around items-center shadow-md">
@@ -230,7 +240,7 @@ function NavbarRegistered() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="ml-3">
-              <AvatarImage src="https://s.isanook.com/ca/0/ud/278/1394829/26309033_141508049870704_5253.jpg?ip/resize/w728/q80/jpg" />
+              <AvatarImage className="object-cover" src={userImg} />
               <AvatarFallback>User Image</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
@@ -256,7 +266,7 @@ function NavbarRegistered() {
                     fill="#FFE1EA"
                   />
                 </svg>
-                <span className="ml-2 text-pgray-700">Profile</span>
+                <span className="ml-2 text-pgray-700"><a href="/profile">Profile</a></span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <svg
