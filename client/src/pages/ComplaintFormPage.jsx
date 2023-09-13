@@ -35,7 +35,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-
 function ComplaintFormPage() {
   const [userId, setUserID] = useState("");
   const [issue, setIssue] = useState("");
@@ -51,7 +50,7 @@ function ComplaintFormPage() {
     setUserID(result.data.data.user_id);
   };
   //ต้องแก้ให้ส่งไอดีไปด้วยได้
-console.log(userId)
+  console.log(userId);
   const createComplaint = async () => {
     await axios.post("http://localhost:4000/auth/complaint", {
       userId,
@@ -92,7 +91,7 @@ console.log(userId)
           <CardContent>
             <form onSubmit={handleSubmit}>
               <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-1.5">
+                <div className="flex flex-col space-y-1.5 ">
                   <Label htmlFor="issue-title">Issue</Label>
                   <Input
                     id="issue-title"
@@ -140,12 +139,11 @@ console.log(userId)
                   </Popover>
                 </div>
               </div>
-              <ButtonDemo>Submit</ButtonDemo>
+              <div className=" pt-6">
+                <ButtonDemo>Submit</ButtonDemo>
+              </div>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <ButtonDemo>Submit</ButtonDemo>
-          </CardFooter>
         </Card>
         <img src={boy} />
       </section>

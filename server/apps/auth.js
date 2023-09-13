@@ -115,13 +115,13 @@ authRouter.post('/complaint', async (req, res) => {
   try {
     console.log(req.body);
     const complainItem = {
-      user_id: req.body.id,
+      user_id: req.body.userId,
       issue: req.body.issue,
       description: req.body.description,
       created_at: new Date(),
       complaint_status: req.body.status,
     };
-    console.log(complainItem)
+    
     const result = await supabase
   .from('complaints')
   .insert([
