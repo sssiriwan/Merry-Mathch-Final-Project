@@ -39,7 +39,8 @@ function ComplaintFormPage() {
   const [userId, setUserID] = useState("");
   const [issue, setIssue] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState(Date);
+  // แก้ ปฎิทิน
+  const [date, setDate] = useState("");
   const [status, setStatus] = useState("New");
 
   const navigate = useNavigate();
@@ -49,8 +50,7 @@ function ComplaintFormPage() {
     console.log(result.data.data);
     setUserID(result.data.data.user_id);
   };
-  //ต้องแก้ให้ส่งไอดีไปด้วยได้
-  console.log(userId);
+
   const createComplaint = async () => {
     await axios.post("http://localhost:4000/auth/complaint", {
       userId,
@@ -115,28 +115,18 @@ function ComplaintFormPage() {
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="issue-created-at">Date Submitted</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[280px] justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {/* {date ? format(date, "PPP") : <span>Pick a date</span>} */}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <Input
+                    className="w-[453px] mb-[40px]"
+                    placeholder="01/01/2022"
+                    type="date"
+                    id="Date"
+                    name="Date"
+                    defaultValue="2022-01-01"
+                    onChange={(event) => {
+                      setDate(event.target.value);
+                    }}
+                    value={date}
+                  />
                 </div>
               </div>
               <div className=" pt-6">
