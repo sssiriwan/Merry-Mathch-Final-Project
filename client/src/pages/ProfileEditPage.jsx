@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,7 @@ function ProfileEditPage() {
   const [sexPrefer, setSexPrefer] = useState("");
   const [racialPrefer, setRacialPrefer] = useState("");
   const [meetingInterest, setMeetingInterest] = useState("");
+  const [aboutMe, setAboutMe] = useState("")
 
   const handleUpdateProfile = async () => {
     const updatedProfile = {
@@ -38,6 +40,7 @@ function ProfileEditPage() {
       sexual_preference: sexPrefer,
       racial_preference: racialPrefer,
       meeting_interest: meetingInterest,
+      about_me: aboutMe
     };
     const result = await axios.put(
       "http://localhost:4000/post/profile",
@@ -60,6 +63,7 @@ function ProfileEditPage() {
     setSexPrefer(result.data.data.sexual_preference);
     setRacialPrefer(result.data.data.racial_preference);
     setMeetingInterest(result.data.data.meeting_interest);
+    setAboutMe(result.data.data.about_me)
   };
   useEffect(() => {
     getMyProfile();
@@ -226,11 +230,11 @@ function ProfileEditPage() {
                 </select>
               </div>
             </div>
+            {/* เดี๋ยวค่อยมาแก้ UI */}
             <div className="flex mt-[40px]">
               <div className="w-[453px]">Racial preferences</div>
               <div className="ml-[24px]">Meeting interests</div>
             </div>
-
             <div className="flex">
               <select
                 className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
@@ -268,6 +272,10 @@ function ProfileEditPage() {
             </div>
             <div className="">
               {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
+            </div>
+            <div>
+                <div>About Me (Maximum 150 characters)</div>
+                <Textarea value={aboutMe} onChange={(e) => { setAboutMe(e.target.value) }} />
             </div>
           </div>
         </section>
