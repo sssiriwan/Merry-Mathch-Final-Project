@@ -53,7 +53,7 @@ function Form() {
     RacialPreferences: "0",
     MeetingInterests: "0",
     tags: "Music",
-    
+
     username: "",
     password: "",
     Date: "",
@@ -129,13 +129,13 @@ function Form() {
     { id: "3", name: "Others" },
   ];
 
-  const { register} = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
   const handleSubmit = () => {
-    register(values)
-    console.log("Submitting form data:", values);
-    navigate("/")
-    // ทำการส่งข้อมูลไปยังเซิร์ฟเวอร์หรือประมวลผลข้อมูลตามที่คุณต้องการ
+    const updatedValues = { ...values, avatars };
+    register(updatedValues);
+    console.log("Submitting form data:", updatedValues);
+    navigate("/");
   };
 
   const setForm = (formName) => {
