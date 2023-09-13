@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 
 // Convert date format from (created_at) column into dd/mm/yy form
+// อันนี้เดี่ยวน้องเซ็ทให้มาจากฝั่งหลัง
 function formatDate(inputDate) {
   const date = new Date(inputDate);
   const day = date.getDate().toString().padStart(2, "0");
@@ -33,8 +34,8 @@ function formatDate(inputDate) {
 function ComplaintListPage() {
 
   const [filteredComplaints, setFilteredComplaints] = useState([]);
-  const [searchInput, setSearchInput] = useState("Search...");
-  const [selectedStatus, setSelectedStatus] = useState("All status");
+  const [searchInput, setSearchInput] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -51,6 +52,16 @@ function ComplaintListPage() {
       setIsLoading(false);
     }
   };
+
+//   try {
+//     const result = await axios.get(`http://localhost:4001/admin/complaint?keywords=${searchInput}&category=${selectedStatus}`);
+//     setFilteredComplaints(result.data.data);
+//   } catch (error) {
+//     setError("An error occurred while fetching data");
+//   } finally {
+//     setIsLoading(false);
+//   }
+// };
 
   const handleSearchInput = (e) => {
     e.preventDefault();
@@ -118,7 +129,7 @@ function ComplaintListPage() {
               <TableBody>
                 {filteredComplaints.map((complaint, index) => (
                   <TableRow key={index}>
-                    <TableCell>{complaint.user}</TableCell>
+                    <TableCell>{complaint.user_id}</TableCell>
                     <TableCell>{complaint.issue}</TableCell>
                     <TableCell>{complaint.description}</TableCell>
                     <TableCell>{formatDate(complaint.created_at)}</TableCell>
@@ -152,3 +163,41 @@ function ComplaintListPage() {
 }
 
 export default ComplaintListPage;
+
+
+// //////////////
+// const handleSearchText = (e) => {
+//   e.preventDefault();
+//   setSearchText(e.target.value);
+// };
+
+// const handleCategory = (e) => {
+//   setCategory(e.target.value);
+// };
+
+// useEffect(() => {
+//   getComplaints();
+// }, [searchText, category]);
+
+
+// const [complaints, setComplaints] = useState([]);
+// const [isError, setIsError] = useState(null);
+// const [isLoading, setIsLoading] = useState(null);
+// const [searchText, setSearchText] = useState("");
+// const [category, setCategory] = useState("");
+
+
+// const getComplaints = async () => {
+//   try {
+//     setIsError(false);
+//     setIsLoading(true);
+//     const results = await axios(
+//       `http://localhost:4001/admin/complaint?keywords=${searchText}&category=${category}`
+//     );
+//     setComplaints(results.data.data);
+//     setIsLoading(false);
+//   } catch (error) {
+//     setIsLoading(false);
+//     setIsError(true);
+//   }
+// };

@@ -52,15 +52,100 @@ complaintRouter.post('/complaint', async (req, res) => {
           console.log(error)
       }
   })
-  //Admin สามารถ Resolve หรือ Cancel Complaint ได้
+  
+
+//Admin สามารถ Resolve หรือ Cancel Complaint ได้
+complaintRouter.put('/complaint', async (req, res) => {
+  const { issue, description, status, updatedStatus } = req.body;
+
+  try {
+    // Update the complaint status in the database.
+    await supabase.from('complaints')
+      .update({ complaint_status: updatedStatus.complaint_status })
+      .eq('complaint_id', complaint_id)
+      .select();
+
+    res.status(200).send('Complaint status updated successfully');
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+complaintRouter.put('/complaint',async (req, res) => {
+  const complaintId = req.body.complaint_id;
+  // console.log(req.body);
+
+  const updatedStatus = {
+    ...req.body,
+    // updated_at: new Date(),
+  };
 //   UPDATE MATCHING ROWS
 // const { data, error } = await supabase
 //   .from('complaints')
 //   .update({ other_column: 'otherValue' })
 //   .eq('some_column', 'someValue')
 //   .select()
+  await supabase.from('complaints')
+  (
+    ` UPDATE complaints
+    SET complaint_status = $2 ,updated_at = $3
+    WHERE complaint_id=  $1`,
+    [complaintId, updatedStatus.complaint_status, updatedStatus.updated_at]
+  );
+  // console.log("success");
+  console.log(`Status ${complaintId} has been updated.`);
+  return res.json({
+    message: `Status ${complaintId} has been updated.`,
+  });
+});
 
 
 export default complaintRouter;
 
 
+
+
+complaintRouter.put('/complaint',async (req, res) => {
+  const { complaint_id, updatedStatus } = req.body;
+
+  const complainItem = {
+    complaint_status: updatedStatus.complaint_status,
+    updated_at: new Date(),
+  };
+
+  const { data, error } = await supabase
+    .from('complaints')
+    .update(complainItem)
+    .eq('complaint_id', complaint_id);
+
+  if (error) {
+    res.status(500).send(error);
+  } else {
+    res.status(200).send(data);
+  }
+});
+
+
+productRouter.get("/", async (req, res) => {
+  try {
+    const issue = req.query.keywords;
+    const status = req.query.status;
+    const query = {};
+    if (issue) {
+      query.issue = new RegExp(issue, "i");
+    }
+    if (status) {
+      query.status = new RegExp(status, "i");
+    }
+    const result = await supabase.from('complaints').select('*').where(query).order('created_at', { ascending: false });
+return res.json({
+  data: result.data,
+});
+    
+  } catch (error) {
+    return res.json({
+      message: `${error}`,
+    });
+  }
+});

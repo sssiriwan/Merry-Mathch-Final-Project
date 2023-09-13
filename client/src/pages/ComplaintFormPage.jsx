@@ -31,14 +31,54 @@ import { Textarea } from "@/components/ui/textarea";
 import { NavbarRegistered } from "@/components/base/Navbar";
 import Footer from "@/components/base/Footer";
 import { ButtonDemo } from "@/components/base/button/Button";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 
 function ComplaintFormPage() {
-  const [date, setDate] = React.useState(Date);
+  const [userId, setUserID] = useState("");
+  const [issue, setIssue] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState(Date);
+  const [status, setStatus] = useState("New");
+
+  const navigate = useNavigate();
+
+  const getMyProfile = async () => {
+    const result = await axios.get("http://localhost:4000/post/profile");
+    console.log(result.data.data);
+    setUserID(result.data.data.user_id);
+  };
+  //ต้องแก้ให้ส่งไอดีไปด้วยได้
+console.log(userId)
+  const createComplaint = async () => {
+    await axios.post("http://localhost:4000/auth/complaint", {
+      userId,
+      issue,
+      description,
+      date,
+      status,
+    });
+
+    navigate("/");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    createComplaint();
+  };
+
+  useEffect(() => {
+    getMyProfile();
+  }, []);
+
   return (
     <>
-    <NavbarRegistered />
+      <NavbarRegistered />
       <section className="flex h-screen justify-center items-center">
         {/* <small>COMPLAINT</small> */}
+
         <Card className="w-1/2 h-[90%] mr-5 border-hidden flex flex-col justify-evenly py-20 ">
           <CardHeader className="">
             <CardTitle className="text-pbeige-700">
@@ -50,17 +90,28 @@ function ComplaintFormPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="issue-title">Issue</Label>
-                  <Input id="issue-title" placeholder="Enter your issue here" />
+                  <Input
+                    id="issue-title"
+                    placeholder="Enter your issue here"
+                    onChange={(event) => {
+                      setIssue(event.target.value);
+                    }}
+                    value={issue}
+                  />
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="issue-desc">Description</Label>
                   <Textarea
                     id="issue-desc"
                     placeholder="Description..."
+                    onChange={(event) => {
+                      setDescription(event.target.value);
+                    }}
+                    value={description}
                   ></Textarea>
                 </div>
                 <div className="flex flex-col space-y-1.5">
@@ -89,6 +140,7 @@ function ComplaintFormPage() {
                   </Popover>
                 </div>
               </div>
+              <ButtonDemo>Submit</ButtonDemo>
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">

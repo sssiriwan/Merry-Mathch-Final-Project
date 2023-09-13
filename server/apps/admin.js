@@ -13,7 +13,7 @@ adminRouter.get('/package', async (req,res) => {
                 message: "Only Admin can access"
             })
         }
-        console.log(req.user.role)
+        // console.log(req.user.role)
         const result = await supabase.from('merry_packages').select('*').order('package_id', {ascending: true});
         return res.json({
             data: result.data,
@@ -34,28 +34,6 @@ adminRouter.get('/package/:packageId', async (req,res) => {
     }
 })
 
-// TABLE เก่า
-// adminRouter.post('/package', async (req,res) => {
-//     try {
-//         const packageItem = {
-//             package_name: req.body.package_name,
-//             merry_limit: req.body.merry_limit,
-//             created_at: new Date(),
-//             admin_id: req.body.admin_id,
-//         }
-//         await supabase.from('package_list').insert([{
-//             package_name: packageItem.package_name,
-//             merry_limit: packageItem.merry_limit,
-//             created_at: packageItem.created_at,
-//             admin_id: packageItem.admin_id,
-//         }])
-//         return res.json({
-//             message: "add package successfully"
-//         })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
 
 adminRouter.post('/package', async (req,res) => {
     try {
@@ -93,8 +71,8 @@ adminRouter.post('/package', async (req,res) => {
                 message: "Only Admin can access"
             })
         }
-        console.log(req.user.role)
-        const result = await supabase.from('complaints').select('*').order('complaint_id', {ascending: true});
+        // console.log(req.user.role)
+        const result = await supabase.from('complaints').select('*').order('created_at', {ascending: false});
         return res.json({
             data: result.data,
         })
@@ -103,5 +81,54 @@ adminRouter.post('/package', async (req,res) => {
     }
 })
 
+//admin สามารถเสริชหาข้อมูลคอมเพลนได้ และกรอง status
+adminRouter.get("/complaint", async (req, res) => {
+    try {
+      const issue = req.query.keywords;
+      const status = req.query.complaint_status;
+      const query = {};
+      if (issue) {
+        query.issue = new RegExp(issue, "i");
+      }
+      if (status) {
+        query.status = new RegExp(status, "i");
+      }
+      const result = await supabase.from('complaints').select('*').where(query).order('created_at', { ascending: false });
+  return res.json({
+    data: result.data,
+  });
+      
+    } catch (error) {
+      return res.json({
+        message: `${error}`,
+      });
+    }
+  });
 
+ 
 export default adminRouter
+
+
+
+// TABLE เก่า
+// adminRouter.post('/package', async (req,res) => {
+//     try {
+//         const packageItem = {
+//             package_name: req.body.package_name,
+//             merry_limit: req.body.merry_limit,
+//             created_at: new Date(),
+//             admin_id: req.body.admin_id,
+//         }
+//         await supabase.from('package_list').insert([{
+//             package_name: packageItem.package_name,
+//             merry_limit: packageItem.merry_limit,
+//             created_at: packageItem.created_at,
+//             admin_id: packageItem.admin_id,
+//         }])
+//         return res.json({
+//             message: "add package successfully"
+//         })
+//     } catch (error) {
+//         console.log(error)
+//     }
+// })
