@@ -48,20 +48,17 @@ function Form() {
   const initialValues = {
     name: "",
     location: "",
-    SexualIdentities: "0",
-    SexualPreferences: "1",
-    RacialPreferences: "0",
-    MeetingInterests: "0",
-    tags: "Music",
-
     username: "",
     password: "",
     Date: "",
     email: "",
     city: "",
     ConfirmPassword: "",
-
-    img: "",
+    SexualIdentities: "0",
+    SexualPreferences: "1",
+    RacialPreferences: "0",
+    MeetingInterests: "0",
+    tags: "Music",
   };
 
   const [values, setValues] = useState(initialValues);
