@@ -10,6 +10,7 @@ import ComplaintFormPage from "../ComplaintFormPage";
 import ProfileEditPage from "../ProfileEditPage";
 import MerryList from "../MerryList";
 import PreviewCard from "../PreviewCard";
+import Package from "../Package";
 
 function AuthenticatedApp() {
   return (
@@ -22,6 +23,7 @@ function AuthenticatedApp() {
           <Route path="/profile" element={<ProfileEditPage />} />
           <Route path="/profile/:userId" element={<PreviewCard />} />
           <Route path="/merry-list" element={<MerryList />} />
+          <Route path="/package" element={<Package />} />
           <Route path="*" element={<Home />} />
         </Routes>
     </>

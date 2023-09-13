@@ -48,7 +48,7 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
     if (checkUser.data[0]) {
       return res.json({
         message: "User already in used",
-      })
+      });
     }
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
@@ -107,10 +107,7 @@ authRouter.post("/login", async (req, res) => {
         message: "username or email not found",
       });
     }
-    const isValidPassword = await bcrypt.compare(
-      req.body.password,
-      user[0].password
-    );
+    const isValidPassword = await bcrypt.compare(req.body.password, user[0].password);
     if (!isValidPassword) {
       return res.status(401).json({
         message: "Password is invalid",
@@ -121,7 +118,7 @@ authRouter.post("/login", async (req, res) => {
       process.env.SUPABASE_JWT_KEY,
       { expiresIn: "9000000" }
     );
-    console.log(req.user)
+    console.log(req.user);
     return res.json({
       data: user[0],
       token,
@@ -143,7 +140,7 @@ authRouter.get("/", async (req, res) => {
 });
 
 //User สามารถสร้าง Complain ได้
-authRouter.post('/complaint', async (req, res) => {
+authRouter.post("/complaint", async (req, res) => {
   try {
     console.log(req.body);
     
@@ -178,6 +175,22 @@ authRouter.post('/complaint', async (req, res) => {
   }
 });
 
+// user สามารถดู package ได้
+authRouter.get("/package", async (req, res) => {
+  try {
+    const result = await supabase
+      .from("merry_packages")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(3)
+    console.log(result);
+    return res.json({
+      data: result.data,
+    });
+  } catch (error) {
+    console.error("Error in /package route:", error);
+  }
+});
 
 export default authRouter;
 
