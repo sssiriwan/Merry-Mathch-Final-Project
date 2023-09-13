@@ -29,7 +29,11 @@ postRouter.put('/profile', async (req,res) => {
         age: req.body.age,
         date_of_birth: req.body.date_of_birth,
         location: req.body.location,
-        city: req.body.city
+        city: req.body.city,
+        sexual_identity: req.body.sexual_identity,
+        sexual_preference: req.body.sexual_preference,
+        racial_preference: req.body.racial_preference,
+        meeting_interest: req.body.meeting_interest
     }
     const { data, error } = await supabase.from('users').update(updatedProfile).eq('user_id', req.user.id);
     return res.json({

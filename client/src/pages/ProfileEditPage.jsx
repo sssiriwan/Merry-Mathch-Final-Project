@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function ProfileEditPage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   // state สำหรับ update
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
@@ -21,20 +21,31 @@ function ProfileEditPage() {
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [location, setLocation] = useState("");
   const [city, setCity] = useState("");
-  
+  const [sexId, setSexId] = useState("");
+  const [sexPrefer, setSexPrefer] = useState("");
+  const [racialPrefer, setRacialPrefer] = useState("");
+  const [meetingInterest, setMeetingInterest] = useState("");
+
   const handleUpdateProfile = async () => {
     const updatedProfile = {
-        fullname,
-        username,
-        email,
-        date_of_birth: dateOfBirth,
-        location,
-        city,
-    }
-    const result = await axios.put("http://localhost:4000/post/profile", updatedProfile);
-    console.log(result)
-    navigate('/matching')
-  }
+      fullname,
+      username,
+      email,
+      date_of_birth: dateOfBirth,
+      location,
+      city,
+      sexual_identity: sexId,
+      sexual_preference: sexPrefer,
+      racial_preference: racialPrefer,
+      meeting_interest: meetingInterest,
+    };
+    const result = await axios.put(
+      "http://localhost:4000/post/profile",
+      updatedProfile
+    );
+    console.log(result);
+    navigate("/matching");
+  };
 
   const getMyProfile = async () => {
     const result = await axios.get("http://localhost:4000/post/profile");
@@ -44,7 +55,11 @@ function ProfileEditPage() {
     setEmail(result.data.data.email);
     setDateOfBirth(result.data.data.date_of_birth);
     setLocation(result.data.data.location);
-    setCity(result.data.data.city)
+    setCity(result.data.data.city);
+    setSexId(result.data.data.sexual_identity);
+    setSexPrefer(result.data.data.sexual_preference);
+    setRacialPrefer(result.data.data.racial_preference);
+    setMeetingInterest(result.data.data.meeting_interest);
   };
   useEffect(() => {
     getMyProfile();
@@ -61,7 +76,9 @@ function ProfileEditPage() {
           </div>
           <div className="w-[260px] flex justify-between">
             <ButtonSecondary>Preview Profile</ButtonSecondary>
-            <ButtonDemo onClick={handleUpdateProfile}>Update Profile</ButtonDemo>
+            <ButtonDemo onClick={handleUpdateProfile}>
+              Update Profile
+            </ButtonDemo>
           </div>
         </article>
         <section className="flex flex-col items-center">
@@ -78,7 +95,9 @@ function ProfileEditPage() {
                   name="name"
                   id="name"
                   placeholder="Jone Snow"
-                  onChange={(e) => { setFullname(e.target.value) }}
+                  onChange={(e) => {
+                    setFullname(e.target.value);
+                  }}
                   value={fullname}
                 />
               </Label>
@@ -91,7 +110,9 @@ function ProfileEditPage() {
                   name="location"
                   id="location"
                   placeholder="Thailand"
-                  onChange={(e) => { setLocation(e.target.value) }}
+                  onChange={(e) => {
+                    setLocation(e.target.value);
+                  }}
                   value={location}
                 />
               </Label>
@@ -105,7 +126,9 @@ function ProfileEditPage() {
                   id="username"
                   placeholder="At least 6 charactor"
                   value={username}
-                  onChange={(e) => { setUsername(e.target.value) }}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
                 />
               </Label>
             </div>
@@ -121,7 +144,9 @@ function ProfileEditPage() {
                   name="Date"
                   defaultValue="2022-01-01"
                   value={dateOfBirth}
-                  onChange={(e) => { setDateOfBirth(e.target.value) }}
+                  onChange={(e) => {
+                    setDateOfBirth(e.target.value);
+                  }}
                 />
               </Label>
 
@@ -134,7 +159,9 @@ function ProfileEditPage() {
                   name="city"
                   placeholder="Bangkok"
                   value={city}
-                  onChange={(e) => { setCity(e.target.value) }}
+                  onChange={(e) => {
+                    setCity(e.target.value);
+                  }}
                 />
               </Label>
 
@@ -147,7 +174,9 @@ function ProfileEditPage() {
                   name="email"
                   placeholder="name@website.com"
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value) }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </Label>
             </div>
@@ -170,17 +199,14 @@ function ProfileEditPage() {
                   className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                   id="SexualIdentities"
                   name="SexualIdentities"
-                  onChange=""
-                  value=""
+                  onChange={(e) => {
+                    setSexId(e.target.value);
+                  }}
+                  value={sexId}
                 >
-                  {/* {option &&
-                option.map((states) => {
-                  return (
-                    <option key={states.id} value={states.id}>
-                      {states.name}
-                    </option>
-                  );
-                })} */}
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="non-binary">Non-binary</option>
                 </select>
               </div>
 
@@ -189,17 +215,14 @@ function ProfileEditPage() {
                   className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                   id="SexualPreferences"
                   name="SexualPreferences"
-                  onChange=""
-                  value=""
+                  onChange={(e) => {
+                    setSexPrefer(e.target.value);
+                  }}
+                  value={sexPrefer}
                 >
-                  {/* {option &&
-                option.map((states) => {
-                  return (
-                    <option key={states.id} value={states.id}>
-                      {states.name}
-                    </option>
-                  );
-                })} */}
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="non-binary">Non-binary</option>
                 </select>
               </div>
             </div>
@@ -213,35 +236,33 @@ function ProfileEditPage() {
                 className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                 id="RacialPreferences"
                 name="RacialPreferences"
-                onChange=""
-                value=""
+                onChange={(e) => {
+                  setRacialPrefer(e.target.value);
+                }}
+                value={racialPrefer}
               >
-                {/* {option1 &&
-              option1.map((states) => {
-                return (
-                  <option key={states.id} value={states.id}>
-                    {states.name}
-                  </option>
-                );
-              })} */}
+                <option value="asian">Asian</option>
+                <option value="caucasoid">Caucasoid</option>
+                <option value="negriod">Negroid</option>
+                <option value="others">Others</option>
               </select>
 
               <div className="ml-[24px]">
                 <select
-                  className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                  className="border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                   id="MeetingInterests"
                   name="MeetingInterests"
-                  onChange=""
-                  value=""
+                  onChange={(e) => {
+                    setMeetingInterest(e.target.value);
+                  }}
+                  value={meetingInterest}
                 >
-                  {/* {option2 &&
-                option2.map((states) => {
-                  return (
-                    <option key={states.id} value={states.id}>
-                      {states.name}
-                    </option>
-                  );
-                })} */}
+                  <option value="friend">Friend</option>
+                  <option value="boyfriend-girlfriend">
+                    Boyfriend / GirlFriend
+                  </option>
+                  <option value="casual">Casual</option>
+                  <option value="others">Others</option>
                 </select>
               </div>
             </div>
