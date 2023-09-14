@@ -4,7 +4,6 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import adminRouter from "./apps/admin.js";
 import postRouter from "./apps/posts.js";
-import getRouter from "./apps/gets.js";
 
 async function init() {
   const app = express();
@@ -16,7 +15,6 @@ async function init() {
   app.use("/auth", authRouter);
   app.use("/admin", adminRouter);
   app.use("/post", postRouter);
-  app.use("/get", getRouter);
 
   app.get("/", (req, res) => {
     res.send("hi sawasdee");
