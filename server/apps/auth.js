@@ -9,7 +9,7 @@ const authRouter = Router();
 // const multerUpload = multer({ dest: "uploads/"});
 // const avatarUpload = multerUpload.fields([{name: "avatar", maxCount:5 }]);
 // const {data, error} = await supabase.storage.from('users').download(path)
-authRouter.post("/register", async (req, res) => {
+authRouter.post("/testregister", async (req, res) => {
   try {
     const user = {
       username: req.body.username,
@@ -24,13 +24,16 @@ authRouter.post("/register", async (req, res) => {
       created_at: new Date(),
     };
     // const avatarFile = req.files.avatar
-    const checkUser = await supabase.from('users').select('*').eq('username', user.username);
+    const checkUser = await supabase
+      .from("users")
+      .select("*")
+      .eq("username", user.username);
     if (checkUser.data[0]) {
       return res.json({
         message: "User already in used",
-      })
+      });
     }
-    console.log(checkUser)
+    console.log(checkUser);
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     await supabase
@@ -41,7 +44,7 @@ authRouter.post("/register", async (req, res) => {
           password: user.password,
           age: 22,
           created_at: user.created_at,
-          role: user.role
+          role: user.role,
         },
       ])
       .select();
@@ -89,7 +92,7 @@ authRouter.post("/login", async (req, res) => {
       process.env.SUPABASE_JWT_KEY,
       { expiresIn: "900000" }
     );
-    console.log(req.user)
+    console.log(req.user);
     return res.json({
       data: user[0],
       token,

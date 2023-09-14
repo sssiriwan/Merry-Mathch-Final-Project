@@ -24,19 +24,21 @@ function AuthProvider(props) {
       const userDataFromToken = jwtDecode(token);
       setState({ ...state, user: userDataFromToken });
       console.log(state);
-      navigate('/')
+      navigate("/");
     } catch (error) {
       console.log(error);
       setState({
-        ...state, error: error
-      })
+        ...state,
+        error: error,
+      });
     }
   };
-  
 
   // register the user
   const register = async (data) => {
-    await axios.post("http://localhost:4000/auth/register", data);
+    await axios.post("http://localhost:4000/auth/register", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     navigate("/login");
   };
 
