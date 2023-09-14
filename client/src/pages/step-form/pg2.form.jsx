@@ -33,9 +33,9 @@ export const Pg2 = () => {
               className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select...</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
@@ -50,10 +50,10 @@ export const Pg2 = () => {
               className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select...</option>
-              <option value="male">Asian</option>
-              <option value="female">Europe</option>
-              <option value="other">Africa</option>
-              <option value="other">America</option>
+              <option value="Asian">Asian</option>
+              <option value="Europe">Europe</option>
+              <option value="Africa">Africa</option>
+              <option value="America">America</option>
               <option value="other">Other</option>
             </select>
           </div>
@@ -71,9 +71,9 @@ export const Pg2 = () => {
               className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select...</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
@@ -88,10 +88,10 @@ export const Pg2 = () => {
               className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select...</option>
-              <option value="male">Friend</option>
-              <option value="female">Boyfriend/Grilfriend</option>
-              <option value="other">Casual</option>
-              <option value="other">Other</option>
+              <option value="Friend">Friend</option>
+              <option value="Boyfriend/Grilfriend">Boyfriend/Grilfriend</option>
+              <option value="Casual">Casual</option>
+              <option value="Other">Other</option>
             </select>
           </div>
         </div>
