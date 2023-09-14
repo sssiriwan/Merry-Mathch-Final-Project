@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
 import merryicon from "../../public/icons/merry.png"
+import { Link } from "react-router-dom";
 
 const packagedetail = [
   {
@@ -148,7 +149,7 @@ function PackageListPage() {
                         </Button>
                       </TableCell>
                       <TableCell>
-                        <Button class="bg-white">
+                        <Button class="bg-white"><Link to="/admin/package-edit">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -165,6 +166,7 @@ function PackageListPage() {
                               fill="#FF6390"
                             />
                           </svg>
+                          </Link>
                         </Button>
                       </TableCell>
                     </TableRow>
