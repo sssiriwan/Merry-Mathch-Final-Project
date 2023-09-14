@@ -59,7 +59,7 @@ function RegisterPage() {
     formData.append("password", password);
 
     for (let avatarKey in avatars) {
-      formData.append("avatars", avatars[avatarKey]);
+      formData.append("avatar", avatars[avatarKey]);
     }
 
     register(formData);

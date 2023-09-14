@@ -1,13 +1,13 @@
 import { Router } from "express";
 // import { pool } from "../utils/supabaseClient.js";
 import { supabase } from "../utils/supabaseClient.js";
-// import multer from "multer"
+import multer from "multer";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const authRouter = Router();
-// const multerUpload = multer({ dest: "uploads/"});
-// const avatarUpload = multerUpload.fields([{name: "avatar", maxCount:5 }]);
+// const multerUpload = multer({ dest: "uploads/" });
+// const avatarUpload = multerUpload.fields([{ name: "avatar", maxCount: 5 }]);
 // const {data, error} = await supabase.storage.from('users').download(path)
 authRouter.post("/testregister", async (req, res) => {
   try {
@@ -24,10 +24,12 @@ authRouter.post("/testregister", async (req, res) => {
       created_at: new Date(),
     };
     // const avatarFile = req.files.avatar
+
     const checkUser = await supabase
       .from("users")
       .select("*")
-      .eq("username", user.username);
+      .or(`username.eq.${user.username},email.eq.${user.email}`);
+
     if (checkUser.data[0]) {
       return res.json({
         message: "User already in used",
@@ -42,6 +44,7 @@ authRouter.post("/testregister", async (req, res) => {
         {
           username: user.username,
           password: user.password,
+          fullname: user.fullname,
           age: 22,
           created_at: user.created_at,
           role: user.role,
