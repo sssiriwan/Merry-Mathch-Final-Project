@@ -13,7 +13,7 @@ function AdminAuthenticatedApp() {
             <Route path="/admin" element={<PackageListPage />} />
             <Route path="/admin/package" element={<PackageAddPage />} />
             <Route path="/admin/complain" element={<ComplaintListPage />} />
-            <Route path="/admin/complain/complainId" element={<ComplaintDetailPage />} />
+            <Route path="/admin/complain/:complainId" element={<ComplaintDetailPage />} />
             <Route path="*" element={<PackageListPage />} />
         </Routes>
         </>

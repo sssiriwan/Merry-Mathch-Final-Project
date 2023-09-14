@@ -81,6 +81,40 @@ adminRouter.post('/package', async (req,res) => {
     }
 })
 
+//admin สาม่ารถเรียกดูคอมเพลนครั้งละ 1 id ได้
+adminRouter.get('/complaint/:id', async (req,res) => {
+    try {
+        const complaintID = req.params.id;
+        const result = await supabase
+        .from('complaints')
+        .select('*, users(*)')
+        .eq('complaint_id', complaintID);
+        return res.json({
+            data: result.data[0]
+        })
+    } catch(error) {
+        console.log(error)
+    }
+})
+
+//Admin สามารถ Resolve หรือ Cancel Complaint ได้
+adminRouter.put('/complaint', async (req, res) => {
+    const { issue, description, status, updatedStatus } = req.body;
+  
+    try {
+      // Update the complaint status in the database.
+      await supabase.from('complaints')
+        .update({ complaint_status: updatedStatus.complaint_status })
+        .eq('complaint_id', complaint_id)
+        .select();
+  
+      res.status(200).send('Complaint status updated successfully');
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  });
+
+
 //admin สามารถเสริชหาข้อมูลคอมเพลนได้ และกรอง status
 adminRouter.get("/complaint", async (req, res) => {
     try {

@@ -114,12 +114,13 @@ authRouter.get("/", async (req, res) => {
 authRouter.post('/complaint', async (req, res) => {
   try {
     console.log(req.body);
+    const currentDate = new Date();
     const complainItem = {
       user_id: req.body.userId,
       issue: req.body.issue,
       description: req.body.description,
       //มาแก้แบบฟอร์มวันที่ในอนาคต
-      created_at: new Date(),
+      created_at: currentDate.getDate() + "/" + currentDate.getMonth() + "/" + currentDate.getFullYear(),
       complaint_status: req.body.status,
     };
     

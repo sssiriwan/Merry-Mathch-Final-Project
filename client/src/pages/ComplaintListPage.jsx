@@ -21,18 +21,17 @@ import {
 } from "@/components/ui/select";
 
 // Convert date format from (created_at) column into dd/mm/yy form
-// อันนี้เดี่ยวน้องเซ็ทให้มาจากฝั่งหลัง
-function formatDate(inputDate) {
-  const date = new Date(inputDate);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear().toString().slice(-2);
+// อันนี้เดี่ยวน้องเซ็ทให้มาจากฝั่งหลังบ้าน
+// function formatDate(inputDate) {
+//   const date = new Date(inputDate);
+//   const day = date.getDate().toString().padStart(2, "0");
+//   const month = (date.getMonth() + 1).toString().padStart(2, "0");
+//   const year = date.getFullYear().toString().slice(-2);
 
-  return `${day}/${month}/${year}`;
-}
+//   return `${day}/${month}/${year}`;
+// }
 
 function ComplaintListPage() {
-
   const [filteredComplaints, setFilteredComplaints] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -53,15 +52,15 @@ function ComplaintListPage() {
     }
   };
 
-//   try {
-//     const result = await axios.get(`http://localhost:4001/admin/complaint?keywords=${searchInput}&category=${selectedStatus}`);
-//     setFilteredComplaints(result.data.data);
-//   } catch (error) {
-//     setError("An error occurred while fetching data");
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };
+  //   try {
+  //     const result = await axios.get(`http://localhost:4001/admin/complaint?keywords=${searchInput}&category=${selectedStatus}`);
+  //     setFilteredComplaints(result.data.data);
+  //   } catch (error) {
+  //     setError("An error occurred while fetching data");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const handleSearchInput = (e) => {
     e.preventDefault();
@@ -85,7 +84,9 @@ function ComplaintListPage() {
 
         {/* Navbar */}
         <div className="w-full flex flex-row bg-white h-20 justify-between items-center px-20 border-b">
-          <div className="flex items-center text-lg font-semibold ml-5">Complaint List</div>
+          <div className="flex items-center text-lg font-semibold ml-5">
+            Complaint List
+          </div>
           <div className="flex flex-row">
             <Input
               className="flex w-80 p-3 items-center gap-4 rounded-md border border-gray-300 bg-white mr-2"
@@ -132,21 +133,26 @@ function ComplaintListPage() {
                     <TableCell>{complaint.user_id}</TableCell>
                     <TableCell>{complaint.issue}</TableCell>
                     <TableCell>{complaint.description}</TableCell>
-                    <TableCell>{formatDate(complaint.created_at)}</TableCell>
+                    <TableCell>{complaint.created_at}</TableCell>
+                    {/* <TableCell>{formatDate(complaint.created_at)}</TableCell> */}
                     <TableCell>
                       <BadgeDemo
                         className={
                           "rounded-lg " +
                           (complaint.complaint_status.toLowerCase() === "new"
                             ? "bg-pbeige-100 text-black"
-                            : complaint.complaint_status.toLowerCase()  === "pending"
+                            : complaint.complaint_status.toLowerCase() ===
+                              "pending"
                             ? "bg-pyellow-100 text-black"
-                            : complaint.complaint_status.toLowerCase()  === "resolved"
+                            : complaint.complaint_status.toLowerCase() ===
+                              "resolved"
                             ? "bg-pgreen-100 text-pgreen-500"
-                            : complaint.complaint_status.toLowerCase()  === "cancel"
+                            : complaint.complaint_status.toLowerCase() ===
+                              "cancel"
                             ? "bg-pgray-200 text-pgray-700"
                             : "")
                         }
+                        
                       >
                         {complaint.complaint_status.toUpperCase()}
                       </BadgeDemo>
@@ -164,7 +170,6 @@ function ComplaintListPage() {
 
 export default ComplaintListPage;
 
-
 // //////////////
 // const handleSearchText = (e) => {
 //   e.preventDefault();
@@ -179,13 +184,11 @@ export default ComplaintListPage;
 //   getComplaints();
 // }, [searchText, category]);
 
-
 // const [complaints, setComplaints] = useState([]);
 // const [isError, setIsError] = useState(null);
 // const [isLoading, setIsLoading] = useState(null);
 // const [searchText, setSearchText] = useState("");
 // const [category, setCategory] = useState("");
-
 
 // const getComplaints = async () => {
 //   try {
@@ -201,3 +204,7 @@ export default ComplaintListPage;
 //     setIsError(true);
 //   }
 // };
+
+// onClick={() => {
+//   navigate(`/admin/complain/${complaint.complaint_id}`);
+// }}

@@ -1,15 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ComplaintAction from "./admin/ComplaintAction";
 import ComplaintDetail from "./admin/ComplaintDetail";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
 import BadgeDemo from "@/components/base/button/Badge";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 function ComplaintDetailPage() {
-  const [issueTitle, setIssueTitle] = useState("I was insulted by Ygritte");
+  const [name, setName] = useState("");
+  const [userId, setUserID] = useState("");
+  const [issue, setIssue] = useState("");
+  const [description, setDescription] = useState("");
+  // แก้ ปฎิทิน
+  const [createAt, setCreateAt] = useState("");
+  const [status, setStatus] = useState("");
+
+  const navigate = useNavigate();
+  const param = useParams();
+
+  const getComplaint = async () => {
+    const result = await axios.get(
+      `http://localhost:4000/admin/complaint/${param.complainId}`
+    );
+    console.log(result.data.data);
+
+    setUserID(result.data.data.user_id);
+    setIssue(result.data.data.issue);
+    setDescription(result.data.data.description);
+    setCreateAt(result.data.data.created_at);
+    setStatus(result.data.data.complaint_status);
+    setName(result.data.data.users.fullname);
+  };
+
+  useEffect(() => {
+    getComplaint();
+  }, []);
+
   const pendingStatus = "h-7 ml-2 rounded-lg bg-pyellow-100 text-black";
   const resolveStatus = "h-7 ml-2 rounded-lg bg-pgreen-100 text-pgreen-500";
   const cancelStatus = "h-7 ml-2 rounded-lg bg-pgray-200 text-pgray-700";
+
+  const h4style = "font-semibold text-pgray-700 mb-2";
+  const divStyle = "m-5";
 
   return (
     <div className="flex">
@@ -31,13 +64,36 @@ function ComplaintDetailPage() {
                 />
               </svg>
             </Button>
-            <div className="text-lg font-semibold ml-5">{issueTitle}</div>
-            <BadgeDemo className={resolveStatus}>resolved</BadgeDemo>
+            <div className="text-lg font-semibold ml-5">
+              I was insulted by Ygritte
+            </div>
+            <BadgeDemo className={resolveStatus}>{status}</BadgeDemo>
           </div>
           <ComplaintAction />
         </div>
         <div className="bg-white rounded-2xl border-pgray-200 border-2 m-7 w-11/12">
-          <ComplaintDetail />
+          <div className="px-10 py-5">
+            <div className={divStyle}>
+              <h4 className={h4style}>
+                Complaint by: <small className="text-black">{name}</small>
+              </h4>
+            </div>
+            <div className="flex justify-center">
+              <hr className="border-pgray-500 border-1 w-[95%]" /> 
+            </div>
+            <div className={divStyle}>
+              <h4 className={h4style}>Issue</h4>
+              <p>{issue}</p>
+            </div>
+            <div className={divStyle}>
+              <h4 className={h4style}>Description</h4>
+              <p>{description}</p>
+            </div>
+            <div className={divStyle}>
+              <h4 className={h4style}>Date Submitted</h4>
+              <p>{createAt}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

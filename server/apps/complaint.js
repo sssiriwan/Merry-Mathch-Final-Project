@@ -106,46 +106,28 @@ export default complaintRouter;
 
 
 
-complaintRouter.put('/complaint',async (req, res) => {
-  const { complaint_id, updatedStatus } = req.body;
-
-  const complainItem = {
-    complaint_status: updatedStatus.complaint_status,
-    updated_at: new Date(),
-  };
-
-  const { data, error } = await supabase
-    .from('complaints')
-    .update(complainItem)
-    .eq('complaint_id', complaint_id);
-
-  if (error) {
-    res.status(500).send(error);
-  } else {
-    res.status(200).send(data);
-  }
-});
 
 
-productRouter.get("/", async (req, res) => {
-  try {
-    const issue = req.query.keywords;
-    const status = req.query.status;
-    const query = {};
-    if (issue) {
-      query.issue = new RegExp(issue, "i");
-    }
-    if (status) {
-      query.status = new RegExp(status, "i");
-    }
-    const result = await supabase.from('complaints').select('*').where(query).order('created_at', { ascending: false });
-return res.json({
-  data: result.data,
-});
+
+// productRouter.get("/", async (req, res) => {
+//   try {
+//     const issue = req.query.keywords;
+//     const status = req.query.status;
+//     const query = {};
+//     if (issue) {
+//       query.issue = new RegExp(issue, "i");
+//     }
+//     if (status) {
+//       query.status = new RegExp(status, "i");
+//     }
+//     const result = await supabase.from('complaints').select('*').where(query).order('created_at', { ascending: false });
+// return res.json({
+//   data: result.data,
+// });
     
-  } catch (error) {
-    return res.json({
-      message: `${error}`,
-    });
-  }
-});
+//   } catch (error) {
+//     return res.json({
+//       message: `${error}`,
+//     });
+//   }
+// });
