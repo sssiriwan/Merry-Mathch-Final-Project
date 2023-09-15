@@ -10,7 +10,7 @@ function ComplaintDetail(props) {
     // const [complainDescription, setComplainDescription] = useState(`${props.description}`);
     // const [complainCreatedAt, setComplainCreatedAt] = useState(`${props.date}`);
 
-    console.log(complainTitle)
+
 
     return (
         <div className="px-10 py-5">

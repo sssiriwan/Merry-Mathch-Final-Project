@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import axios from "axios";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,7 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 // Convert date format from (created_at) column into dd/mm/yy form
 // อันนี้เดี่ยวน้องเซ็ทให้มาจากฝั่งหลังบ้าน
 // function formatDate(inputDate) {
@@ -37,6 +37,9 @@ function ComplaintListPage() {
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [status, setStatus] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchComplaints = async () => {
     setIsLoading(true);
@@ -61,6 +64,27 @@ function ComplaintListPage() {
   //     setIsLoading(false);
   //   }
   // };
+
+  const handleRowClick = async (complaint) => {
+    // Update the status of the complaint to Pending
+    try {
+      const updateComplaint = {
+        status: "Pending"
+      };
+      const result = await axios.put(
+        `http://localhost:4000/products/${complaint.complaint_id}`,
+        updateComplaint
+      );
+      console.log(result);
+      //   //   Navigate to the complaint page
+      navigate(`/admin/complain/${complaint.complaint_id}`);
+    } catch (error) {
+      alert(error);
+    }
+
+    //Navigate to the complaint page
+    // navigate(`/admin/complain/${complaint.complaint_id}`);
+  };
 
   const handleSearchInput = (e) => {
     e.preventDefault();
@@ -129,10 +153,15 @@ function ComplaintListPage() {
 
               <TableBody>
                 {filteredComplaints.map((complaint, index) => (
-                  <TableRow key={index}>
+                  <TableRow
+                    key={index}
+                    onClick={() => handleRowClick(complaint)}
+                  >
                     <TableCell>{complaint.user_id}</TableCell>
                     <TableCell>{complaint.issue}</TableCell>
-                    <TableCell>{complaint.description}</TableCell>
+                    <TableCell className=" line-clamp-1 ">
+                      {complaint.description}
+                    </TableCell>
                     <TableCell>{complaint.created_at}</TableCell>
                     {/* <TableCell>{formatDate(complaint.created_at)}</TableCell> */}
                     <TableCell>
@@ -152,7 +181,6 @@ function ComplaintListPage() {
                             ? "bg-pgray-200 text-pgray-700"
                             : "")
                         }
-                        
                       >
                         {complaint.complaint_status.toUpperCase()}
                       </BadgeDemo>
@@ -204,7 +232,3 @@ export default ComplaintListPage;
 //     setIsError(true);
 //   }
 // };
-
-// onClick={() => {
-//   navigate(`/admin/complain/${complaint.complaint_id}`);
-// }}

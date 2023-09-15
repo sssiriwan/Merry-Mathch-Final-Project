@@ -50,7 +50,12 @@ function ComplaintDetailPage() {
       <div className="w-full flex flex-col bg-pgray-200 items-center">
         <div className="w-full flex bg-white h-20 justify-between items-center px-20 border-b">
           <div className="flex items-center">
-            <Button variant="ghost">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                navigate(`/admin/complain`);
+              }}
+            >
               <svg
                 width="16"
                 height="16"
@@ -67,6 +72,23 @@ function ComplaintDetailPage() {
             <div className="text-lg font-semibold ml-5">
               I was insulted by Ygritte
             </div>
+            {/* <BadgeDemo
+              className={
+                "rounded-lg " +
+                ({ status }.toLowerCase() === "new"
+                  ? "bg-pbeige-100 text-black"
+                  : { status }.toLowerCase() === "pending"
+                  ? "bg-pyellow-100 text-black"
+                  : { status }.toLowerCase() === "resolved"
+                  ? "bg-pgreen-100 text-pgreen-500"
+                  : { status }.toLowerCase() === "cancel"
+                  ? "bg-pgray-200 text-pgray-700"
+                  : "")
+              }
+            >
+              {{ status }.toUpperCase()}
+            </BadgeDemo> */}
+
             <BadgeDemo className={resolveStatus}>{status}</BadgeDemo>
           </div>
           <ComplaintAction />
@@ -79,7 +101,7 @@ function ComplaintDetailPage() {
               </h4>
             </div>
             <div className="flex justify-center">
-              <hr className="border-pgray-500 border-1 w-[95%]" /> 
+              <hr className="border-pgray-500 border-1 w-[95%]" />
             </div>
             <div className={divStyle}>
               <h4 className={h4style}>Issue</h4>
