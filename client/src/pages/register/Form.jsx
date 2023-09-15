@@ -14,6 +14,7 @@ function Form() {
 
   const [page, setPage] = useState(0);
   const [avatars, setAvatars] = useState({});
+  const [test, setTest] = useState([])
 
   const handleFileChange = (event) => {
     const files = event.target.files;
@@ -98,6 +99,8 @@ function Form() {
             onChange={onChange}
             avatars={avatars}
             updateAvatars={updateAvatars}
+            test={test}
+            setTest={setTest}
           ></ProfilePictures>
         );
       }
@@ -129,7 +132,8 @@ function Form() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const handleSubmit = () => {
-    const updatedValues = { ...values, avatars };
+    const updatedValues = { ...values, avatars }; 
+    updatedValues.image = test
     register(updatedValues);
     console.log("Submitting form data:", updatedValues);
     navigate("/");

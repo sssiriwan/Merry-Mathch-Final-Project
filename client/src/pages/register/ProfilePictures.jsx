@@ -1,14 +1,16 @@
 import React from "react";
 import ProfileImage from "./ProfileImage";
+import { createClient } from "@supabase/supabase-js";
 
-function ProfilePictures({ avatars, updateAvatars }) {
+function ProfilePictures({ avatars, updateAvatars, test, setTest }) {
+  const supabase = createClient()
   const maxUploads = 5;
 
   const countTags = () => {
     return maxUploads - Object.keys(avatars).length;
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const files = event.target.files;
     const newAvatars = { ...avatars };
 
@@ -19,7 +21,22 @@ function ProfilePictures({ avatars, updateAvatars }) {
       }
     }
 
-    updateAvatars(newAvatars);
+    updateAvatars(newAvatars); // ขอคอมเม้นก่อน
+
+    console.log(files)
+    console.log(newAvatars)
+    let urlArr = []
+    
+    //Upload รูปด้วย loop
+    for (let i=0; i<Object.keys(newAvatars).length; i++) {
+      await supabase.storage.from('avatarImg').upload( Object.keys(newAvatars)[i], files[0]);
+      urlArr.push(`https://pauqbkgvjpahoowveuka.supabase.co/storage/v1/object/public/avatarImg/${Object.keys(newAvatars)[i]}`)
+    }
+
+    // // Upload รูปที่่ 1
+    // const {data1, error1} = await supabase.storage.from('avatarImg').upload( Object.keys(newAvatars)[0] ,files[0]);
+    console.log(urlArr)
+    setTest(urlArr)
   };
 
   const handleRemoveImage = (avatarKey) => {
