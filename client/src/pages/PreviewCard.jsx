@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-function PreviewCard() {
+function PreviewCard({clicked, setClicked}) {
     const initialValue = {
         fullname: "",
         age: "",
@@ -12,13 +12,15 @@ function PreviewCard() {
         racial_preference: "",
         meeting_interest: "",
         about_me: "",
-        avatar_url:""
+        // avatar_url:"",
+        image_url: [],
+        hobbies_tag: []
     }
     const [profile, setProfile] = useState(initialValue);
 
     const getData = async () => {
         const result = await axios.get('http://localhost:4000/post/profile')
-        console.log(result)
+        console.log(result.data.data)
         setProfile(result.data.data)
     }
     useEffect(()=>{
@@ -26,10 +28,10 @@ function PreviewCard() {
     }, [])
 
     return (
-        <div className="w-[1140px] h-[740px] bg-white border rounded-4xl absolute top-1/4 flex justify-center items-center shadow-3xl">
+        <div id="popup-preview-card" className="w-[1140px] h-[740px] bg-white border rounded-4xl absolute top-1/4 flex justify-center items-center shadow-3xl">
             <div className="w-[980px] h-[579px] flex justify-between">
-                <div className=" bg-putility-400 shadow-3xl bg-opacity-10 rounded-4xl w-[478px] h-[526px]">
-                    <img src={profile.avatar_url} className="w-[478px] h-[478px] object-cover rounded-4xl" />
+                <div className="shadow-md rounded-4xl w-[478px] h-[526px]">
+                    <img src={profile.image_url[0]} className="w-[478px] h-[478px] object-cover rounded-4xl" />
                     <div className="flex items-center justify-between px-10">
                         <div>1/2</div>
                         <div>
@@ -65,7 +67,7 @@ function PreviewCard() {
                         </div>
                     </div>
                 </div>
-                <div className="w-[478px] h-[579px] flex flex-col ml-10 ">
+                <div className="w-[478px] h-[579px] flex flex-col ml-10" onClick={() => { setClicked(!clicked)} }>
                     <div className="w-[418px] h-[96px] flex flex-col">
                         <div className="flex">
                             <h1 className=" font-extrabold text-5xl">{profile.fullname}</h1>
@@ -98,11 +100,18 @@ function PreviewCard() {
                     </div>
                     <div className="text-pgray-900 mb-10 grid gap-4">
                         <h1 className="font-bold text-2xl leading-8 tracking-tight">About me</h1>
-                        <p>{profile.about_me.length > 150 && profile.about_me.slice(0,150)}</p>
+                        <p>{profile.about_me}</p>
                     </div>
                     <div className="text-pgray-900 grid gap-4">
                         <h1 className="font-bold text-2xl leading-8 tracking-tight">Hobbies and Interests</h1>
-                        <p>{profile.about_me.length > 150 && profile.about_me.slice(0,150)}</p>
+                        <div className="flex">
+                            {profile.hobbies_tag.map((tag, index) => {
+                            return (
+                            <div key={index} className="border-2 border-ppurple-300 text-ppurple-600 rounded-xl flex py-2 px-4 mr-3">
+                                {tag}
+                            </div>
+                        )})}
+                        </div>
                     </div>
                 </div>
             </div>

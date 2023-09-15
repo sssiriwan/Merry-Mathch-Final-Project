@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PreviewCard from "./PreviewCard";
+import ListText from "./register/text";
 
 function ProfileEditPage() {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ function ProfileEditPage() {
   return (
     <div className="grid place-items-center">
       <NavbarRegistered />
-        { clicked && <PreviewCard />}
+        { clicked && <PreviewCard setClicked={setClicked} clicked={clicked} />}
       <section className=" w-[930px]">
         <article className="flex items-end justify-between mt-14">
           <div>
@@ -192,17 +193,13 @@ function ProfileEditPage() {
         </section>
 
         <section>
-          <div className="font-bold text-2xl text-ppurple-500 mt-5">
+          <div className="font-bold text-2xl text-ppurple-500">
             <h1>Identities and Interests</h1>
           </div>
-          <div className="">
-            <div className="flex mt-[24px]">
-              <div className="w-[453px]">Sexual identities</div>
-              <div className="ml-[24px]">Sexual preferences</div>
-            </div>
-
+          <div className="mt-8">
             <div className="flex">
-              <div className="mb-6">
+              <div>
+                <label>Sexual Identities</label>
                 <select
                   className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                   id="SexualIdentities"
@@ -212,6 +209,7 @@ function ProfileEditPage() {
                   }}
                   value={sexId}
                 >
+                  <option disabled>Please choose an option</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Non-binary">Non-binary</option>
@@ -219,6 +217,7 @@ function ProfileEditPage() {
               </div>
 
               <div className="ml-[24px]">
+                <label>Sexual Preferences</label>
                 <select
                   className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                   id="SexualPreferences"
@@ -228,34 +227,34 @@ function ProfileEditPage() {
                   }}
                   value={sexPrefer}
                 >
+                  <option disabled>Please choose an option</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Non-binary">Non-binary</option>
                 </select>
               </div>
             </div>
-            {/* เดี๋ยวค่อยมาแก้ UI */}
-            <div className="flex mt-[40px]">
-              <div className="w-[453px]">Racial preferences</div>
-              <div className="ml-[24px]">Meeting interests</div>
-            </div>
-            <div className="flex">
-              <select
-                className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
-                id="RacialPreferences"
-                name="RacialPreferences"
-                onChange={(e) => {
-                  setRacialPrefer(e.target.value);
-                }}
-                value={racialPrefer}
-              >
-                <option value="Asian">Asian</option>
-                <option value="Caucasoid">Caucasoid</option>
-                <option value="Negriod">Negroid</option>
-                <option value="Others">Others</option>
-              </select>
-
+            <div className="flex mt-8">
+              <div>
+                <label>Racial Preferences</label>
+                <select
+                  className="border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+                  id="RacialPreferences"
+                  name="RacialPreferences"
+                  onChange={(e) => {
+                    setRacialPrefer(e.target.value);
+                  }}
+                  value={racialPrefer}
+                >
+                  <option disabled>Please choose an option</option>
+                  <option value="Asian">Asian</option>
+                  <option value="Caucasoid">Caucasoid</option>
+                  <option value="Negriod">Negroid</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
               <div className="ml-[24px]">
+                <label>Meeting Interests</label>
                 <select
                   className="border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
                   id="MeetingInterests"
@@ -265,7 +264,8 @@ function ProfileEditPage() {
                   }}
                   value={meetingInterest}
                 >
-                  <option value="Friend">Friend</option>
+                  <option disabled>Please choose an option</option>
+                  <option value="Friends">Friends</option>
                   <option value="Boyfriend-Girlfriend">
                     Boyfriend / GirlFriend
                   </option>
@@ -274,12 +274,13 @@ function ProfileEditPage() {
                 </select>
               </div>
             </div>
-            <div className="">
+            <div className="mt-8">
+              <label>Hobbies / Interests (Maximum 10)</label>
               {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
             </div>
-            <div>
-                <div>About Me (Maximum 150 characters)</div>
-                <Textarea value={aboutMe} maxlength="150" onChange={(e) => { setAboutMe(e.target.value) }} />
+            <div className="mt-8">
+                <label>About Me (Maximum 150 characters)</label>
+                <Textarea className="resize-none" value={aboutMe} rows="4" maxlength="150" onChange={(e) => { setAboutMe(e.target.value) }} />
             </div>
           </div>
         </section>

@@ -6,15 +6,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const authRouter = Router();
-// const multerUpload = multer({ dest: "uploads/"});
-// const avatarUpload = multerUpload.fields([{name: "avatar", maxCount:5 }]);
-// const {data, error} = await supabase.storage.from('users').download(path)
 authRouter.post("/register", async (req, res) => {
   try {
+    const hobbiesSplit = req.body.tags.split(", ")
     const user = {
       username: req.body.username,
       password: req.body.password,
-      // avatar_url: req.files.avatar,
       fullname: req.body.fullname,
       role: "Users",
       email: req.body.email,
@@ -22,8 +19,9 @@ authRouter.post("/register", async (req, res) => {
       age: req.body.age,
       hobbies: req.body.hobbies,
       created_at: new Date(),
+      hobbies_tag: hobbiesSplit
     };
-    // const avatarFile = req.files.avatar
+    
     const checkUser = await supabase.from('users').select('*').eq('username', user.username);
     if (checkUser.data[0]) {
       return res.json({
@@ -41,15 +39,13 @@ authRouter.post("/register", async (req, res) => {
           password: user.password,
           age: 22,
           created_at: user.created_at,
-          role: user.role
+          role: user.role,
+          hobbies_tag: user.hobbies_tag,
         },
       ])
       .select();
-    // ต้องเปลี่ยนชื่อ file ตรง upload
-    // const { data,error } = await supabase.storage.from('avatars').upload('public/avatar1.png', avatarFile);
-    return res.json({
+      return res.json({
       message: `Created new account successfully`,
-      // image: data
     });
   } catch (error) {
     console.log(error);
