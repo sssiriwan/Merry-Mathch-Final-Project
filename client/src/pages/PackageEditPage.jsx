@@ -1,5 +1,5 @@
 import React from 'react'
-import PackageAddDetail from "./admin/PackageAddDetail";
+import PackageEditDetail from './admin/PackageEditDetail';
 import AdminControlPanel from "./admin/AdminControlPanel";
 import PackageEditAction from './admin/PackageEditAction';
 import axios from "axios";
@@ -14,7 +14,7 @@ function PackageEditPage() {
               <PackageEditAction />
             </div>
             <div className="bg-white rounded-2xl border-pgray-200 border-2 px-20 m-7 w-11/12">
-              <PackageAddDetail />
+              <PackageEditDetail />
             </div>
           </div>
         </div>
