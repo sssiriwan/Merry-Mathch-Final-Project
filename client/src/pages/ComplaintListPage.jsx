@@ -76,11 +76,15 @@ function ComplaintListPage() {
           `http://localhost:4000/admin/complaint/${complaint.complaint_id}`,
           updateComplaint
         );
+        //  Navigate to the complaint action page
+        navigate(`/admin/complain/action/${complaint.complaint_id}`);
+      } else if (complaint.complaint_status.toLowerCase() === "pending") {
+        //  Navigate to the complaint action page
+        navigate(`/admin/complain/action/${complaint.complaint_id}`);
+      } else {
+        //  Navigate to the complaint detail page
+        navigate(`/admin/complain/detail/${complaint.complaint_id}`);
       }
-
-      // console.log(result);
-      //  Navigate to the complaint page
-      navigate(`/admin/complain/${complaint.complaint_id}`);
     } catch (error) {
       alert(error);
     }

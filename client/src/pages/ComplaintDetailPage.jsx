@@ -4,20 +4,14 @@ import ComplaintDetail from "./admin/ComplaintDetail";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
 import BadgeDemo from "@/components/base/button/Badge";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
-function ComplaintActionPage() {
-  const [name, setName] = useState("");
-  const [userId, setUserID] = useState("");
-  const [issue, setIssue] = useState("");
-  const [description, setDescription] = useState("");
-  // แก้ ปฎิทิน
-  const [createAt, setCreateAt] = useState("");
-  const [status, setStatus] = useState("");
-
+function ComplaintDetailPage() {
   const navigate = useNavigate();
   const param = useParams();
+
+  const [status, setStatus] = useState("");
 
   const getComplaint = async () => {
     const result = await axios.get(
@@ -25,22 +19,13 @@ function ComplaintActionPage() {
     );
     console.log(result.data.data);
 
-    setUserID(result.data.data.user_id);
-    setIssue(result.data.data.issue);
-    setDescription(result.data.data.description);
-    setCreateAt(result.data.data.created_at);
     setStatus(result.data.data.complaint_status);
-    setName(result.data.data.users.fullname);
   };
 
   useEffect(() => {
     getComplaint();
   }, []);
-
-  const pendingStatus = "h-7 ml-2 rounded-lg bg-pyellow-100 text-black";
-  const h4style = "font-semibold text-pgray-700 mb-2";
-  const divStyle = "m-5";
-
+  
   return (
     <div className="flex">
       <AdminControlPanel />
@@ -69,37 +54,27 @@ function ComplaintActionPage() {
             <div className="text-lg font-semibold ml-5 pr-2">
               I was insulted by Ygritte
             </div>
-            <BadgeDemo className={pendingStatus}>{status}</BadgeDemo>
+            <BadgeDemo
+              className={
+                "rounded-lg " +
+                (status.toLowerCase() === "resolved"
+                  ? "bg-pgreen-100 text-pgreen-500"
+                  : status.toLowerCase() === "cancel"
+                  ? "bg-pgray-200 text-pgray-700"
+                  : "")
+              }
+            >
+              {status}
+            </BadgeDemo>
           </div>
-          <ComplaintAction />
+          {/* <ComplaintAction /> */}
         </div>
         <div className="bg-white rounded-2xl border-pgray-200 border-2 m-7 w-11/12">
-          <div className="px-10 py-5">
-            <div className={divStyle}>
-              <h4 className={h4style}>
-                Complaint by: <small className="text-black">{name}</small>
-              </h4>
-            </div>
-            <div className="flex justify-center">
-              <hr className="border-pgray-500 border-1 w-[95%]" />
-            </div>
-            <div className={divStyle}>
-              <h4 className={h4style}>Issue</h4>
-              <p>{issue}</p>
-            </div>
-            <div className={divStyle}>
-              <h4 className={h4style}>Description</h4>
-              <p>{description}</p>
-            </div>
-            <div className={divStyle}>
-              <h4 className={h4style}>Date Submitted</h4>
-              <p>{createAt}</p>
-            </div>
-          </div>
+          <ComplaintDetail />
         </div>
       </div>
     </div>
   );
 }
 
-export default ComplaintActionPage;
+export default ComplaintDetailPage;

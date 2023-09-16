@@ -4,6 +4,7 @@ import ComplaintActionPage from "../ComplaintActionPage";
 import ComplaintListPage from "../ComplaintListPage";
 import PackageListPage from "../PackageListPage";
 import { LoginPage } from "../LoginPage";
+import ComplaintDetailPage from "../ComplaintDetailPage";
 
 function AdminAuthenticatedApp() {
   return (
@@ -13,10 +14,8 @@ function AdminAuthenticatedApp() {
         <Route path="/admin" element={<PackageListPage />} />
         <Route path="/admin/package" element={<PackageAddPage />} />
         <Route path="/admin/complain" element={<ComplaintListPage />} />
-        <Route
-          path="/admin/complain/:complainId"
-          element={<ComplaintActionPage />}
-        />
+        <Route path="/admin/complain/action/:complainId" element={<ComplaintActionPage />}/>
+        <Route path="/admin/complain/detail/:complainId" element={<ComplaintDetailPage/>}/>
         <Route path="*" element={<PackageListPage />} />
       </Routes>
     </>

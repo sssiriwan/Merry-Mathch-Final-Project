@@ -19,38 +19,35 @@ function ComplaintAction() {
   };
 
   const handleCancelClick = async () => {
-    // Update the status of the complaint to Pending
+    // Update the status of the complaint to Cancel
     try {
-     
-        const updateComplaint = {
-          status: "Cancel",
-        };
-        const result = await axios.put(
-          `http://localhost:4000/admin/complaint/${param.complainId}`,
-          updateComplaint
-        );
-      
-            //  Navigate to the complaint page
-      navigate(`/admin/complain`);
+      const updateComplaint = {
+        status: "Cancel",
+      };
+      const result = await axios.put(
+        `http://localhost:4000/admin/complaint/${param.complainId}`,
+        updateComplaint
+      );
+
+      //  Navigate to the complaint detail page
+      navigate(`/admin/complain/detail/${param.complainId}`);
     } catch (error) {
       alert(error);
     }
   };
   const handleResolvelClick = async () => {
-    // Update the status of the complaint to Pending
+    // Update the status of the complaint to Resolved
     try {
-     
-        const updateComplaint = {
-          status: "Resolved",
-        };
-        const result = await axios.put(
-          `http://localhost:4000/admin/complaint/${param.complainId}`,
-          updateComplaint
-        );
-      
-    
-      //  Navigate to the complaint page มาแก้ภายหลังให้นำไปหน้า ที่แก้เสร็จแล้ว
-      navigate(`/admin/complain`);
+      const updateComplaint = {
+        status: "Resolved",
+      };
+      const result = await axios.put(
+        `http://localhost:4000/admin/complaint/${param.complainId}`,
+        updateComplaint
+      );
+
+      //  Navigate to the complaint detail page
+      navigate(`/admin/complain/detail/${param.complainId}`);
     } catch (error) {
       alert(error);
     }
@@ -62,10 +59,16 @@ function ComplaintAction() {
 
   return (
     <div>
-      <Button variant="link" className="font-bold text-pred-500" onClick={() => handleCancelClick()}>
+      <Button
+        variant="link"
+        className="font-bold text-pred-500"
+        onClick={() => handleCancelClick()}
+      >
         Cancel Complaint
       </Button>
-      <ButtonDemo onClick={() => handleResolvelClick()}>Resolve Complaint</ButtonDemo>
+      <ButtonDemo onClick={() => handleResolvelClick()}>
+        Resolve Complaint
+      </ButtonDemo>
     </div>
   );
 }
