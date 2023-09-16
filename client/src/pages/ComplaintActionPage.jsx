@@ -33,6 +33,15 @@ function ComplaintActionPage() {
     setName(result.data.data.users.fullname);
   };
 
+  function formatDate(inputDate) {
+    const date = new Date(inputDate);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString().slice(-2);
+  
+    return `${day}/${month}/${year}`;
+  }
+
   useEffect(() => {
     getComplaint();
   }, []);
@@ -93,7 +102,7 @@ function ComplaintActionPage() {
             </div>
             <div className={divStyle}>
               <h4 className={h4style}>Date Submitted</h4>
-              <p>{createAt}</p>
+              <p>{formatDate(createAt)}</p>
             </div>
           </div>
         </div>

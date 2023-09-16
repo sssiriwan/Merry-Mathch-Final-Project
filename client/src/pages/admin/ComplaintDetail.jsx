@@ -29,6 +29,14 @@ function ComplaintDetail() {
     setName(result.data.data.users.fullname);
     setUpdateAt(result.data.data.updated_at);
   };
+  function formatDate(inputDate) {
+  const date = new Date(inputDate);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear().toString().slice(-2);
+
+  return `${day}/${month}/${year}`;
+}
 
   useEffect(() => {
     getComplaint();
@@ -64,7 +72,7 @@ function ComplaintDetail() {
       </div>
       <div className={divStyle}>
         <h4 className={h4style}>{status} date</h4>
-        <p>{updateAt}</p>
+        <p>{formatDate(updateAt)}</p>
       </div>
     </div>
   );

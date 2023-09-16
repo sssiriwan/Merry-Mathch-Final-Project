@@ -22,14 +22,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // Convert date format from (created_at) column into dd/mm/yy form
 // อันนี้เดี่ยวน้องเซ็ทให้มาจากฝั่งหลังบ้าน
-// function formatDate(inputDate) {
-//   const date = new Date(inputDate);
-//   const day = date.getDate().toString().padStart(2, "0");
-//   const month = (date.getMonth() + 1).toString().padStart(2, "0");
-//   const year = date.getFullYear().toString().slice(-2);
 
-//   return `${day}/${month}/${year}`;
-// }
 
 function ComplaintListPage() {
   const [filteredComplaints, setFilteredComplaints] = useState([]);
@@ -100,6 +93,15 @@ function ComplaintListPage() {
     setSelectedStatus(e.target.value);
   };
 
+  function formatDate(inputDate) {
+    const date = new Date(inputDate);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString().slice(-2);
+  
+    return `${day}/${month}/${year}`;
+  }
+
   useEffect(() => {
     fetchComplaints();
   }, [searchInput, selectedStatus]);
@@ -166,8 +168,8 @@ function ComplaintListPage() {
                     <TableCell className=" line-clamp-1 ">
                       {complaint.description}
                     </TableCell>
-                    <TableCell>{complaint.created_at}</TableCell>
-                    {/* <TableCell>{formatDate(complaint.created_at)}</TableCell> */}
+                    {/* <TableCell>{complaint.created_at}</TableCell> */}
+                    <TableCell>{formatDate(complaint.created_at)}</TableCell>
                     <TableCell>
                       <BadgeDemo
                         className={
