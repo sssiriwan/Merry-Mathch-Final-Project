@@ -7,7 +7,7 @@ import BadgeDemo from "@/components/base/button/Badge";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-function ComplaintDetailPage() {
+function ComplaintActionPage() {
   const [name, setName] = useState("");
   const [userId, setUserID] = useState("");
   const [issue, setIssue] = useState("");
@@ -72,23 +72,6 @@ function ComplaintDetailPage() {
             <div className="text-lg font-semibold ml-5">
               I was insulted by Ygritte
             </div>
-            {/* <BadgeDemo
-              className={
-                "rounded-lg " +
-                ({ status }.toLowerCase() === "new"
-                  ? "bg-pbeige-100 text-black"
-                  : { status }.toLowerCase() === "pending"
-                  ? "bg-pyellow-100 text-black"
-                  : { status }.toLowerCase() === "resolved"
-                  ? "bg-pgreen-100 text-pgreen-500"
-                  : { status }.toLowerCase() === "cancel"
-                  ? "bg-pgray-200 text-pgray-700"
-                  : "")
-              }
-            >
-              {{ status }.toUpperCase()}
-            </BadgeDemo> */}
-
             <BadgeDemo className={resolveStatus}>{status}</BadgeDemo>
           </div>
           <ComplaintAction />
@@ -122,4 +105,4 @@ function ComplaintDetailPage() {
   );
 }
 
-export default ComplaintDetailPage;
+export default ComplaintActionPage;
