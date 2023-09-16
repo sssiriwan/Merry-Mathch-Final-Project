@@ -68,22 +68,22 @@ function ComplaintListPage() {
   const handleRowClick = async (complaint) => {
     // Update the status of the complaint to Pending
     try {
-      const updateComplaint = {
-        status: "Pending"
-      };
-      const result = await axios.put(
-        `http://localhost:4000/admin/complaint/${complaint.complaint_id}`,
-        updateComplaint
-      );
-      console.log(result);
+      if (complaint.complaint_status.toLowerCase() === "new") {
+        const updateComplaint = {
+          status: "Pending",
+        };
+        const result = await axios.put(
+          `http://localhost:4000/admin/complaint/${complaint.complaint_id}`,
+          updateComplaint
+        );
+      }
+
+      // console.log(result);
       //  Navigate to the complaint page
       navigate(`/admin/complain/${complaint.complaint_id}`);
     } catch (error) {
       alert(error);
     }
-
-    //Navigate to the complaint page
-    // navigate(`/admin/complain/${complaint.complaint_id}`);
   };
 
   const handleSearchInput = (e) => {
