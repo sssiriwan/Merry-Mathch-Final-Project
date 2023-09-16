@@ -72,11 +72,11 @@ function ComplaintListPage() {
         status: "Pending"
       };
       const result = await axios.put(
-        `http://localhost:4000/products/${complaint.complaint_id}`,
+        `http://localhost:4000/admin/complaint/${complaint.complaint_id}`,
         updateComplaint
       );
       console.log(result);
-      //   //   Navigate to the complaint page
+      //  Navigate to the complaint page
       navigate(`/admin/complain/${complaint.complaint_id}`);
     } catch (error) {
       alert(error);
