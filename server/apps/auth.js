@@ -8,18 +8,24 @@ import jwt from "jsonwebtoken";
 const authRouter = Router();
 authRouter.post("/register", async (req, res) => {
   try {
-    const hobbiesSplit = req.body.tags.split(", ")
+    // const hobbiesSplit = req.body.hobbies_tag.split(", ")
     const user = {
       username: req.body.username,
       password: req.body.password,
       fullname: req.body.fullname,
       role: "Users",
+      date_of_birth: req.body.date_of_birth,
       email: req.body.email,
       location: req.body.location,
+      city: req.body.city,
       age: req.body.age,
-      hobbies: req.body.hobbies,
       created_at: new Date(),
-      hobbies_tag: hobbiesSplit
+      sexual_identity: req.body.sexual_identity,
+      sexual_preference: req.body.sexual_preference,
+      racial_preference: req.body.racial_preference,
+      meeting_interest: req.body.meeting_interest,
+      hobbies_tag: req.body.hobbies_tag,
+      about_me: req.body.about_me
     };
     
     const checkUser = await supabase.from('users').select('*').eq('username', user.username);
@@ -37,10 +43,20 @@ authRouter.post("/register", async (req, res) => {
         {
           username: user.username,
           password: user.password,
-          age: 22,
-          created_at: user.created_at,
+          fullname: user.fullname,
           role: user.role,
+          email: user.email,
+          location: user.location,
+          city: user.city,
+          date_of_birth: user.date_of_birth,
+          age: 22,
+          created_at: new Date(),
+          sexual_identity: user.sexual_identity,
+          sexual_preference: user.sexual_preference,
+          racial_preference: user.racial_preference,
+          meeting_interest: user.meeting_interest,
           hobbies_tag: user.hobbies_tag,
+          about_me: user.about_me,
         },
       ])
       .select();
