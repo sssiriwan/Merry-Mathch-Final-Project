@@ -19,6 +19,15 @@ postRouter.get('/profile', async (req,res) => {
         data: data[0]
     })
 })
+
+postRouter.get('/profile/:userId', async (req,res) => {
+    const userId = req.params.userId;
+    const { data, error } = await supabase.from('users').select('*').eq('user_id', userId)
+    return res.json({
+        data: data[0]
+    })
+})
+
 // API ใช้ update ข้อมูล profile
 postRouter.put('/profile', async (req,res) => {
     console.log(req.user)
@@ -40,6 +49,14 @@ postRouter.put('/profile', async (req,res) => {
     const { data, error } = await supabase.from('users').update(updatedProfile).eq('user_id', req.user.id);
     return res.json({
         message: "Updated profile successfully"
+    })
+})
+
+postRouter.get('/match-list', async (req,res) => {
+    console.log(req.user)
+    const { data, error } = await supabase.from('users').select('*').eq('role', 'Users');
+    return res.json({
+        data: data
     })
 })
 export default postRouter

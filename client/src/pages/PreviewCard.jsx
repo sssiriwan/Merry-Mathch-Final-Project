@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 
-function PreviewCard({clicked, setClicked}) {
+function PreviewCard({clicked, setClicked, userId}) {
     const initialValue = {
         fullname: "",
         age: "",
@@ -16,10 +16,11 @@ function PreviewCard({clicked, setClicked}) {
         image_url: [],
         hobbies_tag: []
     }
+    console.log(userId)
     const [profile, setProfile] = useState(initialValue);
 
     const getData = async () => {
-        const result = await axios.get('http://localhost:4000/post/profile')
+        const result = await axios.get(`http://localhost:4000/post/profile/${userId}`)
         console.log(result.data.data)
         setProfile(result.data.data)
     }

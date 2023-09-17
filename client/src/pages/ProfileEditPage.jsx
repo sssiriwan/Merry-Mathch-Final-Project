@@ -61,7 +61,7 @@ function ProfileEditPage() {
         { clicked && <PreviewCard setClicked={setClicked} clicked={clicked} />}
       <section className=" w-[930px]">
         <article className="flex items-end justify-between mt-14">
-          <div>
+          <div className="text-pbeige-700">
             <TypographySmall>PROFILE</TypographySmall>
             <TypographyH1>Let's make profile</TypographyH1>
             <TypographyH1>to let others know you</TypographyH1>
