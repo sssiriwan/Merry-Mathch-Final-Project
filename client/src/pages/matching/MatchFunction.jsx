@@ -1,15 +1,41 @@
 import React from "react";
-import Hook from "@/components/base/Hook";
+import axios from "axios";
 import { useState, useNavigate, useEffect } from "react";
 import TinderCard from "react-tinder-card";
+import PreviewCard from "../PreviewCard";
 
 const MatchFunction = () => {
-  const data = Hook();
+  const [data, setData] = useState();
   const [lastDirection, setLastDirection] = useState();
+  const [showProfile, setShowProfile] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [limits, setLimits] = useState(2);
+
+  const getData = async () => {
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      const response = await axios.get("http://localhost:4000/auth");
+      const users = response.data.data.data;
+      setData(users);
+      setIsLoading(false);
+      console.log(response);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+      console.log("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const swiped = (direction, nameToDelete) => {
     console.log("removing: " + nameToDelete);
     setLastDirection(direction);
+    handleLimitsCount();
   };
 
   const outOfFrame = (fullname) => {
@@ -20,32 +46,44 @@ const MatchFunction = () => {
 
   const swipeRight = async () => {};
 
+  const handleProfileClick = () => {
+    setShowProfile(true);
+  };
+
+  const handleLimitsCount = () => {
+    if (limits > 0) {
+      setLimits(limits - 1);
+    } else {
+      alert("You've reached your daily match limit.");
+    }
+  };
+
   const db = [
     {
       fullname: "Richard",
-      avtar_url:
+      avatar_url:
         "https://cdn.pic.in.th/file/picinth/cute-dog-shiba-inu-ryuji-japan-44.md.jpeg",
       age: "20",
     },
     {
       fullname: "Erlich",
-      avtar_url: "https://cdn.pic.in.th/file/picinth/104.-Cute-cat.md.jpeg",
+      avatar_url: "https://cdn.pic.in.th/file/picinth/104.-Cute-cat.md.jpeg",
       age: "20",
     },
     {
       fullname: "Monica",
-      avtar_url: "https://cdn.pic.in.th/file/picinth/7.-Ant-appears.md.jpeg",
+      avatar_url: "https://cdn.pic.in.th/file/picinth/7.-Ant-appears.md.jpeg",
       age: "20",
     },
     {
       fullname: "Jared",
-      avtar_url:
+      avatar_url:
         "https://cdn.pic.in.th/file/picinth/Muichiro_looking_at_the_sky.jpeg",
       age: "20",
     },
     {
       fullname: "Dinesh",
-      avtar_url: "https://cdn.pic.in.th/file/picinth/56.-nature-girl.jpeg",
+      avatar_url: "https://cdn.pic.in.th/file/picinth/56.-nature-girl.jpeg",
       age: "20",
     },
   ];
@@ -59,9 +97,10 @@ const MatchFunction = () => {
           onCardLeftScreen={() => outOfFrame(user.fullname)}
         >
           <div
-            style={{ backgroundImage: `url(${user.avtar_url})` }}
+            style={{ backgroundImage: `url(${user.avatar_url})` }}
             className="h-[620px] w-[620px] bg-cover absolute flex flex-col justify-between rounded-3xl"
           >
+            {showProfile && <PreviewCard setShowProfile={setShowProfile} />}
             {/* Card content */}
             <div></div>
             <div className="h-[152px] flex justify-center items-center static">
@@ -75,6 +114,7 @@ const MatchFunction = () => {
                   </span>
                   {/* profile button */}
                   <img
+                    onClick={handleProfileClick}
                     src="./icons/action_button.png"
                     className="cursor-pointer"
                     alt="see a profile"
@@ -114,7 +154,7 @@ const MatchFunction = () => {
         <div></div>
         <div className="mb-[28px]">
           <span className="text-pgray-700 text-base">Match limit today</span>
-          <span className="text-pred-400 text-base">2/20</span>
+          <span className="text-pred-400 text-base ml-3">{limits}</span>
         </div>
       </div>
     </section>
