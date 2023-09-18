@@ -25,13 +25,37 @@ adminRouter.get('/package', async (req,res) => {
 
 adminRouter.get('/package/:packageId', async (req,res) => {
     try {
-        const result = await supabase.from('package_list').select('*').eq('id', req.params.packageId);
+        const result = await supabase.from('merry_packages').select('*').eq('package_id', req.params.packageId);
         return res.json({
             data: result.data[0]
         })
     } catch(error) {
         console.log(error)
     }
+})
+
+// แก้ไข package
+adminRouter.put('/package/:packageId', async (req, res) => {
+    try {
+        const packageId = req.params.packageId;
+        const updatePackage = {
+            package_name : req.body.package_name,
+            package_limit : req.body.package_limit,
+            price : req.body.price,
+            // package_icon : req.body.icon,
+            // package_detail : req.body.package_detail,
+            update_at : new Date(),
+        };
+        console.log(updatePackage)
+        const result =  await supabase.from('merry_packages').update(updatePackage).eq('package_id', packageId)
+        return res.json({
+            
+            message: "successfully",
+        }) 
+    } catch(error) {
+        console.log(error)
+    }
+    
 })
 
 // TABLE เก่า
