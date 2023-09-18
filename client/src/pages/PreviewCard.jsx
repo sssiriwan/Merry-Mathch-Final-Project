@@ -18,6 +18,7 @@ function PreviewCard({clicked, setClicked, userId}) {
     }
     console.log(userId)
     const [profile, setProfile] = useState(initialValue);
+    // const userId = 
 
     const getData = async () => {
         const result = await axios.get(`http://localhost:4000/post/profile/${userId}`)
