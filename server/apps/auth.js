@@ -6,24 +6,28 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const authRouter = Router();
-// const multerUpload = multer({ dest: "uploads/"});
-// const avatarUpload = multerUpload.fields([{name: "avatar", maxCount:5 }]);
-// const {data, error} = await supabase.storage.from('users').download(path)
 authRouter.post("/register", async (req, res) => {
   try {
+    // const hobbiesSplit = req.body.hobbies_tag.split(", ")
     const user = {
       username: req.body.username,
       password: req.body.password,
-      // avatar_url: req.files.avatar,
       fullname: req.body.fullname,
       role: "Users",
+      date_of_birth: req.body.date_of_birth,
       email: req.body.email,
       location: req.body.location,
+      city: req.body.city,
       age: req.body.age,
-      hobbies: req.body.hobbies,
       created_at: new Date(),
+      sexual_identity: req.body.sexual_identity,
+      sexual_preference: req.body.sexual_preference,
+      racial_preference: req.body.racial_preference,
+      meeting_interest: req.body.meeting_interest,
+      hobbies_tag: req.body.hobbies_tag,
+      about_me: req.body.about_me
     };
-    // const avatarFile = req.files.avatar
+    
     const checkUser = await supabase.from('users').select('*').eq('username', user.username);
     if (checkUser.data[0]) {
       return res.json({
@@ -39,17 +43,25 @@ authRouter.post("/register", async (req, res) => {
         {
           username: user.username,
           password: user.password,
+          fullname: user.fullname,
+          role: user.role,
+          email: user.email,
+          location: user.location,
+          city: user.city,
+          date_of_birth: user.date_of_birth,
           age: 22,
-          created_at: user.created_at,
-          role: user.role
+          created_at: new Date(),
+          sexual_identity: user.sexual_identity,
+          sexual_preference: user.sexual_preference,
+          racial_preference: user.racial_preference,
+          meeting_interest: user.meeting_interest,
+          hobbies_tag: user.hobbies_tag,
+          about_me: user.about_me,
         },
       ])
       .select();
-    // ต้องเปลี่ยนชื่อ file ตรง upload
-    // const { data,error } = await supabase.storage.from('avatars').upload('public/avatar1.png', avatarFile);
-    return res.json({
+      return res.json({
       message: `Created new account successfully`,
-      // image: data
     });
   } catch (error) {
     console.log(error);

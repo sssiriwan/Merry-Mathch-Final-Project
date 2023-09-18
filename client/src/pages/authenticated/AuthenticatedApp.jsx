@@ -7,6 +7,9 @@ import axios from "axios";
 import AdminAuthenticatedApp from "./AdminAuthenticatedApp";
 import { useEffect, useState } from "react";
 import ComplaintFormPage from "../ComplaintFormPage";
+import ProfileEditPage from "../ProfileEditPage";
+import MerryList from "../MerryList";
+import PreviewCard from "../PreviewCard";
 
 function AuthenticatedApp() {
   return (
@@ -16,6 +19,9 @@ function AuthenticatedApp() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/matching" element={<MatchingPage />} />
           <Route path="/complaint" element={<ComplaintFormPage />} />
+          <Route path="/profile" element={<ProfileEditPage />} />
+          <Route path="/profile/:userId" element={<PreviewCard />} />
+          <Route path="/merry-list" element={<MerryList />} />
           <Route path="*" element={<Home />} />
         </Routes>
     </>
