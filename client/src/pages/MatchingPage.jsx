@@ -19,14 +19,15 @@ import axios from "axios";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import TinderCard from "react-tinder-card";
 import MatchFunction from "./matching/MatchFunction";
 
 function MatchingPage() {
   return (
     <>
       <NavbarRegistered />
-      <section className="h-[900px] flex">
-        <aside className="h-full w-[18%] py-7 border-r border-pgray-100">
+      <section className="h-[900px] w-screen flex justify-center">
+        <aside className="h-full w-[316px] py-7 border-r border-pgray-100">
           <div className=" border-ppurple-500 bg-pgray-100 border flex flex-col justify-center items-center py-4 mx-5 rounded-2xl mb-7">
             <svg
               width="62"
@@ -180,11 +181,11 @@ function MatchingPage() {
           </div>
         </aside>
 
-        <section className="w-[72%] bg-putility-400 flex justify-center items-center">
+        <section className="w-[905px] bg-putility-400">
           <MatchFunction />
         </section>
 
-        <div className="w-[10%] pl-3 pt-3">
+        <div className="w-[220px] pl-3 pt-3">
           <h1 className="text-[#191C77] font-bold my-3">Sex you interest</h1>
           <div className="flex flex-col">
             <div className="mb-3">
