@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
 import merryicon from "../../public/icons/merry.png"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const packagedetail = [
   {
@@ -34,6 +34,7 @@ const packagedetail = [
 ];
 
 function PackageListPage() {
+  const navigate = useNavigate()
   const [items, setItems] = useState([]);
 
   const fetchPackage = async () => {
@@ -149,7 +150,11 @@ function PackageListPage() {
                         </Button>
                       </TableCell>
                       <TableCell>
-                        <Button class="bg-white"><Link to="/admin/package-edit">
+                        <Button class="bg-white"
+                        onclick={() => {
+                          navigate(`/admin/edit/${package_id}`)
+                        }}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -166,7 +171,7 @@ function PackageListPage() {
                               fill="#FF6390"
                             />
                           </svg>
-                          </Link>
+                          
                         </Button>
                       </TableCell>
                     </TableRow>

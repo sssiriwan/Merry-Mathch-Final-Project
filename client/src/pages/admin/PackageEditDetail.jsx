@@ -11,38 +11,47 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+
+
+
+
 
 function PackageEditDetail() {
+  const navigate = useNavigate();
+  const params = useParams();
+
+
   const [name, setName] = useState("");
   const [limit, setLimit] = useState(0);
-  const [icon, setIcon] = useState("https://files.vogue.co.th/uploads/makeup_steps_to_natural_look3.jpg");
+  const [icon, setIcon] = useState("");
   const [detail, setDetail] = useState("");
-  console.log(limit)
-  const navigate = useNavigate();
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    addPackage();
-  }
-
-  const addPackage = async () => {
-    const newPackage = {
-      package_icon: icon,
-      package_name: name,
-      package_limit: limit,
-      price: 2000,
-    }
-    console.log(newPackage)
-    const result = await axios.put('http://localhost:4000/admin/package', newPackage);
-    console.log(result)
-    navigate("/admin")
-  }
 
 
-
+  const getCurrentPackage = async () => {
+      const response = await axios.get(`http://localhost:4000/admin/package/${params.packageId}`);
+      console.log(response);
+      setName(response.data.data.package_name);
+      setLimit(response.data.data.package_limit);
+      setIcon(response.data.data.package_icon);
+      setDetail(response.data.data.package_detail);
+    } 
   
+    const handleSubmit = async () => {
+      const updatePackage = {
+        package_name: name,
+        package_limit: limit,
+      }
+      const result = await axios.put(`http://localhost:4000/admin/package/${params.packageId}`, updatePackage)
+      navigate('/admin')
+    }
+
+  useEffect(() => {
+    getCurrentPackage()
+  }, [])
+
   return (
     <CardContent className="grid gap-6 p-5">
       {/* <select value={limit} onChange={(event) => { setLimit(event.target.value)}}>
@@ -52,7 +61,14 @@ function PackageEditDetail() {
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="subject">Package name *</Label>
-          <Input id="Package" placeholder="" onChange={(event) => { setName(event.target.value)}} />
+          <Input
+            id="Package"
+            placeholder=""
+            value={name}
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+          />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="area">Merry limit *</Label>
@@ -61,12 +77,17 @@ function PackageEditDetail() {
               <SelectValue placeholder="Select" />
             </SelectTrigger>
           </Select> */}
-          <select  value={limit} onChange={(event) => { setLimit(event.target.value)}} >
-              <option value={0} disabled></option>
-              <option value={25}>25</option>
-              <option value={45}>45</option>
-              <option value={75}>75</option>
-            </select>
+          <select
+            value={limit}
+            onChange={(event) => {
+              setLimit(event.target.value);
+            }}
+          >
+            <option value={0} disabled></option>
+            <option value={25}>25</option>
+            <option value={45}>45</option>
+            <option value={75}>75</option>
+          </select>
         </div>
       </div>
       <Label htmlFor="subject">Icon *</Label>
@@ -110,12 +131,24 @@ function PackageEditDetail() {
               fill="#C8CCDB"
             />
           </svg>
-          <Input id="Package" placeholder="" value={detail} onChange={(event) => { setDetail(event.target.value)}} />
+          <Input
+            id="Package"
+            placeholder=""
+            value={detail}
+            onChange={(event) => {
+              setDetail(event.target.value);
+            }}
+          />
           <Button className="bg-white text-pgray-500">Delete</Button>
         </div>
       </div>
       <div className="flex h-20 justify-start items-start">
-        <button onClick={handleSubmit} className="border bg-pred-500 px-7 py-3 text-white rounded-full">+ Add detail</button>
+        <button
+          // onClick={handleSubmit}
+          className="border bg-pred-500 px-7 py-3 text-white rounded-full"
+        >
+          + Add detail
+        </button>
       </div>
     </CardContent>
   );
