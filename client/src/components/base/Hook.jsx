@@ -23,11 +23,8 @@ const Hook = () => {
       console.log("Error fetching data:", error);
     }
   };
-  useEffect(() => {
-    getData();
-  }, []);
 
-  return;
+  return { getData };
 };
 
 export default Hook;
