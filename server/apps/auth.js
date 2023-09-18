@@ -122,6 +122,43 @@ authRouter.get("/", async (req, res) => {
   }
 });
 
+//User สามารถสร้าง Complain ได้
+authRouter.post('/complaint', async (req, res) => {
+  try {
+    console.log(req.body);
+    
+    const complainItem = {
+      user_id: req.body.userId,
+      issue: req.body.issue,
+      description: req.body.description,
+      //มาแก้แบบฟอร์มวันที่ในอนาคต
+      created_at:  new Date(),
+      complaint_status: req.body.status,
+    };
+    
+    const result = await supabase
+  .from('complaints')
+  .insert([
+    {
+      user_id: complainItem.user_id,
+      issue: complainItem.issue,
+      description: complainItem.description,
+      created_at: complainItem.created_at,
+      complaint_status: complainItem.complaint_status
+    },
+  ])
+  .select()
+   
+    return res.json({
+      message: "add complaint successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
 export default authRouter;
 
 // ไม่ใช้แล้วค่ะ POST METHOD: REGISTER USER
