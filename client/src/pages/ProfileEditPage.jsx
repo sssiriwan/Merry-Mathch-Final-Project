@@ -20,6 +20,7 @@ function ProfileEditPage() {
   const navigate = useNavigate();
   const [clicked, setClicked] = useState(false)
   const [profile, setProfile] = useState({
+    user_id: "",
     fullname: "",
     username: "",
     email: "",
@@ -58,7 +59,7 @@ function ProfileEditPage() {
   return (
     <div className="grid place-items-center">
       <NavbarRegistered />
-        { clicked && <PreviewCard setClicked={setClicked} clicked={clicked} />}
+        { clicked && <PreviewCard setClicked={setClicked} clicked={clicked} userId={profile.user_id} />}
       <section className=" w-[930px]">
         <article className="flex items-end justify-between mt-14">
           <div className="text-pbeige-700">
