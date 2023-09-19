@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import PreviewCard from "./PreviewCard";
 import ListText from "./register/text";
 
+import "../App.css"
+
 function ProfileEditPage() {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
@@ -348,8 +350,10 @@ function ProfileEditPage() {
         </section>
       </section>
       </>}
-        {isLoading && <>
-        <h1>load อยู่ มึงใจเย็นๆ</h1></>}
+        {isLoading && 
+        <div class="h-[500px] flex items-center">
+          <div class="custom-loader"></div>
+          </div>}
       <Footer />
     </div>
   );
