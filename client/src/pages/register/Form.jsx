@@ -48,20 +48,17 @@ function Form() {
   const initialValues = {
     name: "",
     location: "",
-    SexualIdentities: "0",
-    SexualPreferences: "1",
-    RacialPreferences: "0",
-    MeetingInterests: "0",
-    tags: "Music",
-    
     username: "",
     password: "",
     Date: "",
     email: "",
     city: "",
     ConfirmPassword: "",
-
-    img: "",
+    SexualIdentities: "0",
+    SexualPreferences: "1",
+    RacialPreferences: "0",
+    MeetingInterests: "0",
+    tags: "Music",
   };
 
   const [values, setValues] = useState(initialValues);
@@ -129,13 +126,30 @@ function Form() {
     { id: "3", name: "Others" },
   ];
 
-  const { register} = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
   const handleSubmit = () => {
-    register(values)
-    console.log("Submitting form data:", values);
-    navigate("/")
-    // ทำการส่งข้อมูลไปยังเซิร์ฟเวอร์หรือประมวลผลข้อมูลตามที่คุณต้องการ
+    const updatedValues = { ...values, avatars };
+    // สร้าง FormData
+    const formData = new FormData();
+    formData.append('fullname', values.name);
+    formData.append('username', values.username);
+    formData.append('password', values.password);
+    formData.append('email', values.email);
+    formData.append('date_of_birth', values.Date);
+    formData.append('tags', values.tags);
+    formData.append('location', values.location);
+    formData.append('city', values.city);
+    formData.append('sexual_identity', values.SexualIdentities);
+    formData.append('sexual_preference', values.SexualPreferences);
+    formData.append('meeting_interest', values.MeetingInterests);
+    formData.append('racial_preference', values.RacialPreferences);
+    for (let avatarKey in avatars) {
+      formData.append("avatar", avatars[avatarKey])
+    }
+    register(formData);
+    console.log("Submitting form data:", updatedValues);
+    navigate("/");
   };
 
   const setForm = (formName) => {

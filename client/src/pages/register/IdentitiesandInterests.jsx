@@ -34,7 +34,7 @@ function Identities({
               {option &&
                 option.map((states) => {
                   return (
-                    <option key={states.id} value={states.id}>
+                    <option key={states.id} value={states.name}>
                       {states.name}
                     </option>
                   );
@@ -53,7 +53,7 @@ function Identities({
               {option &&
                 option.map((states) => {
                   return (
-                    <option key={states.id} value={states.id}>
+                    <option key={states.id} value={states.name}>
                       {states.name}
                     </option>
                   );
@@ -77,7 +77,7 @@ function Identities({
             {option1 &&
               option1.map((states) => {
                 return (
-                  <option key={states.id} value={states.id}>
+                  <option key={states.id} value={states.name}>
                     {states.name}
                   </option>
                 );
@@ -95,7 +95,7 @@ function Identities({
               {option2 &&
                 option2.map((states) => {
                   return (
-                    <option key={states.id} value={states.id}>
+                    <option key={states.id} value={states.name}>
                       {states.name}
                     </option>
                   );
