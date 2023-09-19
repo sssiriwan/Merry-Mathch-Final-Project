@@ -130,7 +130,24 @@ function Form() {
   const navigate = useNavigate();
   const handleSubmit = () => {
     const updatedValues = { ...values, avatars };
-    register(updatedValues);
+    // สร้าง FormData
+    const formData = new FormData();
+    formData.append('fullname', values.name);
+    formData.append('username', values.username);
+    formData.append('password', values.password);
+    formData.append('email', values.email);
+    formData.append('date_of_birth', values.Date);
+    formData.append('tags', values.tags);
+    formData.append('location', values.location);
+    formData.append('city', values.city);
+    formData.append('sexual_identity', values.SexualIdentities);
+    formData.append('sexual_preference', values.SexualPreferences);
+    formData.append('meeting_interest', values.MeetingInterests);
+    formData.append('racial_preference', values.RacialPreferences);
+    for (let avatarKey in avatars) {
+      formData.append("avatar", avatars[avatarKey])
+    }
+    register(formData);
     console.log("Submitting form data:", updatedValues);
     navigate("/");
   };
