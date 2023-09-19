@@ -16,8 +16,9 @@ function PreviewCard({clicked, setClicked, userId}) {
     }
     console.log(userId)
     const [profile, setProfile] = useState(initialValue);
+    const [hobbies, setHobbies] = useState({})
     const [avatars, setAvatars] = useState({})
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(2)
     console.log(count)
     const handleNextImage = () => {
         if(count < 6) {
@@ -34,6 +35,16 @@ function PreviewCard({clicked, setClicked, userId}) {
             setCount(count - 1)
         }
     }
+    let hobbyArr = []
+    for(const hobby in hobbies) {
+        if(hobbies[hobby] == null) {
+            break;
+        }
+        if(typeof hobbies[hobby] == 'string') {
+            hobbyArr.push(hobbies[hobby])
+        }
+    }
+    console.log(hobbyArr)
     
     const age = (birthday) => {
         const today = new Date();
@@ -49,9 +60,10 @@ function PreviewCard({clicked, setClicked, userId}) {
     const getData = async () => {
         setIsLoading(true)
         const result = await axios.get(`http://localhost:4000/post/profile/${userId}`)
-        // console.log(result.data.data)
+        console.log(result.data.data)
         setIsLoading(false)
         setProfile(result.data.data)
+        setHobbies(result.data.data.hobbies)
         setAvatars(result.data.data.profile_image)
         console.log("รูปจ้ารูป",result.data.data.profile_image)
     }
@@ -142,12 +154,12 @@ function PreviewCard({clicked, setClicked, userId}) {
                     <div className="text-pgray-900 grid gap-4">
                         <h1 className="font-bold text-2xl leading-8 tracking-tight">Hobbies and Interests</h1>
                         <div className="flex">
-                            {/* {profile.hobbies_tag.map((tag, index) => {
+                            {hobbyArr.map((tag, index) => {
                             return (
                             <div key={index} className="border-2 border-ppurple-300 text-ppurple-600 rounded-xl flex py-2 px-4 mr-3">
                                 {tag}
                             </div>
-                        )})} */}
+                        )})}
                         </div>
                     </div>
                 </div>

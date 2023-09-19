@@ -52,10 +52,9 @@ function ProfileEditPage() {
   const getMyProfile = async () => {
     setIsLoading(true)
     const result = await axios.get("http://localhost:4000/post/profile");
-    // console.log(result.data.data);
-    // console.log(result.data.image);
+    console.log(result.data.data);
     setIsLoading(false)
-    setAvatars(result.data.image)
+    // setAvatars(result.data.image)
     setProfile(result.data.data);
   };
   useEffect(() => {
