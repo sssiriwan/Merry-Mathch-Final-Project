@@ -38,6 +38,7 @@ function ProfileEditPage() {
 
   })
   const [avatars, setAvatars] = useState({})
+  const textLength = profile.about_me.length;
 
   const handleUpdateProfile = async () => {
     const result = await axios.put(
@@ -270,7 +271,7 @@ function ProfileEditPage() {
               {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
             </div>
             <div className="mt-8">
-                <label>About Me (Maximum 150 characters)</label>
+                <label>About Me (Maximum {150-textLength} characters)</label>
                 <Textarea className="resize-none" value={profile.about_me} rows="4" maxlength="150" 
                 onChange={(event) => { setProfile({...profile ,about_me: event.target.value}) }} />
             </div>
