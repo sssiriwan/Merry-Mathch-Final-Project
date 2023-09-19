@@ -15,16 +15,18 @@ postRouter.get('/', async (req,res) => {
 postRouter.get('/profile', async (req,res) => {
     console.log(req.user)
     const {data, error} = await supabase.from('users').select('*').eq('user_id', req.user.id)
+    const {data:result} = await supabase.from('profile_image').select('img_1,img_2,img_3,img_4,img_5').eq('user_id', req.user.id)
     return res.json({
-        data: data[0]
+        data: data[0],
+        image: result[0]
     })
 })
 
 postRouter.get('/profile/:userId', async (req,res) => {
     const userId = req.params.userId;
-    const { data, error } = await supabase.from('users').select('*').eq('user_id', userId)
+    const { data, error } = await supabase.from('users').select("*, profile_image(*), hobbies(*)").eq('user_id', userId)
     return res.json({
-        data: data[0]
+        data: data[0],
     })
 })
 

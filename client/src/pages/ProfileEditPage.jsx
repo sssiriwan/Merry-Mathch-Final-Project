@@ -17,6 +17,7 @@ import PreviewCard from "./PreviewCard";
 import ListText from "./register/text";
 
 function ProfileEditPage() {
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
   const [clicked, setClicked] = useState(false)
   const [profile, setProfile] = useState({
@@ -32,9 +33,9 @@ function ProfileEditPage() {
     racial_preference: "",
     meeting_interest: "",
     about_me: "",
-    hobbies_tag: [],
-    image_url: [],
+
   })
+  const [avatars, setAvatars] = useState({})
 
   const handleUpdateProfile = async () => {
     const result = await axios.put(
@@ -49,8 +50,12 @@ function ProfileEditPage() {
   };
 
   const getMyProfile = async () => {
+    setIsLoading(true)
     const result = await axios.get("http://localhost:4000/post/profile");
-    console.log(result.data.data);
+    // console.log(result.data.data);
+    // console.log(result.data.image);
+    setIsLoading(false)
+    setAvatars(result.data.image)
     setProfile(result.data.data);
   };
   useEffect(() => {
@@ -59,6 +64,7 @@ function ProfileEditPage() {
   return (
     <div className="grid place-items-center">
       <NavbarRegistered />
+      { !isLoading && <>
         { clicked && <PreviewCard setClicked={setClicked} clicked={clicked} userId={profile.user_id} />}
       <section className=" w-[930px]">
         <article className="flex items-end justify-between mt-14">
@@ -342,6 +348,9 @@ function ProfileEditPage() {
           </div>
         </section>
       </section>
+      </>}
+        {isLoading && <>
+        <h1>load อยู่ มึงใจเย็นๆ</h1></>}
       <Footer />
     </div>
   );

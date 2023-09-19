@@ -2,9 +2,10 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 
 function PreviewCard({clicked, setClicked, userId}) {
+    const [isLoading, setIsLoading] = useState(false)
     const initialValue = {
         fullname: "",
-        age: "",
+        date_of_birth: "",
         location: "",
         city: "",
         sexual_identity: "",
@@ -12,18 +13,47 @@ function PreviewCard({clicked, setClicked, userId}) {
         racial_preference: "",
         meeting_interest: "",
         about_me: "",
-        // avatar_url:"",
-        image_url: [],
-        hobbies_tag: []
     }
     console.log(userId)
     const [profile, setProfile] = useState(initialValue);
-    // const userId = 
-
+    const [avatars, setAvatars] = useState({})
+    const [count, setCount] = useState(0)
+    console.log(count)
+    const handleNextImage = () => {
+        if(count < 6) {
+            setCount(count + 1)
+        } else {
+            setCount(2)
+        }
+    };
+    
+    const handlePrevImage = () => {
+        if(count === 2) {
+            setCount(6)
+        } else {
+            setCount(count - 1)
+        }
+    }
+    
+    const age = (birthday) => {
+        const today = new Date();
+        const userAge =
+        today.getFullYear() -
+        birthday.getFullYear() -
+        (today.getMonth() < birthday.getMonth() ||
+        (today.getMonth() === birthday.getMonth() &&
+        today.getDate() < birthday.getDate()));
+        return userAge;
+    };
+        
     const getData = async () => {
+        setIsLoading(true)
         const result = await axios.get(`http://localhost:4000/post/profile/${userId}`)
-        console.log(result.data.data)
+        // console.log(result.data.data)
+        setIsLoading(false)
         setProfile(result.data.data)
+        setAvatars(result.data.data.profile_image)
+        console.log("รูปจ้ารูป",result.data.data.profile_image)
     }
     useEffect(()=>{
         getData()
@@ -33,12 +63,14 @@ function PreviewCard({clicked, setClicked, userId}) {
         <div id="popup-preview-card" className="w-[1140px] h-[740px] bg-white border rounded-4xl absolute top-1/4 flex justify-center items-center shadow-3xl">
             <div className="w-[980px] h-[579px] flex justify-between">
                 <div className="shadow-md rounded-4xl w-[478px] h-[526px]">
-                    <img src={profile.image_url[0]} className="w-[478px] h-[478px] object-cover rounded-4xl" />
+                    {!isLoading && (
+                        <>
+                        <img src={Object.values(avatars)[count]} className="w-[478px] h-[478px] object-cover rounded-4xl" />
                     <div className="flex items-center justify-between px-10">
-                        <div>1/2</div>
+                        <div>{count-1}/5</div>
                         <div>
                             {/* ปุ่มใน รูป <- -> */}
-                            <button className="rounded-3xl hover:scale-125">
+                            <button onClick={handlePrevImage} className="rounded-3xl hover:scale-125">
                                 <svg
                                 width="40"
                                 height="40"
@@ -52,7 +84,7 @@ function PreviewCard({clicked, setClicked, userId}) {
                                 />
                                 </svg>
                             </button>
-                            <button className="rounded-3xl hover:scale-125">
+                            <button onClick={handleNextImage} className="rounded-3xl hover:scale-125">
                                 <svg
                                 width="40"
                                 height="40"
@@ -68,12 +100,15 @@ function PreviewCard({clicked, setClicked, userId}) {
                             </button>
                         </div>
                     </div>
+                    </>
+                    )}
+                    {isLoading && <h1>load อยู่ อย่ารีบ</h1>}
                 </div>
                 <div className="w-[478px] h-[579px] flex flex-col ml-10" onClick={() => { setClicked(!clicked)} }>
                     <div className="w-[418px] h-[96px] flex flex-col">
                         <div className="flex">
                             <h1 className=" font-extrabold text-5xl">{profile.fullname}</h1>
-                            <h1 className="font-extrabold text-5xl text-pgray-700 ml-4">{profile.age}</h1>
+                            <h1 className="font-extrabold text-5xl text-pgray-700 ml-4">{age(new Date(profile.date_of_birth))}</h1>
                         </div>
                         <div className="flex mt-3">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,12 +142,12 @@ function PreviewCard({clicked, setClicked, userId}) {
                     <div className="text-pgray-900 grid gap-4">
                         <h1 className="font-bold text-2xl leading-8 tracking-tight">Hobbies and Interests</h1>
                         <div className="flex">
-                            {profile.hobbies_tag.map((tag, index) => {
+                            {/* {profile.hobbies_tag.map((tag, index) => {
                             return (
                             <div key={index} className="border-2 border-ppurple-300 text-ppurple-600 rounded-xl flex py-2 px-4 mr-3">
                                 {tag}
                             </div>
-                        )})}
+                        )})} */}
                         </div>
                     </div>
                 </div>

@@ -97,9 +97,9 @@ authRouter.post("/login", async (req, res) => {
       .from("users")
       .select("*")
       .eq("username", req.body.username);
-    if (error) {
-      console.log(error);
-    }
+    // if (error) {
+    //   console.log(error);
+    // }
 
     if (!user[0]) {
       return res.status(404).json({
