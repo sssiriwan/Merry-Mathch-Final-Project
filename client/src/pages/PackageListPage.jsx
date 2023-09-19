@@ -130,7 +130,7 @@ function PackageListPage() {
                       <TableCell>{packagedetail.package_name}</TableCell>
                       <TableCell>{packagedetail.package_limit}</TableCell>
                       <TableCell>{packagedetail.created_at}</TableCell>
-                      <TableCell>{packagedetail.updated_at}</TableCell>
+                      <TableCell>{packagedetail.update_at}</TableCell>
                       <TableCell>
                         <Button class="bg-white">
                           <svg
@@ -150,10 +150,10 @@ function PackageListPage() {
                         </Button>
                       </TableCell>
                       <TableCell>
-                        <Button class="bg-white"
-                        onclick={() => {
-                          navigate(`/admin/edit/${package_id}`)
+                        <Button class="bg-white" onClick={() => {
+                          navigate(`/admin/edit/${packagedetail.package_id}`)
                         }}
+                        
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
