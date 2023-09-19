@@ -1,21 +1,42 @@
 import { Router } from "express";
 // import { pool } from "../utils/supabaseClient.js";
 import { supabase } from "../utils/supabaseClient.js";
-// import multer from "multer"
+import multer from "multer"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const authRouter = Router();
 // const multerUpload = multer({ dest: "uploads/"});
 // const avatarUpload = multerUpload.fields([{name: "avatar", maxCount:5 }]);
-// const {data, error} = await supabase.storage.from('users').download(path)
-authRouter.post("/register", async (req, res) => {
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const avatarUpload = upload.fields([{name: "avatar", maxCount:5 }]);
+authRouter.post("/register", avatarUpload , async (req, res) => {
   try {
+    const files = req.files.avatar
+    console.log(files)
+    console.log(req.body)
+    let fileUrl = []
+    for(let i=0; i<files.length; i++) {
+      const fileName = `${Date.now()}`
+      const { data, error } = await supabase.storage.from('avatarImg').upload( fileName, files[i].buffer , {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: files[i].mimetype
+      })
+      console.log(data.path)
+      const result = await supabase.storage.from('avatarImg').getPublicUrl(data.path)
+      console.log(result.data)
+      fileUrl.push(result.data.publicUrl)
+      if(error) {
+        console.log(error)
+      }
+    }
+    console.log(fileUrl)
     const user = {
       username: req.body.username,
       password: req.body.password,
-      // avatar_url: req.files.avatar,
-      fullname: req.body.fullname,
+      fullname: req.body.name,
       role: "Users",
       email: req.body.email,
       location: req.body.location,
@@ -23,33 +44,30 @@ authRouter.post("/register", async (req, res) => {
       hobbies: req.body.hobbies,
       created_at: new Date(),
     };
-    // const avatarFile = req.files.avatar
     const checkUser = await supabase.from('users').select('*').eq('username', user.username);
     if (checkUser.data[0]) {
       return res.json({
         message: "User already in used",
       })
     }
-    console.log(checkUser)
+    console.log("ถ้าไม่มี user เหมือนกันจะขึ้นอันนี้จ้า",checkUser)
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
-    await supabase
+    const result = await supabase
       .from("users")
       .insert([
-        {
-          username: user.username,
-          password: user.password,
-          age: 22,
-          created_at: user.created_at,
-          role: user.role
-        },
+        user
       ])
       .select();
-    // ต้องเปลี่ยนชื่อ file ตรง upload
-    // const { data,error } = await supabase.storage.from('avatars').upload('public/avatar1.png', avatarFile);
+    const userImg = await supabase.from('profile_image').insert([
+      { user_id: result.data[0].user_id ,img_1: fileUrl[0], img_2: fileUrl[1] }
+    ])
+    console.log(result)
+    console.log(userImg)
     return res.json({
       message: `Created new account successfully`,
-      // image: data
+      asd: result,
+      asd2: userImg
     });
   } catch (error) {
     console.log(error);
@@ -65,10 +83,6 @@ authRouter.post("/login", async (req, res) => {
     if (error) {
       console.log(error);
     }
-    // const { data: email } = await supabase
-    //   .from("users")
-    //   .select("*")
-    //   .eq("email", req.body.email);
 
     if (!user[0]) {
       return res.status(404).json({
