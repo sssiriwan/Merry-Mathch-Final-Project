@@ -13,6 +13,7 @@ import {
 import { useState, useEffect } from "react";
 import merryicon from "../../public/icons/merry.png"
 import { Link, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const packagedetail = [
   {
@@ -35,6 +36,7 @@ const packagedetail = [
 
 function PackageListPage() {
   const navigate = useNavigate()
+  const params = useParams()
   const [items, setItems] = useState([]);
 
   const fetchPackage = async () => {
@@ -42,6 +44,17 @@ function PackageListPage() {
     console.log(result.data.data)
     setItems(result.data.data)
   }
+
+  const handleDelete = async (packageId) => {
+    try {
+      await axios.delete(`http://localhost:4000/admin/package/${packageId}`);
+      setItems((prevItems) =>
+        prevItems.filter((item) => item.package_id !== packageId)
+      );
+    } catch (error) {
+      console.error("Error deleting package:", error);
+    }
+  };
 
   useEffect(()=> {
     fetchPackage();
@@ -132,7 +145,7 @@ function PackageListPage() {
                       <TableCell>{packagedetail.created_at}</TableCell>
                       <TableCell>{packagedetail.update_at}</TableCell>
                       <TableCell>
-                        <Button class="bg-white">
+                        <Button class="bg-white" onClick={() => handleDelete(packagedetail.package_id)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"

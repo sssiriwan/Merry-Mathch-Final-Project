@@ -173,27 +173,58 @@ adminRouter.get("/complaint", async (req, res) => {
 
 
 // แก้ไข package
-adminRouter.put('/package/:packageId', async (req, res) => {
-    try {
-        const packageId = req.params.packageId;
-        const updatePackage = {
-            package_name : req.body.package_name,
-            package_limit : req.body.package_limit,
-            price : req.body.price,
-            // package_icon : req.body.icon,
-            // package_detail : req.body.package_detail,
-            update_at : new Date(),
-        };
-        console.log(updatePackage)
-        const result =  await supabase.from('merry_packages').update(updatePackage).eq('package_id', packageId)
-        return res.json({
-            
-            message: "successfully",
-        }) 
-    } catch(error) {
-        console.log(error)
+adminRouter.put("/package/:packageId", async (req, res) => {
+  try {
+    const packageId = req.params.packageId;
+    const updatePackage = {
+      package_name: req.body.package_name,
+      package_limit: req.body.package_limit,
+      price: req.body.price,
+      // package_icon : req.body.icon,
+      // package_detail : req.body.package_detail,
+      update_at: new Date(),
+    };
+    console.log(updatePackage);
+    const result = await supabase
+      .from("merry_packages")
+      .update(updatePackage)
+      .eq("package_id", packageId);
+    return res.json({
+      message: "successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// DELETE package
+adminRouter.delete("/package/:packageId", async (req, res) => {
+  try {
+    const packageId = req.params.packageId;
+    const { data, error } = await supabase
+      .from("merry_packages")
+      .delete()
+      .eq("package_id", packageId);
+
+    if (error) {
+      console.error("Error deleting package:", error);
+      return res.status(500).json({
+        error: "Internal server error",
+      });
     }
-    
-})
+
+    // if (!data || data.length === 0) {
+    //     return res.status(404).json({
+    //         message: "Package not found",
+    //     });
+    // }
+
+    return res.json({
+      message: "Package has been deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 export default adminRouter;
