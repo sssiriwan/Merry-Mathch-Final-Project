@@ -27,19 +27,19 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
         upsert: false,
         contentType: files[i].mimetype
       })
-      console.log(data.path)
+      // console.log(data.path)
       const result = await supabase.storage.from('avatarImg').getPublicUrl(data.path)
-      console.log(result.data)
+      // console.log(result.data)
       fileUrl.push(result.data.publicUrl)
       if(error) {
         console.log(error)
       }
     }
-    console.log(fileUrl)
+    // console.log(fileUrl)
     const user = {
       username: req.body.username,
       password: req.body.password,
-      fullname: req.body.name,
+      fullname: req.body.fullname,
       role: "Users",
       date_of_birth: req.body.date_of_birth,
       email: req.body.email,
@@ -79,10 +79,12 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
     console.log(result)
     console.log("เพิ่มแถวในตารางรูป",userImg)
     console.log("เพิ่มแถวในตารางอดิเรก", userHobbies)
+    const imageId = await supabase.from('profile_image').select('image_id').eq('user_id', result.data[0].user_id);
+    const hobbiesId = await supabase.from('hobbies').select('hobbies_id').eq('user_id', result.data[0].user_id)
+    const updateUser = await supabase.from('users').update({ image_id: imageId.data[0].image_id, hobbies_id: hobbiesId.data[0].hobbies_id}).eq('user_id', result.data[0].user_id).select();
+    console.log("อัพเดทhobbiesกับimageid", updateUser)
     return res.json({
       message: `Created new account successfully`,
-      asd: result,
-      asd2: userImg
     });
   } catch (error) {
     console.log("catch เออเร่อ",error);
