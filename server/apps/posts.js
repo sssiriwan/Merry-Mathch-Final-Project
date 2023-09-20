@@ -14,7 +14,7 @@ postRouter.get('/', async (req,res) => {
 // API get profile (เทียบ user_id)
 postRouter.get('/profile', async (req,res) => {
     console.log(req.user)
-    const {data, error} = await supabase.from('users').select('*, profile_image(img_1, img_2, img_3, img_4, img_5), hobbies(*)').eq('user_id', req.user.id).single();
+    const {data, error} = await supabase.from('profiles').select('*, users(*), profile_image(img_1, img_2, img_3, img_4, img_5), hobbies(*)').eq('user_id', req.user.id).single();
     return res.json({
         data: data,
     })
