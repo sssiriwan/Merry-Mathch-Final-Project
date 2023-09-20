@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 import PreviewCard from "./PreviewCard";
 import ListText from "./register/text";
-
+import ProfileImage from "./register/ProfileImage";
 import "../App.css"
 
 function ProfileEditPage() {
@@ -39,7 +39,7 @@ function ProfileEditPage() {
   })
   const [avatars, setAvatars] = useState({})
   const textLength = profile.about_me.length;
-
+  // ปุ่มกด update profile
   const handleUpdateProfile = async () => {
     const result = await axios.put(
       "http://localhost:4000/post/profile",
@@ -48,16 +48,45 @@ function ProfileEditPage() {
     console.log(result);
     navigate("/matching");
   };
+
+  // สำหรับรูป
+  const countTags = () => {
+    return 5 - Object.keys(avatars).length;
+  };
+
   const updateTags = (updatedTags) => {
     setValues({ ...profile, tags: updatedTags.join(", ") }); // รวม tags ใหม่เป็น string และอัปเดตใน initialValues
   };
 
+  const updateAvatars = (newAvatars) => {
+    setAvatars(newAvatars);
+  };
+  
+  const handleDragStartImage = (e, avatarKey) => {
+    e.dataTransfer.setData("text/plain", avatarKey);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedAvatarKey = e.dataTransfer.getData("text/plain");
+    const targetAvatarKey = e.currentTarget.getAttribute("data-key");
+
+    const newAvatars = { ...avatars };
+    const droppedFile = newAvatars[droppedAvatarKey];
+
+    newAvatars[droppedAvatarKey] = avatars[targetAvatarKey];
+    newAvatars[targetAvatarKey] = droppedFile;
+
+    updateAvatars(newAvatars);
+  };
+
+  // ดึงข้อมูล
   const getMyProfile = async () => {
     setIsLoading(true)
     const result = await axios.get("http://localhost:4000/post/profile");
     console.log(result.data.data);
     setIsLoading(false)
-    // setAvatars(result.data.image)
+    setAvatars(result.data.data.profile_image)
     setProfile(result.data.data);
   };
   useEffect(() => {
@@ -288,7 +317,7 @@ function ProfileEditPage() {
 
           <div className="input-container relative">
             <div className="flex mb-[347px]">
-              {/* {Object.keys(avatars).map((avatarKey, index) => (
+              {Object.values(avatars).map((avatarKey, index) => (
                 <div
                   key={avatarKey}
                   className="mr-[24px] relative"
@@ -300,14 +329,26 @@ function ProfileEditPage() {
                   }}
                   data-key={avatarKey}
                 >
-                  <ProfileImage
-                    file={avatars[avatarKey]}
-                    onDragStartImage={(e) => handleDragStartImage(e, avatarKey)}
-                    onDragEnd={() => {}}
-                    onRemoveImage={() => handleRemoveImage(avatarKey)}
-                  />
+                  <div
+                    className="mr-[24px] relative"
+                    draggable="true"
+                    onDragStart={(e) => onDragStartImage(e)}
+                    onDragEnd={() => onDragEnd()}
+                  >
+                    <img
+                      className=" rounded-[12px]"
+                      src={avatarKey}
+                      // alt={ava.name}
+                    />
+                    <button
+                      className="image-remove-button bg-[#AF2758] text-white rounded-full h-10 w-10 p-2 absolute top-0 right-0"
+                      onClick={() => onRemoveImage()}
+                    >
+                      x
+                    </button>
+                  </div>
                 </div>
-              ))} */}
+              ))}
 
               {/* {[...Array(maxUploads - Object.keys(avatars).length)].map(
                 (_, index) => (

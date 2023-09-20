@@ -15,19 +15,19 @@ function Form() {
   const [page, setPage] = useState(0);
   const [avatars, setAvatars] = useState({});
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    const newAvatars = { ...avatars };
+  // const handleFileChange = (event) => {
+  //   const files = event.target.files;
+  //   const newAvatars = { ...avatars };
 
-    for (let i = 0; i < files.length; i++) {
-      if (Object.keys(newAvatars).length < maxUploads) {
-        const uniqueId = Date.now() + i;
-        newAvatars[uniqueId] = files[i];
-      }
-    }
+  //   for (let i = 0; i < files.length; i++) {
+  //     if (Object.keys(newAvatars).length < maxUploads) {
+  //       const uniqueId = Date.now() + i;
+  //       newAvatars[uniqueId] = files[i];
+  //     }
+  //   }
 
-    updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
-  };
+  //   updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
+  // };
 
   const updateAvatars = (newAvatars) => {
     setAvatars(newAvatars);
@@ -129,7 +129,9 @@ function Form() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const handleSubmit = () => {
-    const updatedValues = { ...values, avatars };
+    // const updatedValues = { ...values, avatars };
+    // console.log("Submitting form data:", updatedValues);
+
     // สร้าง FormData
     const formData = new FormData();
     formData.append('fullname', values.name);
@@ -148,7 +150,6 @@ function Form() {
       formData.append("avatar", avatars[avatarKey])
     }
     register(formData);
-    console.log("Submitting form data:", updatedValues);
     navigate("/");
   };
 
