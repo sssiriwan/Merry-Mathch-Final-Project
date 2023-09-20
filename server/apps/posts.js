@@ -6,6 +6,13 @@ const postRouter = Router();
 postRouter.use(protect);
 
 postRouter.get('/', async (req,res) => {
+    const { data, error } = await supabase.from('profiles').select('*, profile_image(img_1,img_2,img_3,img_4,img_5)');
+    return res.json({
+        data: data
+    })
+})
+
+postRouter.get('/check', async (req,res) => {
     console.log("จาก API POST GET/",req.user)
     return res.json({
         data: req.user
@@ -57,8 +64,7 @@ postRouter.put('/profile', async (req,res) => {
 })
 
 postRouter.get('/match-list', async (req,res) => {
-    console.log(req.user)
-    const { data, error } = await supabase.from('users').select('*').eq('role', 'Users');
+    const { data, error } = await supabase.from('profiles').select('*, profile_image(img_1,img_2,img_3,img_4,img_5)');
     return res.json({
         data: data
     })
