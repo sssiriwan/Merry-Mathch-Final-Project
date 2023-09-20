@@ -54,11 +54,15 @@ const Navbar = () => {
 };
 
 function NavbarRegistered() {
+  const [isLoading, setIsLoading] = useState(false)
   const [userImg, setUserImg] = useState("")
 
   const getMyProfile = async () => {
+    setIsLoading(true)
     const result = await axios.get('http://localhost:4000/post/profile');
-    setUserImg(result.data.data.avatar_url)
+    setIsLoading(false)
+    console.log("เมนูบาร์", Object.values(result.data.data.profile_image)[0])
+    setUserImg(Object.values(result.data.data.profile_image)[0])
   }
   useEffect(()=>{
     getMyProfile();

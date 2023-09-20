@@ -18,6 +18,7 @@ import ListText from "./register/text";
 
 function ProfileEditPage() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [profile, setProfile] = useState({
     user_id: "",
