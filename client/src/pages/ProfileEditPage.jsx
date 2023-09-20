@@ -23,8 +23,8 @@ function ProfileEditPage() {
   const [profile, setProfile] = useState({
     user_id: "",
     fullname: "",
-    username: "",
-    email: "",
+    // username: "",
+    // email: "",
     date_of_birth: null,
     location: "",
     city: "",
@@ -36,6 +36,8 @@ function ProfileEditPage() {
     hobbies_tag: [],
     image_url: [],
   })
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
 
   const handleUpdateProfile = async () => {
     const result = await axios.put(
@@ -53,6 +55,8 @@ function ProfileEditPage() {
     const result = await axios.get("http://localhost:4000/post/profile");
     console.log(result.data.data);
     setProfile(result.data.data);
+    setUsername(result.data.data.users.username)
+    setEmail(result.data.data.users.email)
   };
   useEffect(() => {
     getMyProfile();
@@ -119,9 +123,10 @@ function ProfileEditPage() {
                   name="username"
                   id="username"
                   placeholder="At least 6 charactor"
-                  value={profile.username}
+                  value={username}
+                  disabled
                   onChange={(event) => {
-                    setProfile({...profile ,username: event.target.value});
+                    setUsername(event.target.value);
                   }}
                 />
               </Label>
@@ -167,9 +172,9 @@ function ProfileEditPage() {
                   id="email"
                   name="email"
                   placeholder="name@website.com"
-                  value={profile.email}
+                  value={email}
                   onChange={(event) => {
-                    setProfile({...profile ,email: event.target.value});
+                    setEmail(event.target.value);
                   }}
                 />
               </Label>
