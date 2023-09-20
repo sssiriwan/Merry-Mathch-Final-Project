@@ -39,20 +39,9 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
     const user = {
       username: req.body.username,
       password: req.body.password,
-      fullname: req.body.fullname,
       role: "Users",
-      date_of_birth: req.body.date_of_birth,
       email: req.body.email,
-      location: req.body.location,
-      city: req.body.city,
-      age: req.body.age,
       created_at: new Date(),
-      sexual_identity: req.body.sexual_identity,
-      sexual_preference: req.body.sexual_preference,
-      racial_preference: req.body.racial_preference,
-      meeting_interest: req.body.meeting_interest,
-      hobbies_tag: req.body.hobbies_tag,
-      about_me: req.body.about_me
     };
     const checkUser = await supabase.from('users').select('*').eq('username', user.username);
     if (checkUser.data[0]) {
@@ -60,7 +49,6 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
         message: "User already in used",
       })
     }
-    // console.log("ถ้าไม่มี user เหมือนกันจะขึ้นอันนี้จ้า",checkUser)
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     const result = await supabase
@@ -69,20 +57,32 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
         user
       ])
       .select();
+      console.log(result)
     const userImg = await supabase.from('profile_image').insert([
       { user_id: result.data[0].user_id ,img_1: fileUrl[0], img_2: fileUrl[1], img_3: fileUrl[2], img_4: fileUrl[3], img_5: fileUrl[4] }
-    ])
+    ]).select()
+    console.log("เพิ่มแถวในตารางรูป",userImg)
     const userHobbies = await supabase.from('hobbies').insert([
       { user_id: result.data[0].user_id ,hob_1: hobbies[0] ,hob_2: hobbies[1] ,hob_3: hobbies[2] ,hob_4: hobbies[3] ,hob_5: hobbies[4] ,
         hob_6: hobbies[5] ,hob_7: hobbies[6] ,hob_8: hobbies[7] ,hob_9: hobbies[8] ,hob_10: hobbies[9] ,}
-    ])
-    console.log(result)
-    console.log("เพิ่มแถวในตารางรูป",userImg)
+    ]).select()
     console.log("เพิ่มแถวในตารางอดิเรก", userHobbies)
-    const imageId = await supabase.from('profile_image').select('image_id').eq('user_id', result.data[0].user_id);
-    const hobbiesId = await supabase.from('hobbies').select('hobbies_id').eq('user_id', result.data[0].user_id)
-    const updateUser = await supabase.from('users').update({ image_id: imageId.data[0].image_id, hobbies_id: hobbiesId.data[0].hobbies_id}).eq('user_id', result.data[0].user_id).select();
-    console.log("อัพเดทhobbiesกับimageid", updateUser)
+    const userProfile = {
+      fullname: req.body.fullname,
+      date_of_birth: req.body.date_of_birth,
+      location: req.body.location,
+      city: req.body.city,
+      created_at: new Date(),
+      sexual_identity: req.body.sexual_identity,
+      sexual_preference: req.body.sexual_preference,
+      racial_preference: req.body.racial_preference,
+      meeting_interest: req.body.meeting_interest,
+      hobbies_id: userHobbies.data[0].hobbies_id,
+      image_id: userImg.data[0].image_id,
+      user_id: result.data[0].user_id
+    };
+    const resultUserProfile = await supabase.from('profiles').insert([ userProfile ]).select()
+    console.log("เพิ่มแถวในprofiles",resultUserProfile)
     return res.json({
       message: `Created new account successfully`,
     });
