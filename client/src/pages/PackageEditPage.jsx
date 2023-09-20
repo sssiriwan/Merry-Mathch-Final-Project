@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ConfirmationModal from "./admin/ConfirmationModal";
 
 function PackageEditPage() {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ function PackageEditPage() {
 
   const [detailList, setDetailList] = useState([]);
   const [newDetail, setNewDetail] = useState("");
+
+  const [showConfirmation, setShowConfirmation] = useState(false)
 
   const handleAddDetail = () => {
     if (newDetail.trim() !== "") {
@@ -49,6 +52,28 @@ function PackageEditPage() {
     );
     navigate("/admin");
   };
+
+
+  const handleDeletePackage = async () => {
+    setShowConfirmation(true);
+  }
+    
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:4000/admin/package/${params.packageId}`);
+      navigate("/admin");
+    } catch (error) {
+      console.error(error);
+      
+    }
+    setShowConfirmation(false);
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmation(false);
+  };
+  
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -205,10 +230,19 @@ function PackageEditPage() {
         </div>
 
         <div className=" w-full flex   justify-end  mr-36">
-          <Button variant="ghost" className=" text-pgray-700">
+          <Button variant="ghost" className=" text-pgray-700"  onClick={handleDeletePackage}>
             Delete Package
           </Button>
         </div>
+        {showConfirmation && (
+        <ConfirmationModal
+          message="Do you sure to delete this Package?"
+          confirmLabel="Yes, I want to delete"
+          cancelLabel="No, I don’t want"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
+      )}
       </div>
     </div>
   );
