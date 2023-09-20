@@ -61,7 +61,6 @@ function NavbarRegistered() {
     setIsLoading(true)
     const result = await axios.get('http://localhost:4000/post/profile');
     setIsLoading(false)
-    console.log("เมนูบาร์", Object.values(result.data.data.profile_image)[0])
     setUserImg(Object.values(result.data.data.profile_image)[0])
   }
   useEffect(()=>{

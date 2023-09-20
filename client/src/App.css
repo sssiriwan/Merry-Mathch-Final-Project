@@ -1,11 +1,20 @@
 #root {
   /* max-width: 1366px; */
+  --swiper-theme-color: white;
+  --swiper-navigation-size: 20px !important;
   margin: 0;
   padding: 0;
   font-family: 'Nunito', sans-serif;
   box-sizing: border-box;
 }
-
+.swiper-button-prev {
+  top: 600px !important;
+  left: 860px !important;
+} 
+.swiper-button-next {
+  top: 600px !important;
+  left: 900px !important;
+}
 .shadowcss {
   position: absolute;
   width: 100%;
