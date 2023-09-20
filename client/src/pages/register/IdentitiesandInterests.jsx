@@ -1,16 +1,8 @@
 import React from "react";
 
 import ListText from "./text";
-import { useForm } from "react-hook-form";
 
-function Identities({
-  formValues,
-  onChange,
-  updateTags,
-  option,
-  option1,
-  option2,
-}) {
+function Identities({ formValues, onChange, updateTags }) {
   return (
     <>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
@@ -31,14 +23,10 @@ function Identities({
               onChange={onChange}
               value={formValues.SexualIdentities}
             >
-              {option &&
-                option.map((states) => {
-                  return (
-                    <option key={states.id} value={states.name}>
-                      {states.name}
-                    </option>
-                  );
-                })}
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
@@ -50,14 +38,10 @@ function Identities({
               onChange={onChange}
               value={formValues.SexualPreferences}
             >
-              {option &&
-                option.map((states) => {
-                  return (
-                    <option key={states.id} value={states.name}>
-                      {states.name}
-                    </option>
-                  );
-                })}
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
           </div>
         </div>
@@ -74,14 +58,12 @@ function Identities({
             onChange={onChange}
             value={formValues.RacialPreferences}
           >
-            {option1 &&
-              option1.map((states) => {
-                return (
-                  <option key={states.id} value={states.name}>
-                    {states.name}
-                  </option>
-                );
-              })}
+            <option value="">Select...</option>
+            <option value="male">Asian</option>
+            <option value="female">Europe</option>
+            <option value="other">Africa</option>
+            <option value="other">America</option>
+            <option value="other">Other</option>
           </select>
 
           <div className="ml-[24px]">
@@ -92,14 +74,11 @@ function Identities({
               onChange={onChange}
               value={formValues.MeetingInterests}
             >
-              {option2 &&
-                option2.map((states) => {
-                  return (
-                    <option key={states.id} value={states.name}>
-                      {states.name}
-                    </option>
-                  );
-                })}
+              <option value="">Select...</option>
+              <option value="male">Friend</option>
+              <option value="female">Boyfriend/Grilfriend</option>
+              <option value="other">Casual</option>
+              <option value="other">Other</option>
             </select>
           </div>
         </div>

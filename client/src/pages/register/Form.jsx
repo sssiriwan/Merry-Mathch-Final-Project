@@ -54,10 +54,10 @@ function Form() {
     email: "",
     city: "",
     ConfirmPassword: "",
-    SexualIdentities: "0",
-    SexualPreferences: "1",
-    RacialPreferences: "0",
-    MeetingInterests: "0",
+    SexualIdentities: "",
+    SexualPreferences: "",
+    RacialPreferences: "",
+    MeetingInterests: "",
     tags: "Music",
   };
 
@@ -84,10 +84,7 @@ function Form() {
           <Identities
             formValues={values}
             onChange={onChange}
-            option={states}
             updateTags={updateTags}
-            option1={states1}
-            option2={states2}
           />
         );
       }
@@ -106,46 +103,26 @@ function Form() {
     }
   };
 
-  const states = [
-    { id: "0", name: "Male" },
-    { id: "1", name: "Female" },
-    { id: "2", name: "Non-Binary" },
-  ];
-
-  const states1 = [
-    { id: "0", name: "Asian" },
-    { id: "1", name: "Caucasoid" },
-    { id: "2", name: "Negriod" },
-    { id: "3", name: "Others" },
-  ];
-
-  const states2 = [
-    { id: "0", name: "Friend" },
-    { id: "1", name: "Boyfriend/Grilfriend" },
-    { id: "2", name: "Casual" },
-    { id: "3", name: "Others" },
-  ];
-
   const { register } = useAuth();
   const navigate = useNavigate();
   const handleSubmit = () => {
     const updatedValues = { ...values, avatars };
     // สร้าง FormData
     const formData = new FormData();
-    formData.append('fullname', values.name);
-    formData.append('username', values.username);
-    formData.append('password', values.password);
-    formData.append('email', values.email);
-    formData.append('date_of_birth', values.Date);
-    formData.append('tags', values.tags);
-    formData.append('location', values.location);
-    formData.append('city', values.city);
-    formData.append('sexual_identity', values.SexualIdentities);
-    formData.append('sexual_preference', values.SexualPreferences);
-    formData.append('meeting_interest', values.MeetingInterests);
-    formData.append('racial_preference', values.RacialPreferences);
+    formData.append("fullname", values.name);
+    formData.append("username", values.username);
+    formData.append("password", values.password);
+    formData.append("email", values.email);
+    formData.append("date_of_birth", values.Date);
+    formData.append("tags", values.tags);
+    formData.append("location", values.location);
+    formData.append("city", values.city);
+    formData.append("sexual_identity", values.SexualIdentities);
+    formData.append("sexual_preference", values.SexualPreferences);
+    formData.append("meeting_interest", values.MeetingInterests);
+    formData.append("racial_preference", values.RacialPreferences);
     for (let avatarKey in avatars) {
-      formData.append("avatar", avatars[avatarKey])
+      formData.append("avatar", avatars[avatarKey]);
     }
     register(formData);
     console.log("Submitting form data:", updatedValues);
