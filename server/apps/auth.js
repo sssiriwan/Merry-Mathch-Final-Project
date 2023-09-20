@@ -39,6 +39,7 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
     const user = {
       username: req.body.username,
       password: req.body.password,
+      fullname: req.body.fullname,
       role: "Users",
       email: req.body.email,
       created_at: new Date(),
