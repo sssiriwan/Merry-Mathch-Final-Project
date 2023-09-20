@@ -118,7 +118,7 @@ authRouter.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: user[0].user_id, username: user[0].username, role: user[0].role },
       process.env.SUPABASE_JWT_KEY,
-      { expiresIn: "900000" }
+      { expiresIn: "9000000" }
     );
     console.log(req.user)
     return res.json({
