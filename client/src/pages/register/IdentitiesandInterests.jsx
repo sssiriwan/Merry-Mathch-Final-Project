@@ -1,16 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import ValindateContext from "./valindatecontext/Valindatecontext";
 
 import ListText from "./text";
-import { useForm } from "react-hook-form";
 
-function Identities({
-  formValues,
-  onChange,
-  updateTags,
-  option,
-  option1,
-  option2,
-}) {
+function Identities({ formValues, onChange, updateTags }) {
+  const { errorSexIden, errorSexPrefer, errorRacialPrefer, errorMeetingInter } =
+    useContext(ValindateContext);
+
   return (
     <>
       <div className="font-[700] text-[24px] text-ppurple-500 mt-[80px]">
@@ -31,15 +27,12 @@ function Identities({
               onChange={onChange}
               value={formValues.SexualIdentities}
             >
-              {option &&
-                option.map((states) => {
-                  return (
-                    <option key={states.id} value={states.name}>
-                      {states.name}
-                    </option>
-                  );
-                })}
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
+            {errorSexIden && <p className=" text-red-600">{errorSexIden}</p>}
           </div>
 
           <div className="ml-[24px]">
@@ -50,15 +43,14 @@ function Identities({
               onChange={onChange}
               value={formValues.SexualPreferences}
             >
-              {option &&
-                option.map((states) => {
-                  return (
-                    <option key={states.id} value={states.name}>
-                      {states.name}
-                    </option>
-                  );
-                })}
+              <option value="">Select...</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
+            {errorSexPrefer && (
+              <p className=" text-red-600">{errorSexPrefer}</p>
+            )}
           </div>
         </div>
         <div className="flex mt-[40px]">
@@ -67,22 +59,25 @@ function Identities({
         </div>
 
         <div className="flex">
-          <select
-            className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
-            id="RacialPreferences"
-            name="RacialPreferences"
-            onChange={onChange}
-            value={formValues.RacialPreferences}
-          >
-            {option1 &&
-              option1.map((states) => {
-                return (
-                  <option key={states.id} value={states.name}>
-                    {states.name}
-                  </option>
-                );
-              })}
-          </select>
+          <div>
+            <select
+              className="  border rounded w-[453px] py-2 px-3 text-gray-700 bg-white leading-tight focus:outline-none focus:shadow-outline"
+              id="RacialPreferences"
+              name="RacialPreferences"
+              onChange={onChange}
+              value={formValues.RacialPreferences}
+            >
+              <option value="">Select...</option>
+              <option value="male">Asian</option>
+              <option value="female">Europe</option>
+              <option value="other">Africa</option>
+              <option value="other">America</option>
+              <option value="other">Other</option>
+            </select>
+            {errorRacialPrefer && (
+              <p className=" text-red-600">{errorRacialPrefer}</p>
+            )}
+          </div>
 
           <div className="ml-[24px]">
             <select
@@ -92,15 +87,15 @@ function Identities({
               onChange={onChange}
               value={formValues.MeetingInterests}
             >
-              {option2 &&
-                option2.map((states) => {
-                  return (
-                    <option key={states.id} value={states.name}>
-                      {states.name}
-                    </option>
-                  );
-                })}
+              <option value="">Select...</option>
+              <option value="male">Friend</option>
+              <option value="female">Boyfriend/Grilfriend</option>
+              <option value="other">Casual</option>
+              <option value="other">Other</option>
             </select>
+            {errorMeetingInter && (
+              <p className=" text-red-600">{errorMeetingInter}</p>
+            )}
           </div>
         </div>
         <div className="">
