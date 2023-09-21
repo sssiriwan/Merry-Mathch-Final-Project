@@ -62,9 +62,15 @@ postRouter.put('/profile', async (req,res) => {
         message: "Updated profile successfully"
     })
 })
+//ดึงข้อมูล จากตาราง merry list แล้วนำมา แมพโดยหามา
+//logic เอา status มาเช็คว่าตรงกันไหมแล้วให้ปุ่มแชทขึ้นมา
+
+// , profiles(*, users(email, username),hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5))
 
 postRouter.get('/match-list', async (req,res) => {
-    const { data, error } = await supabase.from('profiles').select('*, profile_image(img_1,img_2,img_3,img_4,img_5)');
+    console.log("จากprofile",req.user)
+    const { data, error } = await supabase
+    .from('match_list').select('*,profiles(*, users(email, username, user_id),hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5))').eq('user_id', req.user.id);
     return res.json({
         data: data
     })
