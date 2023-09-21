@@ -18,23 +18,23 @@ function PreviewCard({ clicked, setClicked, userId }) {
   const [profile, setProfile] = useState(initialValue);
   const [hobbies, setHobbies] = useState({});
   const [avatars, setAvatars] = useState({});
-  const [count, setCount] = useState(2);
-  console.log(hobbies);
+  const [count, setCount] = useState(0);
   const handleNextImage = () => {
-    if (count < 6) {
+    if (count < imageArr.length-1) {
       setCount(count + 1);
     } else {
-      setCount(2);
+      setCount(0);
     }
   };
 
   const handlePrevImage = () => {
-    if (count === 2) {
-      setCount(6);
+    if (count === 0) {
+      setCount(imageArr.length-1);
     } else {
       setCount(count - 1);
     }
   };
+  // Check hobbies object for null
   let hobbyArr = [];
   for (const hobby in hobbies) {
     if (hobbies[hobby] == null) {
@@ -44,7 +44,19 @@ function PreviewCard({ clicked, setClicked, userId }) {
       hobbyArr.push(hobbies[hobby]);
     }
   }
-  console.log(hobbyArr);
+  // console.log("งานอดิเรกหน้า preview",hobbyArr);
+  // Check profile_image for null
+  let imageArr = [];
+  for (const img in avatars) {
+    if (avatars[img] == null) {
+      break;
+    }
+    if (typeof avatars[img] == "string") {
+      imageArr.push(avatars[img]);
+    }
+  }
+  console.log("อาร์เรย์",imageArr)
+  console.log("preview",imageArr.length);
 
   const age = (birthday) => {
     const today = new Date();
@@ -82,12 +94,13 @@ function PreviewCard({ clicked, setClicked, userId }) {
         <div className="shadow-md rounded-4xl w-[478px] h-[526px]">
           {!isLoading && (
             <>
+            {/* imageArr */}
               <img
                 src={Object.values(avatars)[count]}
                 className="w-[478px] h-[478px] object-cover rounded-4xl"
               />
               <div className="flex items-center justify-between px-10">
-                <div>{count - 1}/5</div>
+                <div>{count+1}/{imageArr.length}</div>
                 <div>
                   {/* ปุ่มใน รูป <- -> */}
                   <button
