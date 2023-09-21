@@ -29,9 +29,9 @@ adminRouter.get("/package", async (req, res) => {
 adminRouter.get("/package/:packageId", async (req, res) => {
   try {
     const result = await supabase
-      .from("package_list")
+      .from("merry_packages")
       .select("*")
-      .eq("id", req.params.packageId);
+      .eq("package_id", req.params.packageId);
     return res.json({
       data: result.data[0],
     });
