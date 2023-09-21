@@ -256,6 +256,7 @@ function Form() {
           <div className="flex-1">{handleForms()}</div>
         </div>
       </div>
+
       <FooterSection
         page={page}
         formLength={formLength}
