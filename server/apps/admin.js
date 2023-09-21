@@ -29,9 +29,9 @@ adminRouter.get("/package", async (req, res) => {
 adminRouter.get("/package/:packageId", async (req, res) => {
   try {
     const result = await supabase
-      .from("package_list")
+      .from("merry_packages")
       .select("*")
-      .eq("id", req.params.packageId);
+      .eq("package_id", req.params.packageId);
     return res.json({
       data: result.data[0],
     });
@@ -91,6 +91,17 @@ adminRouter.get("/complaint", async (req, res) => {
   }
 });
 
+adminRouter.get('/package/:packageId', async (req,res) => {
+  try {
+      const result = await supabase.from('merry_packages').select('*').eq('package_id', req.params.packageId);
+      return res.json({
+          data: result.data[0]
+      })
+  } catch(error) {
+      console.log(error)
+  }
+})
+
 //admin สาม่ารถเรียกดูคอมเพลนครั้งละ 1 id ได้
 adminRouter.get("/complaint/:id", async (req, res) => {
   try {
@@ -132,6 +143,7 @@ adminRouter.put("/complaint/:id", async (req, res) => {
   }
 });
 
+
 //admin สามารถเสริชหาข้อมูลคอมเพลนได้ และกรอง status
 adminRouter.get("/complaint", async (req, res) => {
   try {
@@ -159,27 +171,60 @@ adminRouter.get("/complaint", async (req, res) => {
   }
 });
 
-export default adminRouter;
 
-// TABLE เก่า
-// adminRouter.post('/package', async (req,res) => {
-//     try {
-//         const packageItem = {
-//             package_name: req.body.package_name,
-//             merry_limit: req.body.merry_limit,
-//             created_at: new Date(),
-//             admin_id: req.body.admin_id,
-//         }
-//         await supabase.from('package_list').insert([{
-//             package_name: packageItem.package_name,
-//             merry_limit: packageItem.merry_limit,
-//             created_at: packageItem.created_at,
-//             admin_id: packageItem.admin_id,
-//         }])
-//         return res.json({
-//             message: "add package successfully"
-//         })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
+// แก้ไข package
+adminRouter.put("/package/:packageId", async (req, res) => {
+  try {
+    const packageId = req.params.packageId;
+    const updatePackage = {
+      package_name: req.body.package_name,
+      package_limit: req.body.package_limit,
+      price: req.body.price,
+      // package_icon : req.body.icon,
+      // package_detail : req.body.package_detail,
+      update_at: new Date(),
+    };
+    console.log(updatePackage);
+    const result = await supabase
+      .from("merry_packages")
+      .update(updatePackage)
+      .eq("package_id", packageId);
+    return res.json({
+      message: "successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// DELETE package
+adminRouter.delete("/package/:packageId", async (req, res) => {
+  try {
+    const packageId = req.params.packageId;
+    const { data, error } = await supabase
+      .from("merry_packages")
+      .delete()
+      .eq("package_id", packageId);
+
+    if (error) {
+      console.error("Error deleting package:", error);
+      return res.status(500).json({
+        error: "Internal server error",
+      });
+    }
+
+    // if (!data || data.length === 0) {
+    //     return res.status(404).json({
+    //         message: "Package not found",
+    //     });
+    // }
+
+    return res.json({
+      message: "Package has been deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export default adminRouter;
