@@ -223,7 +223,7 @@ function MerryCard(props) {
 }
 
 function MerryList() {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const getUser = async () => {
     const result = await axios.get("http://localhost:4000/post/match-list");
     console.log(result.data.data);
@@ -252,7 +252,7 @@ function MerryList() {
         </article>
 
         <div className="flex flex-col items-center">
-          {user.map((item, index) => {
+          {Object.values(user).map((item, index) => {
             return <MerryCard user={item} key={index} />;
           })}
         </div>
