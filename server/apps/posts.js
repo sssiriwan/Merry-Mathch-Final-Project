@@ -69,4 +69,6 @@ postRouter.get('/match-list', async (req,res) => {
         data: data
     })
 })
+
+
 export default postRouter
