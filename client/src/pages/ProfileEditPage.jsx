@@ -25,8 +25,6 @@ function ProfileEditPage() {
   const [profile, setProfile] = useState({
     user_id: "",
     fullname: "",
-    username: "",
-    email: "",
     date_of_birth: null,
     location: "",
     city: "",
@@ -37,6 +35,8 @@ function ProfileEditPage() {
     about_me: "",
 
   })
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("")
   const [avatars, setAvatars] = useState({})
   
   // ปุ่มกด update profile
@@ -88,6 +88,8 @@ function ProfileEditPage() {
     setIsLoading(false)
     setAvatars(result.data.data.profile_image)
     setProfile(result.data.data);
+    setUsername(result.data.data.users.username)
+    setEmail(result.data.data.users.email)
   };
   useEffect(() => {
     getMyProfile();
@@ -155,9 +157,9 @@ function ProfileEditPage() {
                   name="username"
                   id="username"
                   placeholder="At least 6 charactor"
-                  value={profile.username}
+                  value={username}
                   onChange={(event) => {
-                    setProfile({...profile ,username: event.target.value});
+                    setUsername(event.target.value);
                   }}
                 />
               </Label>
@@ -203,9 +205,9 @@ function ProfileEditPage() {
                   id="email"
                   name="email"
                   placeholder="name@website.com"
-                  value={profile.email}
+                  value={email}
                   onChange={(event) => {
-                    setProfile({...profile ,email: event.target.value});
+                    setEmail(event.target.value);
                   }}
                 />
               </Label>
