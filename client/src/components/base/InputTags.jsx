@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 const InputTags = ({ hobbies }) => {
   const [maxTags, setMaxTags] = useState(10);
   const [inputValue, setInputValue] = useState("");
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([{ hobbies }]);
 
   const countTags = () => {
     return maxTags - tags.length;
