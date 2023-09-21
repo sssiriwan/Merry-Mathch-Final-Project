@@ -77,7 +77,9 @@ function NavbarRegistered() {
           </a>
         </Button>
         <Button variant="link" className="font-bold text-[#191C77]">
+          <a href="/package">
           Merry Membership
+          </a>
         </Button>
         {/* Notification's Menu */}
         <DropdownMenu>
@@ -304,7 +306,7 @@ function NavbarRegistered() {
                     fill="#FFE1EA"
                   />
                 </svg>
-                <span className="ml-2 text-pgray-700">Merry Membership</span>
+                <span className="ml-2 text-pgray-700"><a href="/package">Merry Membership</a></span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <svg
