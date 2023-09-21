@@ -1,9 +1,22 @@
 import { useState, useContext } from "react";
 
-const InputTags = ({ hobbies }) => {
+const InputTags = ({
+  hobbies: {
+    hob_1,
+    hob_2,
+    hob_3,
+    hob_4,
+    hob_5,
+    hob_6,
+    hob_7,
+    hob_8,
+    hob_9,
+    hob_10,
+  },
+}) => {
   const [maxTags, setMaxTags] = useState(10);
   const [inputValue, setInputValue] = useState("");
-  const [tags, setTags] = useState([hobbies.hob_1]);
+  const [tags, setTags] = useState([]);
 
   const countTags = () => {
     return maxTags - tags.length;
