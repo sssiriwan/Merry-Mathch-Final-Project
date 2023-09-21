@@ -31,43 +31,43 @@ function MerryCard(props) {
         <PreviewCard
           setClicked={setClicked}
           clicked={clicked}
-          userId={profile.user_id}
+          userId={profile.profiles.user_id}
         />
       )}
 
       <div className="flex border-b h-[180px] items-center py-28 my-3">
         <div>
           <img
-            src={profile.avatar_url}
+            src={profile.profiles.profile_image.img_1}
             className="aspect-square object-cover rounded-2xl w-44 ml-5"
           />
         </div>
         <div className="ml-10 w-[600px]">
           <div className="flex font-bold text-2xl text-pgray-700 items-center">
-            <h1 className="text-pgray-900 mr-3">{profile.fullname}</h1>
-            <h1>{age(new Date(profile.date_of_birth))}</h1>
+            <h1 className="text-pgray-900 mr-3">{profile.profiles.fullname}</h1>
+            <h1>{age(new Date(profile.profiles.date_of_birth))}</h1>
             <div className="text-base font-normal ml-3">
               <h2>
-                {profile.city}, {profile.location}
+                {profile.profiles.city}, {profile.profiles.location}
               </h2>
             </div>
           </div>
           <div>
             <div className="flex items-center">
               <h1 className="w-48 mt-2">Sexual Identities</h1>
-              <h1 className="text-pgray-700">{profile.sexual_identity}</h1>
+              <h1 className="text-pgray-700">{profile.profiles.sexual_identity}</h1>
             </div>
             <div className="flex items-center">
               <h1 className="w-48 mt-2">Sexual Preferences</h1>
-              <h1 className="text-pgray-700">{profile.sexual_preference}</h1>
+              <h1 className="text-pgray-700">{profile.profiles.sexual_preference}</h1>
             </div>
             <div className="flex items-center">
               <h1 className="w-48 mt-2">Racial Preferences</h1>
-              <h1 className="text-pgray-700">{profile.racial_preference}</h1>
+              <h1 className="text-pgray-700">{profile.profiles.racial_preference}</h1>
             </div>
             <div className="flex items-center">
               <h1 className="w-48 mt-2">Meeting Interests</h1>
-              <h1 className="text-pgray-700">{profile.meeting_interest}</h1>
+              <h1 className="text-pgray-700">{profile.profiles.meeting_interest}</h1>
             </div>
           </div>
         </div>
