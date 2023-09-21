@@ -15,16 +15,16 @@ import { useNavigate } from "react-router-dom";
 
 import PreviewCard from "./PreviewCard";
 import ListText from "./register/text";
+import ProfileImage from "./register/ProfileImage";
+import "../App.css"
 
 function ProfileEditPage() {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate();
   const [clicked, setClicked] = useState(false)
   const [profile, setProfile] = useState({
     user_id: "",
     fullname: "",
-    // username: "",
-    // email: "",
     date_of_birth: null,
     location: "",
     city: "",
@@ -33,12 +33,13 @@ function ProfileEditPage() {
     racial_preference: "",
     meeting_interest: "",
     about_me: "",
-    hobbies_tag: [],
-    image_url: [],
-  })
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
 
+  })
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("")
+  const [avatars, setAvatars] = useState({})
+  
+  // ปุ่มกด update profile
   const handleUpdateProfile = async () => {
     const result = await axios.put(
       "http://localhost:4000/post/profile",
@@ -47,13 +48,45 @@ function ProfileEditPage() {
     console.log(result);
     navigate("/matching");
   };
+
+  // สำหรับรูป
+  const countTags = () => {
+    return 5 - Object.keys(avatars).length;
+  };
+
   const updateTags = (updatedTags) => {
     setValues({ ...profile, tags: updatedTags.join(", ") }); // รวม tags ใหม่เป็น string และอัปเดตใน initialValues
   };
 
+  const updateAvatars = (newAvatars) => {
+    setAvatars(newAvatars);
+  };
+  
+  const handleDragStartImage = (e, avatarKey) => {
+    e.dataTransfer.setData("text/plain", avatarKey);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedAvatarKey = e.dataTransfer.getData("text/plain");
+    const targetAvatarKey = e.currentTarget.getAttribute("data-key");
+
+    const newAvatars = { ...avatars };
+    const droppedFile = newAvatars[droppedAvatarKey];
+
+    newAvatars[droppedAvatarKey] = avatars[targetAvatarKey];
+    newAvatars[targetAvatarKey] = droppedFile;
+
+    updateAvatars(newAvatars);
+  };
+
+  // ดึงข้อมูล
   const getMyProfile = async () => {
+    setIsLoading(true)
     const result = await axios.get("http://localhost:4000/post/profile");
     console.log(result.data.data);
+    setIsLoading(false)
+    setAvatars(result.data.data.profile_image)
     setProfile(result.data.data);
     setUsername(result.data.data.users.username)
     setEmail(result.data.data.users.email)
@@ -64,6 +97,7 @@ function ProfileEditPage() {
   return (
     <div className="grid place-items-center">
       <NavbarRegistered />
+      { !isLoading && <>
         { clicked && <PreviewCard setClicked={setClicked} clicked={clicked} userId={profile.user_id} />}
       <section className=" w-[930px]">
         <article className="flex items-end justify-between mt-14">
@@ -124,7 +158,6 @@ function ProfileEditPage() {
                   id="username"
                   placeholder="At least 6 charactor"
                   value={username}
-                  disabled
                   onChange={(event) => {
                     setUsername(event.target.value);
                   }}
@@ -269,7 +302,7 @@ function ProfileEditPage() {
               {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
             </div>
             <div className="mt-8">
-                <label>About Me (Maximum 150 characters)</label>
+                <label>About Me (Maximum {/*{150-textLength}*/} characters)</label>
                 <Textarea className="resize-none" value={profile.about_me} rows="4" maxlength="150" 
                 onChange={(event) => { setProfile({...profile ,about_me: event.target.value}) }} />
             </div>
@@ -286,7 +319,7 @@ function ProfileEditPage() {
 
           <div className="input-container relative">
             <div className="flex mb-[347px]">
-              {/* {Object.keys(avatars).map((avatarKey, index) => (
+              {Object.values(avatars).map((avatarKey, index) => (
                 <div
                   key={avatarKey}
                   className="mr-[24px] relative"
@@ -298,14 +331,26 @@ function ProfileEditPage() {
                   }}
                   data-key={avatarKey}
                 >
-                  <ProfileImage
-                    file={avatars[avatarKey]}
-                    onDragStartImage={(e) => handleDragStartImage(e, avatarKey)}
-                    onDragEnd={() => {}}
-                    onRemoveImage={() => handleRemoveImage(avatarKey)}
-                  />
+                  <div
+                    className="mr-[24px] relative"
+                    draggable="true"
+                    onDragStart={(e) => onDragStartImage(e)}
+                    onDragEnd={() => onDragEnd()}
+                  >
+                    <img
+                      className=" rounded-[12px]"
+                      src={avatarKey}
+                      // alt={ava.name}
+                    />
+                    <button
+                      className="image-remove-button bg-[#AF2758] text-white rounded-full h-10 w-10 p-2 absolute top-0 right-0"
+                      onClick={() => onRemoveImage()}
+                    >
+                      x
+                    </button>
+                  </div>
                 </div>
-              ))} */}
+              ))}
 
               {/* {[...Array(maxUploads - Object.keys(avatars).length)].map(
                 (_, index) => (
@@ -348,6 +393,11 @@ function ProfileEditPage() {
           </div>
         </section>
       </section>
+      </>}
+        {isLoading && 
+        <div class="h-[500px] flex items-center">
+          <div class="custom-loader"></div>
+          </div>}
       <Footer />
     </div>
   );

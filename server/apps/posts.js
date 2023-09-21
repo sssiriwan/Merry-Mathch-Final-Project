@@ -6,7 +6,14 @@ const postRouter = Router();
 postRouter.use(protect);
 
 postRouter.get('/', async (req,res) => {
-    console.log("จาก API POST GET/",req.user)
+    const { data, error } = await supabase.from('profiles').select('*, profile_image(img_1,img_2,img_3,img_4,img_5)');
+    return res.json({
+        data: data
+    })
+})
+
+postRouter.get('/check', async (req,res) => {
+    console.log("จาก API GET checkuser",req.user)
     return res.json({
         data: req.user
     })
@@ -14,7 +21,7 @@ postRouter.get('/', async (req,res) => {
 // API get profile (เทียบ user_id)
 postRouter.get('/profile', async (req,res) => {
     console.log("จากprofile",req.user)
-    const {data, error} = await supabase.from('profiles').select('*, users(email, username), profile_image(img_1, img_2, img_3,img_4,img_5)').eq('user_id', req.user.id).single();
+    const {data, error} = await supabase.from('profiles').select('*, users(email, username), hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)').eq('user_id', req.user.id).single();
     return res.json({
         data: data
     })
@@ -22,7 +29,7 @@ postRouter.get('/profile', async (req,res) => {
 
 postRouter.get('/profile/:userId', async (req,res) => {
     const userId = req.params.userId;
-    const { data, error } = await supabase.from('users').select('*').eq('user_id', userId)
+    const { data, error } = await supabase.from('profiles').select('*,hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1,img_2,img_3,img_4,img_5)').eq('user_id', userId)
     return res.json({
         data: data[0]
     })
@@ -57,10 +64,39 @@ postRouter.put('/profile', async (req,res) => {
 })
 
 postRouter.get('/match-list', async (req,res) => {
-    console.log(req.user)
-    const { data, error } = await supabase.from('users').select('*').eq('role', 'Users');
+    const { data, error } = await supabase.from('profiles').select('*, profile_image(img_1,img_2,img_3,img_4,img_5)');
     return res.json({
         data: data
     })
 })
+
+postRouter.post('/match', async (req,res) => {
+    console.log(req.body.profile_id, "กับ", req.body.status)
+    const {data, error} = await supabase.from('match_list').insert([
+        { 
+            user_id: req.user.id, 
+            profile_id: req.body.profile_id, 
+            status: req.body.status,
+            created_at: new Date(),
+        }])
+    console.log(data)
+    return res.json({
+        message: 'Merry! :)'
+    })
+})
+
+postRouter.post('/unmatch', async (req,res) => {
+    console.log(req.body.profile_id, "กับ", req.body.status)
+    const {data, error} = await supabase.from('unmatch').insert([
+        { 
+            user_id: req.user.id, 
+            profile_id: req.body.profile_id,
+            created_at: new Date(),
+        }])
+    console.log(data)
+    return res.json({
+        message: 'Unmerry! :('
+    })
+})
+
 export default postRouter
