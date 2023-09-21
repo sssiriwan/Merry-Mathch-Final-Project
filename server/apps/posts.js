@@ -13,7 +13,7 @@ postRouter.get('/', async (req,res) => {
 })
 
 postRouter.get('/check', async (req,res) => {
-    console.log("จาก API POST GET/",req.user)
+    console.log("จาก API GET checkuser",req.user)
     return res.json({
         data: req.user
     })
@@ -70,5 +70,33 @@ postRouter.get('/match-list', async (req,res) => {
     })
 })
 
+postRouter.post('/match', async (req,res) => {
+    console.log(req.body.profile_id, "กับ", req.body.status)
+    const {data, error} = await supabase.from('match_list').insert([
+        { 
+            user_id: req.user.id, 
+            profile_id: req.body.profile_id, 
+            status: req.body.status,
+            created_at: new Date(),
+        }])
+    console.log(data)
+    return res.json({
+        message: 'Merry! :)'
+    })
+})
+
+postRouter.post('/unmatch', async (req,res) => {
+    console.log(req.body.profile_id, "กับ", req.body.status)
+    const {data, error} = await supabase.from('unmatch').insert([
+        { 
+            user_id: req.user.id, 
+            profile_id: req.body.profile_id,
+            created_at: new Date(),
+        }])
+    console.log(data)
+    return res.json({
+        message: 'Unmerry! :('
+    })
+})
 
 export default postRouter
