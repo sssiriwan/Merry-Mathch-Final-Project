@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import ProfileImage from "./ProfileImage";
+import ValindateContext from "./valindatecontext/Valindatecontext";
 
 function ProfilePictures({ avatars, updateAvatars }) {
   const maxUploads = 5;
+
+  const { errorImage } = useContext(ValindateContext);
 
   const countTags = () => {
     return maxUploads - Object.keys(avatars).length;
@@ -52,7 +55,8 @@ function ProfilePictures({ avatars, updateAvatars }) {
         <h1>Profile pictures</h1>
       </div>
       <div className="font-[400] text-[16px] text-pgray-800">
-        Upload at least {countTags()} photos.
+        Upload at least {countTags()} photos.{" "}
+        {errorImage && <div className="text-red-500 mt-2">{errorImage}</div>}
       </div>
 
       <div className="input-container relative">
