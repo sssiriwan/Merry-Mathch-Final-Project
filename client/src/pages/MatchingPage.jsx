@@ -29,23 +29,40 @@ import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
 function MatchingPage() {
   const [isLoading, setIsLoading] = useState(false);
-  // const [users, setUsers] = useState([])
-  const [eachUser, setEachUser] = useState({});
+  const [profile, setProfile] = useState({})
+  const [profileImg, setProfileImg] = useState({});
   const [count, setCount] = useState(0);
 
   const getData = async () => {
     setIsLoading(true);
     const result = await axios.get("http://localhost:4000/post");
-    console.log(result.data.data);
-    // setUsers(result.data.data)
-    setEachUser(result.data.data[count].profile_image);
+    console.log(result.data.data[count]);
+    setProfile(result.data.data[count])
+    setProfileImg(result.data.data[count].profile_image);
     setIsLoading(false);
   };
 
-  const handleCount = () => {
+  const matchSomeone = async () => {
+    const data = {
+      profile_id: profile.profile_id,
+      status: "waiting",
+    }
+    console.log("จะแมชคนนี้",profile.profile_id)
+    const result = await axios.post('http://localhost:4000/post/match', data)
+    console.log(result)
     setCount(count + 1);
   };
-  
+
+  const unmatchSomeone = async () => {
+    const data = {
+      profile_id: profile.profile_id,
+      status: "waiting",
+    }
+    console.log("จะแมชคนนี้",profile.profile_id)
+    const result = await axios.post('http://localhost:4000/post/unmatch', data)
+    console.log(result)
+    setCount(count + 1);
+  };
   
   useEffect(() => {
     getData();
@@ -221,7 +238,7 @@ function MatchingPage() {
           >
             {!isLoading && (
               <>
-                {Object.values(eachUser).map((image) => {
+                {Object.values(profileImg).map((image) => {
                   return (
                     image != null && (
                       <SwiperSlide className="w-[700px] h-[700px]">
@@ -238,8 +255,11 @@ function MatchingPage() {
             )}
             <h1 className="text-white">ชื่อ</h1>
           </Swiper>
-          <Button onClick={handleCount} className="">
-            กด Count
+          <Button onClick={matchSomeone} className="">
+            เห็นชอบครับ
+          </Button>
+          <Button onClick={unmatchSomeone} className="">
+            ไม่เห็นชอบครับ
           </Button>
 
           <footer className="h-5 absolute bottom-0 flex">
