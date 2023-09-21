@@ -19,7 +19,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
   const [hobbies, setHobbies] = useState({});
   const [avatars, setAvatars] = useState({});
   const [count, setCount] = useState(2);
-  console.log(count);
+  console.log(hobbies);
   const handleNextImage = () => {
     if (count < 6) {
       setCount(count + 1);
@@ -67,7 +67,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
     setProfile(result.data.data);
     setHobbies(result.data.data.hobbies);
     setAvatars(result.data.data.profile_image);
-    console.log("รูปจ้ารูป", result.data.data.profile_image);
+    console.log("รูปจ้ารูป", result.data.data);
   };
   useEffect(() => {
     getData();
@@ -82,10 +82,10 @@ function PreviewCard({ clicked, setClicked, userId }) {
         <div className="shadow-md rounded-4xl w-[478px] h-[526px]">
           {!isLoading && (
             <>
-              {/* <img
+              <img
                 src={Object.values(avatars)[count]}
                 className="w-[478px] h-[478px] object-cover rounded-4xl"
-              /> */}
+              />
               <div className="flex items-center justify-between px-10">
                 <div>{count - 1}/5</div>
                 <div>

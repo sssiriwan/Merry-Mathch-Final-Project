@@ -21,7 +21,7 @@ postRouter.get('/check', async (req,res) => {
 // API get profile (เทียบ user_id)
 postRouter.get('/profile', async (req,res) => {
     console.log("จากprofile",req.user)
-    const {data, error} = await supabase.from('profiles').select('*, users(email, username), profile_image(img_1, img_2, img_3,img_4,img_5)').eq('user_id', req.user.id).single();
+    const {data, error} = await supabase.from('profiles').select('*, users(email, username), hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)').eq('user_id', req.user.id).single();
     return res.json({
         data: data
     })
@@ -29,7 +29,7 @@ postRouter.get('/profile', async (req,res) => {
 
 postRouter.get('/profile/:userId', async (req,res) => {
     const userId = req.params.userId;
-    const { data, error } = await supabase.from('users').select('*').eq('user_id', userId)
+    const { data, error } = await supabase.from('profiles').select('*,hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1,img_2,img_3,img_4,img_5)').eq('user_id', userId)
     return res.json({
         data: data[0]
     })
