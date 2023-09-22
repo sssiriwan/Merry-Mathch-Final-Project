@@ -150,19 +150,12 @@ adminRouter.get("/complaintz", async (req, res) => {
     const issue = req.query.keywords;
     const status = req.query.complaint_status;
     // const query = {};
-    // if (issue) {
-    //   query.issue = new RegExp(issue, "i");
-    // }
-    // if (status) {
-    //   query.status = new RegExp(status, "i");
-    // }
     console.log(issue)
     const result = await supabase
       .from("complaints")
       .select("*")
-      .ilike('issue', `%${issue}%`)
+      .or(`issue.ilike.%${issue}%, issue.eq.${status}`)
       .order("created_at", { ascending: false });
-    console.log(result.data.length)
     return res.json({
       data: result.data,
     });
