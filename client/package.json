@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@hookform/error-message": "^2.0.1",
     "@egjs/react-flicking": "^4.11.0",
     "@glidejs/glide": "^3.6.0",
+    "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.3.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.4",
@@ -57,6 +57,7 @@
     "react-hook-form": "^7.45.4",
     "react-router-dom": "^6.15.0",
     "react-tinder-card": "^1.6.2",
+    "swiper": "^10.3.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.2"

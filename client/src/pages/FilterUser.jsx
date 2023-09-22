@@ -7,29 +7,33 @@ import { ButtonDemo, ButtonSecondary } from "@/components/base/button/Button";
 import MultiRangeSlider from "@/pages/Slider";
 
 function FilterUser() {
-  const [text, setText] = useState("");
-  const getData = async () => {
-    const result = await axios.get("http://localhost:4000/matching");
-    console.log(result);
-  };
+  const [keyword, setKeyword] = useState("");
+
   useEffect(() => {
-    getData();
-  });
+    const fetchData = async () => {
+      try {
+        setError(null);
+        const response = await axios.get(
+          `http://localhost:4000/:keyword=${keyword}`
+        );
+
+        if (response.data.error) {
+          setError("เกิดข้อผิดพลาด");
+        } else {
+          setData("เกิดข้อผิดพลาดเซิร์ฟเวอร์");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [keyword]);
+
+  const handleSearch = () => {
+    fetchData();
+  };
   const [values, setValues] = useState([25, 50]); // Initial values for each thumb
-
-  //   const handleChange = (newValues) => {
-  //     setValues(newValues);
-  //   };
-
-  //   const handleInputChange = (event) => {
-  //     console.log(event.target);
-  //     const text = event.target.value;
-  //     const min = event.target.min;
-  //     const max = event.target.value;
-  //     setText(text);
-  //     setMinSalary(min);
-  //     setMaxSalary(max);
-  //   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -50,11 +54,11 @@ function FilterUser() {
               <input
                 className="rounded-[8px] text-[14px] pl-[28px] border-solid border-[1px] border-Pink bg-White"
                 type="text"
-                id="search-input"
+                // id="search-input"
                 placeholder="Search..."
-                value={text}
+                value={keyword}
                 onChange={(e) => {
-                  setText(e.target.value);
+                  setKeyword(e.target.value);
                 }}
               />
             </div>
