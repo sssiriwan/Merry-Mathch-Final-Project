@@ -130,7 +130,7 @@ postRouter.get("/keyword", async (req, res) => {
       .select(
         "*, users(email, username), hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
       )
-      .eq("location", `${keyword}`);
+      .eq("issue", `${keyword}`);
     return res.json({
       data,
     });
