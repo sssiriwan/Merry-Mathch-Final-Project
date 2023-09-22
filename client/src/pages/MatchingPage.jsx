@@ -51,7 +51,7 @@ function MatchingPage() {
       status: "waiting",
     };
     console.log("จะแมชคนนี้", profile.profile_id);
-    // const result = await axios.post("http://localhost:4000/post/match", data);
+    const result = await axios.post("http://localhost:4000/post/match", data);
     // console.log(result);
     setCount(count + 1);
   };
@@ -62,7 +62,7 @@ function MatchingPage() {
       status: "waiting",
     };
     console.log("จะแมชคนนี้", profile.profile_id);
-    // const result = await axios.post("http://localhost:4000/post/unmatch", data);
+    const result = await axios.post("http://localhost:4000/post/unmatch", data);
     // console.log(result);
     setCount(count + 1);
   };
