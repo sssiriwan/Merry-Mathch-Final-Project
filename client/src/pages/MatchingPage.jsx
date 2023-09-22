@@ -19,6 +19,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import FilterUser from "@/pages/FilterUser";
 //  Import Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -50,7 +51,7 @@ function MatchingPage() {
       status: "waiting",
     };
     console.log("จะแมชคนนี้", profile.profile_id);
-    // const result = await axios.post("http://localhost:4000/post/match", data);
+    const result = await axios.post("http://localhost:4000/post/match", data);
     // console.log(result);
     setCount(count + 1);
   };
@@ -61,7 +62,7 @@ function MatchingPage() {
       status: "waiting",
     };
     console.log("จะแมชคนนี้", profile.profile_id);
-    // const result = await axios.post("http://localhost:4000/post/unmatch", data);
+    const result = await axios.post("http://localhost:4000/post/unmatch", data);
     // console.log(result);
     setCount(count + 1);
   };
@@ -253,7 +254,12 @@ function MatchingPage() {
               <h2 className="ml-2 text-pgray-400">
                 {age(new Date(profile.date_of_birth))}
               </h2>
-              <button onClick={() => { setClicked(!clicked) }} className="rounded-full w-7 h-7 flex justify-center items-center ml-2 bg-white bg-opacity-30 hover:bg-opacity-10">
+              <button
+                onClick={() => {
+                  setClicked(!clicked);
+                }}
+                className="rounded-full w-7 h-7 flex justify-center items-center ml-2 bg-white bg-opacity-30 hover:bg-opacity-10"
+              >
                 <svg
                   width="16"
                   height="16"
@@ -439,7 +445,7 @@ function MatchingPage() {
           </footer>
         </section>
         <div className="w-[10%] pl-3 pt-3">
-          <h1 className="text-[#191C77] font-bold my-3">Sex you interest</h1>
+          {/* <h1 className="text-[#191C77] font-bold my-3">Sex you interest</h1>
           <div className="flex flex-col">
             <div className="mb-3">
               <Checkbox
@@ -474,7 +480,9 @@ function MatchingPage() {
             <div className="mb-3">
               <Slider defaultValue={[33]} max={100} step={1} />
             </div>
-          </div>
+            
+          </div> */}
+          <FilterUser />
         </div>
       </section>
     </>

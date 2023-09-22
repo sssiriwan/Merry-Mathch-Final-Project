@@ -145,21 +145,16 @@ adminRouter.put("/complaint/:id", async (req, res) => {
 
 
 //admin สามารถเสริชหาข้อมูลคอมเพลนได้ และกรอง status
-adminRouter.get("/complaint", async (req, res) => {
+adminRouter.get("/complaintz", async (req, res) => {
   try {
     const issue = req.query.keywords;
     const status = req.query.complaint_status;
-    const query = {};
-    if (issue) {
-      query.issue = new RegExp(issue, "i");
-    }
-    if (status) {
-      query.status = new RegExp(status, "i");
-    }
+    // const query = {};
+    console.log(issue)
     const result = await supabase
       .from("complaints")
       .select("*")
-      .where(query)
+      .or(`issue.ilike.%${issue}%, issue.eq.${status}`)
       .order("created_at", { ascending: false });
     return res.json({
       data: result.data,
@@ -170,6 +165,26 @@ adminRouter.get("/complaint", async (req, res) => {
     });
   }
 });
+// API GET ดูข้อมูลตาม keyword
+// adminRouter.get("/keyword", async (req, res) => {
+//   try {
+//     const keyword = req.query.keyword;
+//     console.log(keyword)
+
+//     const { data, error } = await supabase
+//       .from("profiles")
+//       .select(
+//         "*, users(email, username), hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
+//       )
+//       .eq("issue", `${keyword}`);
+//     return res.json({
+//       data,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// });
+
 
 
 // แก้ไข package
@@ -226,5 +241,7 @@ adminRouter.delete("/package/:packageId", async (req, res) => {
     console.log(error);
   }
 });
+
+
 
 export default adminRouter;

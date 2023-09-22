@@ -338,7 +338,7 @@ function ProfileEditPage() {
                     onDragEnd={() => onDragEnd()}
                   >
                     <img
-                      className=" rounded-[12px]"
+                      className="w-40 h-40 object-cover rounded-2xl"
                       src={avatarKey}
                       // alt={ava.name}
                     />
