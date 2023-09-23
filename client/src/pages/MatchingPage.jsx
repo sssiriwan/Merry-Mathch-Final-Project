@@ -319,7 +319,7 @@ function MatchingPage() {
           </Swiper>
           <div className="w-40 absolute left-1/2 bottom-7 z-10 flex justify-around">
             <Button
-              onClick={matchSomeone}
+              onClick={unmatchSomeone}
               className="w-16 h-16 rounded-2xl bg-white"
             >
               <div className="w-10 h-10 flex justify-center items-center">
@@ -381,7 +381,7 @@ function MatchingPage() {
               </div>
             </Button>
             <Button
-              onClick={unmatchSomeone}
+              onClick={matchSomeone}
               className="w-16 h-16 rounded-2xl bg-white"
             >
               <div className="w-14 h-14 flex justify-center items-center pt-1 pl-1">

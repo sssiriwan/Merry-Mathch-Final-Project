@@ -41,6 +41,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.6",
     "@react-spring/web": "^9.5.5",
+    "@supabase/supabase-js": "^2.36.0",
     "@tanstack/react-table": "^8.9.3",
     "axios": "^1.5.0",
     "bear-react-carousel": "^4.0.15-alpha.1",
