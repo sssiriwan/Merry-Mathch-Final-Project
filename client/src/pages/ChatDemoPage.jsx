@@ -4,7 +4,7 @@ import { RealtimeChannel } from "@supabase/supabase-js";
 import { useAuth } from "@/contexts/authentication";
 // chat/(match_list_id)
 
-const ChatPage = () => {
+const ChatDemoPage = () => {
   const { state } = useAuth();
   const [messageUser1, setMessageUser1] = useState("");
   const [messageUser2, setMessageUser2] = useState("");
@@ -138,7 +138,7 @@ const ChatPage = () => {
     </div>
   );
 };
-export default ChatPage;
+export default ChatDemoPage;
 
 // {conversation?.map((item, index) => (
 //   <div key={item.message_id} className={item.user_id === user1 ? "chat-message-left" : "chat-message-right"}>
