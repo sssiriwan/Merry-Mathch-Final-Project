@@ -504,13 +504,19 @@ function ProfileEditPage() {
 
                   <div className="input-container relative">
                     <div className="flex mb-[347px]">
-                      {Object.keys(avatars).map((avatarKey) => {
+                      {Object.keys(avatars).map((avatarKey, index) => {
+                        const avatar = avatars[avatarKey];
+                        const imageUrl = avatar.objectURL || avatar; // ใช้ URL จาก objectURL ถ้ามี ไม่然แล้วใช้ URL จาก avatars[avatarKey]
+
                         return (
-                          <div key={avatarKey} className="mr-[24px] relative">
+                          <div
+                            key={index}
+                            className="mr-[24px] relative"
+                            data-key={avatarKey}
+                          >
                             <img
-                              className="image-preview"
-                              src={avatars[avatarKey]}
-                              // alt={file.name}
+                              className="w-40 h-40 object-cover rounded-2xl"
+                              src={imageUrl}
                             />
                             <button
                               className="image-remove-button bg-[#AF2758] text-white rounded-full p-2 absolute top-0 right-0"
@@ -523,7 +529,6 @@ function ProfileEditPage() {
                           </div>
                         );
                       })}
-
                       {[...Array(maxUploads - Object.keys(avatars).length)].map(
                         (_, index) => (
                           <label
@@ -545,16 +550,15 @@ function ProfileEditPage() {
                                 <path
                                   d="M12.5 4.5V19.5M20 12H5"
                                   stroke="#7D2262"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
                                 />
                               </svg>
                             </div>
                             <div className="text-ppurple-600 text-lg">
                               Upload
                             </div>
-
                             <input
                               id={`avatar${index}`}
                               name={`avatar${index}`}
