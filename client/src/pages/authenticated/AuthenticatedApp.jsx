@@ -11,6 +11,7 @@ import ProfileEditPage from "../ProfileEditPage";
 import MerryList from "../MerryList";
 import PreviewCard from "../PreviewCard";
 import Package from "../Package";
+import Membership from "../Membership";
 
 function AuthenticatedApp() {
   return (
@@ -24,6 +25,7 @@ function AuthenticatedApp() {
           <Route path="/profile/:userId" element={<PreviewCard />} />
           <Route path="/merry-list" element={<MerryList />} />
           <Route path="/package" element={<Package />} />
+          <Route path="/membership" element={<Membership />} />
           <Route path="*" element={<Home />} />
         </Routes>
     </>
