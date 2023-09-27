@@ -21,6 +21,7 @@ postRouter.get("/check", async (req, res) => {
     data: req.user,
   });
 });
+
 // API get profile (เทียบ user_id)
 postRouter.get("/profile", async (req, res) => {
   console.log("จากprofile", req.user);
@@ -45,7 +46,7 @@ postRouter.get("/profile/:userId", async (req, res) => {
     )
     .eq("user_id", userId);
   return res.json({
-    data: data[0],
+    data: data,
   });
 });
 
@@ -82,14 +83,23 @@ postRouter.put("/profile", async (req, res) => {
 //ดึงข้อมูล จากตาราง merry list แล้วนำมา แมพโดยหามา
 //logic เอา status มาเช็คว่าตรงกันไหมแล้วให้ปุ่มแชทขึ้นมา
 
+// const { data, error } = await supabase
+//   .from('countries')
+//   .select('name')
+//   .match({ id: 2, name: 'Albania' })
+
+// const { data, error } = await supabase
+//   .from('countries')
+//   .select()
+//   .filter('name', 'in', '("Algeria","Japan")')
+
 postRouter.get("/match-list", async (req, res) => {
   console.log("จากprofile", req.user);
   const { data, error } = await supabase
     .from("match_list")
-    .select(
-      "*,profiles(*, users(email, username, user_id),hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5))"
-    )
-    .eq("user_id", req.user.id);
+    .select("*")
+    //.eq("chooser", req.user.id)
+    .or(`chooser.eq.${req.user.id},chosen_one.eq.${req.user.id}`);
   return res.json({
     data: data,
   });
@@ -99,7 +109,7 @@ postRouter.put("/match", async (req, res) => {
   try {
     console.log("จากprofile", req.user);
     console.log(req.body);
-    const matchListID= req.body.match_list_id
+    const matchListID = req.body.match_list_id;
     const updateStatus = {
       match_list_id: req.body.match_list_id,
       status: req.body.status,
@@ -110,7 +120,7 @@ postRouter.put("/match", async (req, res) => {
       .update(updateStatus)
       .eq("match_list_id", matchListID);
     return res.json({
-        message: "Match status updated successfully",
+      message: "Match status updated successfully",
     });
   } catch (error) {
     res.status(500).send(error);
@@ -121,9 +131,10 @@ postRouter.post("/match", async (req, res) => {
   console.log(req.body.profile_id, "กับ", req.body.status);
   const { data, error } = await supabase.from("match_list").insert([
     {
-      user_id: req.user.id,
-      profile_id: req.body.profile_id,
+      chooser: req.user.id,
+      chosen_one: req.body.user_id,
       status: req.body.status,
+      profile_id: req.body.profile_id,
       created_at: new Date(),
     },
   ]);
@@ -137,7 +148,8 @@ postRouter.post("/unmatch", async (req, res) => {
   console.log(req.body.profile_id, "กับ", req.body.status);
   const { data, error } = await supabase.from("unmatch").insert([
     {
-      user_id: req.user.id,
+      chooser: req.user.id,
+      unchosen_one: req.body.user_id,
       profile_id: req.body.profile_id,
       created_at: new Date(),
     },
@@ -151,7 +163,7 @@ postRouter.post("/unmatch", async (req, res) => {
 postRouter.get("/keyword", async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    console.log(keyword)
+    console.log(keyword);
 
     const { data, error } = await supabase
       .from("profiles")

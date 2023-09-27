@@ -19,6 +19,9 @@ const ChatPage = () => {
   const user2 = 286;
   const matchId = 278286; // match_list_id
 
+  //ผู้เลือก chooser
+  //ผู้ถูกเลือก chosen_one
+
   // room - chat
   // 1 - M
 
@@ -42,9 +45,9 @@ const ChatPage = () => {
     }
   };
 
-  const sendMessageUser1 = async () => {
+  const sendMessageUser1 = async () => {    
     const { data, error } = await supabase.from("message").insert({
-      user_id: user1,
+      user_id: user1,// เป็นคอลัม profile_id
       message_content: messageUser1,
       room_chat_id: roomId,
       timestampt: new Date(),
@@ -368,3 +371,7 @@ const ChatPage = () => {
   );
 };
 export default ChatPage;
+
+
+
+// ใส่รูป user คนที่ส่งข้อความ เอาทั้งก้อนที่ แมพออกมา มาเข้าเงื่อนไขเช็ค user
