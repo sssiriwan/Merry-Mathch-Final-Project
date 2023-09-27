@@ -2,6 +2,7 @@ import { Router } from "express";
 import { protect } from "../middlewares/protect.js";
 import { supabase } from "../utils/supabaseClient.js";
 import { count } from "console";
+import multer from "multer";
 
 const postRouter = Router();
 postRouter.use(protect);
@@ -49,8 +50,11 @@ postRouter.get("/profile/:userId", async (req, res) => {
   });
 });
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const avatarUpload = upload.fields([{ name: "avatars", maxCount: 5 }]);
 // API ใช้ update ข้อมูล profile
-postRouter.put("/profile", async (req, res) => {
+postRouter.put("/profile", avatarUpload, async (req, res) => {
   console.log(req.user);
   const updatedProfile = {
     // username: req.body.username,
@@ -66,6 +70,7 @@ postRouter.put("/profile", async (req, res) => {
     about_me: req.body.about_me,
     // hobbies_tag: req.body.hobbies_tag,
   };
+  console.log(req.body);
   const { data, error } = await supabase
     .from("profiles")
     .update(updatedProfile)
@@ -99,7 +104,7 @@ postRouter.put("/match", async (req, res) => {
   try {
     console.log("จากprofile", req.user);
     console.log(req.body);
-    const matchListID= req.body.match_list_id
+    const matchListID = req.body.match_list_id;
     const updateStatus = {
       match_list_id: req.body.match_list_id,
       status: req.body.status,
@@ -110,7 +115,7 @@ postRouter.put("/match", async (req, res) => {
       .update(updateStatus)
       .eq("match_list_id", matchListID);
     return res.json({
-        message: "Match status updated successfully",
+      message: "Match status updated successfully",
     });
   } catch (error) {
     res.status(500).send(error);
@@ -151,7 +156,7 @@ postRouter.post("/unmatch", async (req, res) => {
 postRouter.get("/keyword", async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    console.log(keyword)
+    console.log(keyword);
 
     const { data, error } = await supabase
       .from("profiles")
