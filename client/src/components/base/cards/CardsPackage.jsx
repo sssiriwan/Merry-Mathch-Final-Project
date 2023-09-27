@@ -10,6 +10,7 @@ const CardsPackage = () => {
   const fetchPackageData = async () => {
     try {
       const response = await axios.get("http://localhost:4000/auth/package");
+      console.log(response.data.data)
       setPackages(response.data.data)
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -24,13 +25,13 @@ const CardsPackage = () => {
 
   useEffect(() => {
     fetchPackageData();
-  }, []);
+  }, [packages]);
 
   return (
-    <div className="flex flex-row  justify-center">
+    <div className="flex-wrap grid grid-cols-3 place-items-center">
       
       {packages.map((packageItem) => (
-        <div className="w-[357px] h-[438px]  mr-6 border border-pgray-400 rounded-4xl flex justify-center items-center">
+        <div className="w-[357px] h-[438px] m-5 border border-pgray-400 rounded-4xl flex justify-center items-center">
         <div key={packageItem.package_id}>
           <div className="w-[277px] h-[358px] flex flex-col justify-between">
             <div className="w-[60px] h-[60px] flex justify-center items-center bg-pgray-100 rounded-2xl">

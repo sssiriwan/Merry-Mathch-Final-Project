@@ -42,7 +42,7 @@ const Payment_1 = () => {
           {/* form of register credit card */}
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-[548px] h-[554px]"
+            className="w-[548px] h-[554px] bg-orange-300"
           >
             <div>
               {/* head */}
@@ -129,7 +129,7 @@ const Payment_1 = () => {
                   <div className="text-base text-pred-500 font-bold">
                     Cancel
                   </div>
-                  <ButtonPrimary> Payment1 Confirm</ButtonPrimary>
+                  <ButtonPrimary> Payment Confirm</ButtonPrimary>
                 </div>
               </div>
             </div>

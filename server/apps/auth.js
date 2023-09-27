@@ -182,7 +182,7 @@ authRouter.get("/package", async (req, res) => {
       .from("merry_packages")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(3)
+      // .limit()
     console.log(result);
     return res.json({
       data: result.data,

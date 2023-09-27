@@ -300,7 +300,7 @@ function NavbarRegistered() {
                   />
                 </svg>
                 <span className="ml-2 text-pgray-700">
-                  <a href="/package">Merry Membership</a>
+                  <a href="/payment">Merry Membership</a>
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem>
@@ -333,7 +333,7 @@ function NavbarRegistered() {
                 viewBox="0 0 16 17"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="ml-2"
+                className="ml-3"
               >
                 <path
                   d="M8.66667 11.1665V11.8332C8.66667 12.3636 8.45595 12.8723 8.08088 13.2474C7.70581 13.6225 7.1971 13.8332 6.66667 13.8332H4C3.46957 13.8332 2.96086 13.6225 2.58579 13.2474C2.21071 12.8723 2 12.3636 2 11.8332V5.1665C2 4.63607 2.21071 4.12736 2.58579 3.75229C2.96086 3.37722 3.46957 3.1665 4 3.1665H6.66667C7.1971 3.1665 7.70581 3.37722 8.08088 3.75229C8.45595 4.12736 8.66667 4.63607 8.66667 5.1665V5.83317M11.3333 11.1665L14 8.49984L11.3333 11.1665ZM14 8.49984L11.3333 5.83317L14 8.49984ZM14 8.49984H4.66667H14Z"
