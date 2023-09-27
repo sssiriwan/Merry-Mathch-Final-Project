@@ -76,23 +76,10 @@ function MerryCard(props) {
           match_list_id: item.match_list_id,
           status: "unmerry",
         };
-        //   return updateStatus
-        // }
-        //   if (item.status === "unmerry"){
-        //     const updateStatus = {
-        //     match_list_id: item.match_list_id ,
-        //     status: "merry",
-        //   };
-        //   return updateStatus
-        // }
-
-        const result = await axios.put(
+         const result = await axios.put(
           `http://localhost:4000/post/match`,
           updateStatus
         );
-
-        //  Navigate to the complaint detail page
-        // navigate(`/admin/complain/detail/${param.complainId}`);
       } catch (error) {
         alert(error);
       }

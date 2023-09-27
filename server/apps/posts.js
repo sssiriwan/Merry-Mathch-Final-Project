@@ -83,27 +83,17 @@ postRouter.put("/profile", async (req, res) => {
 //ดึงข้อมูล จากตาราง merry list แล้วนำมา แมพโดยหามา
 //logic เอา status มาเช็คว่าตรงกันไหมแล้วให้ปุ่มแชทขึ้นมา
 
-// const { data, error } = await supabase
-//   .from('countries')
-//   .select('name')
-//   .match({ id: 2, name: 'Albania' })
-
-// const { data, error } = await supabase
-//   .from('countries')
-//   .select()
-//   .filter('name', 'in', '("Algeria","Japan")')
-
 postRouter.get("/match-list", async (req, res) => {
   console.log("จากprofile", req.user);
   const { data, error } = await supabase
     .from("match_list")
     .select("*")
-    //.eq("chooser", req.user.id)
     .or(`chooser.eq.${req.user.id},chosen_one.eq.${req.user.id}`);
   return res.json({
     data: data,
   });
 });
+
 //อัพเดต status เมื่อกด unmerry
 postRouter.put("/match", async (req, res) => {
   try {
@@ -132,9 +122,8 @@ postRouter.post("/match", async (req, res) => {
   const { data, error } = await supabase.from("match_list").insert([
     {
       chooser: req.user.id,
-      chosen_one: req.body.user_id,
+      chosen_one: req.body.chosen_one,
       status: req.body.status,
-      profile_id: req.body.profile_id,
       created_at: new Date(),
     },
   ]);

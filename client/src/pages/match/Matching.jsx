@@ -10,6 +10,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
 import PreviewCard from "../PreviewCard";
+import { supabase } from "@/utils/supabaseClient";
 
 export const Matching = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +18,8 @@ export const Matching = () => {
   const [profileImg, setProfileImg] = useState({});
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
+  const [userId, setUserId] = useState(null);
+  console.log(userId);
 
   const getData = async () => {
     setIsLoading(true);
@@ -27,24 +30,50 @@ export const Matching = () => {
     setIsLoading(false);
   };
 
+  const getUserProfile = async () => {
+    const result = await axios.get("http://localhost:4000/post/profile");
+    setUserId(result.data.data.user_id);
+  };
+
   const matchSomeone = async () => {
-    const data = {
-      user_id: profile.user_id,
-      status: "merry",
-    };
-    console.log("จะแมชคนนี้", profile.profile_id);
-    const result = await axios.post("http://localhost:4000/post/match", data);
-    // console.log(result);
-    setCount(count + 1);
+    console.log(profile.user_id)
+    const checkMatch = await supabase
+      .from("match_list")
+      .select("*")
+      .eq("chooser", profile.user_id)
+      .eq("chosen_one", userId)
+      .select();
+    console.log(checkMatch.data);
+    if (checkMatch.data.length==0) {
+      console.log("จะแมชคนนี้", profile.user_id);
+      const { data, error } = await supabase.from("match_list").insert({
+        chooser: userId,
+        chosen_one: profile.user_id,
+        status: "merry",
+        created_at: new Date(),
+      });
+      setCount(count + 1);
+    } else {
+      console.log("อัปเดตสถานะอันนี้", checkMatch.data[0].matchlist_id)
+      const updateStatus = {
+        status: "match",
+        updated_at: new Date(),
+      };
+      const { data, error } = await supabase
+        .from("match_list")
+        .update(updateStatus)
+        .eq("matchlist_id", checkMatch.data[0].matchlist_id);
+        //เด้งป้อปอัพไปห้องแชท
+      //  setCount(count + 1);
+    }
   };
 
   const unmatchSomeone = async () => {
     const data = {
       user_id: profile.user_id,
-      
     };
-    console.log("จะแมชคนนี้", profile.profile_id);
-    const result = await axios.post("http://localhost:4000/post/unmatch", data);
+    console.log("จะไม่แมชคนนี้", profile.profile_id);
+    //const result = await axios.post("http://localhost:4000/post/unmatch", data);
     // console.log(result);
     setCount(count + 1);
   };
@@ -62,7 +91,9 @@ export const Matching = () => {
 
   useEffect(() => {
     getData();
-  }, [count]);
+    getUserProfile();
+  }, [count, userId]);
+
   return (
     <section className="w-[72%] bg-putility-400 flex justify-center items-center">
       {clicked && (
