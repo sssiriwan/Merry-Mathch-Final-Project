@@ -308,7 +308,7 @@ function MerryCard(props) {
                 />
               </svg>
             </button>
-            <button className="w-10 h-10 bg-white rounded-2xl shadow-3xl grid place-items-center aspect-square">
+            <button className="w-10 h-10 bg-white rounded-2xl shadow-3xl grid place-items-center aspect-square" onClick={()=>{navigate(`/chat/${matchList.matchlist_id}`)}}>
               <svg
                 width="20"
                 height="19"

@@ -25,7 +25,7 @@ function AuthenticatedApp() {
           <Route path="/profile/:userId" element={<PreviewCard />} />
           <Route path="/merry-list" element={<MerryList />} />
           <Route path="/package" element={<Package />} />
-          <Route path="/chat" element={<ChatPage/>}/>
+          <Route path="/chat/:matchListId" element={<ChatPage/>}/>
           <Route path="*" element={<Home />} />
         </Routes>
     </>
