@@ -6,11 +6,12 @@ import {
   TypographyH3,
   TypographySmall,
 } from "@/components/base/button/Typography";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const ChatPage = () => {
   const param = useParams();
+  const navigate = useNavigate();
 
 
   const { state } = useAuth();
@@ -19,6 +20,9 @@ const ChatPage = () => {
   console.log(roomId)
   const [conversation, setConversation] = useState([]);
   const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null)
+  console.log(userId)
+  const [authen, setAuthen] = useState(false)
 
   // const user1 = 278;
   // const user2 = 286;
@@ -51,10 +55,27 @@ const ChatPage = () => {
     }
   };
 
+  const authenUser = async ()=> {
+    const { data, error } = await supabase
+      .from("match_list")
+      .select("*")
+      .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
+      .eq("matchlist_id",roomId)
+      console.log(data)
+      if(data.length>0){
+        setAuthen(true);
+      }else{
+         setAuthen(false);
+         navigate(`/merry-list`);
+              }    
+    
+  }
+
   const getUserProfile = async () => {
     const result = await axios.get("http://localhost:4000/post/profile");
     console.log(result.data.data.profile_id);
     setUser(result.data.data.profile_id)
+    setUserId(result.data.data.user_id)
 
 
   }
@@ -67,9 +88,12 @@ const ChatPage = () => {
       matchlist_id: roomId,
       timestampt: new Date(),
     });
+    setMessageUser1("");
+
   };
  
   const getLastMessage = async () => {
+    console.log("TEST")
     const { data, error } = await supabase
       .from("chat_message")
       .select("*")
@@ -100,7 +124,6 @@ const ChatPage = () => {
           event: "INSERT",
           schema: "public",
           table: "chat_message",
-          FIXME: "matchlist_id",
           filter: `matchlist_id=eq.${roomId}`,
         },
         async (payload) => {
@@ -112,12 +135,16 @@ const ChatPage = () => {
     return () => {
       channelA.unsubscribe();
     };
-  }, []);
+  }, [roomId]);
 
   useEffect(() => {
     getRoomChat();
     getUserProfile();
   }, []);
+
+  useEffect(()=>{
+    authenUser();
+  },[roomId,userId])
 
   const styleLayoutChat = (messageId) => {
     if (messageId !== user) {
@@ -141,8 +168,11 @@ const ChatPage = () => {
     }
   };
 
+  if(!authen) return null
+
   return (
     <div>
+
       <NavbarRegistered />
       <section className="h-[900px] flex">
         {/* แถบด้านซ้ายหลังจากทำแชทเสร็จจะกลับมาทำ */}
@@ -190,6 +220,7 @@ const ChatPage = () => {
                   className=" w-[80%] flex-1 border-none outline-none bg-transparent p-[10px] font-medium "
                   placeholder="Messege here..."
                   onChange={(e) => setMessageUser1(e.target.value)}
+                  value={messageUser}
                 />
                 <button
                   onClick={() => sendMessageUser1()}

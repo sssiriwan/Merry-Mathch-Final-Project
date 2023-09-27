@@ -11,6 +11,7 @@ import { MerryCardChosen } from "./match/MerryCardChosen";
 
 function MerryList() {
   const [user, setUser] = useState({});
+  console.log(user)
   const [userId, setUserId] = useState(null);
   const [isLoading, setIsLading] = useState(false);
 
@@ -65,15 +66,16 @@ function MerryList() {
         </article>
         {user.length > 0 && (
           <div className="flex flex-col items-center">
-            {user?.map((item, index) => {
-               if (item.chooser !== userId) {
+
+            {user?.map((item, index) => {          
+                if (item.chooser !== userId) {
                 return <MerryCard user={item} id={userId} key={index} />;
-              }
+              // }
               //ทำ merrycard สองใบ render เลือก f7' ข้อมูลจาก db คนละแบบ
               // if (item.chosen_one == userId) {
               //   console.log(ทดสอยฮะ)
               //   return <MerryCardChosen user={item} id={userId} key={index} />;
-              // }
+              }
             })}
           </div>
         )}

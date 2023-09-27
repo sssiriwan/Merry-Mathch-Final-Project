@@ -46,7 +46,7 @@ postRouter.get("/profile/:userId", async (req, res) => {
     )
     .eq("user_id", userId);
   return res.json({
-    data: data,
+    data: data[0],
   });
 });
 
