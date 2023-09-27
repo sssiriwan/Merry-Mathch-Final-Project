@@ -21,7 +21,6 @@ function PackageEditPage() {
   const [icon, setIcon] = useState({});
   const [detail, setDetail] = useState([]);
   const [price, setPrice] = useState(0)
-  const [urlString, setUrlString] = useState("")
   
 
   const [detailList, setDetailList] = useState([]);
@@ -29,12 +28,18 @@ function PackageEditPage() {
 
   const [showConfirmation, setShowConfirmation] = useState(false)
 
+  // function จัดการรูป
   const handleFileChange = (event) => {
     const uniqueId = Date.now();
     setIcon({
       ...icon,
       [uniqueId]: event.target.files[0]
     })
+  }
+  const handleRemoveImage = (event, iconKey) => {
+    event.preventDefault();
+    delete icon[iconKey];
+    setIcon({...icon})
   }
 
   const handleAddDetail = () => {
@@ -46,23 +51,28 @@ function PackageEditPage() {
 
   const getCurrentPackage = async () => {
     const response = await axios.get(`http://localhost:4000/admin/package/${params.packageId}`);
+    const uniqueId = Date.now();
+    const testObject = {[uniqueId]: response.data.data.package_icon}
     setName(response.data.data.package_name);
     setLimit(response.data.data.package_limit);
-    setIcon(response.data.data.package_icon);
+    setIcon(testObject);
     setDetail(response.data.data.package_detail);
     setPrice(response.data.data.price)
   };
 
   const handleEditSubmit = async () => {
-    const packageUpdated = {
-      package_name: name,
-      package_limit: limit,
-      price,
-    };
-
+    const formData = new FormData();
+    formData.append('package_name', name);
+    formData.append('package_limit', limit);
+    formData.append('price', price);
+    for (let iconKey in icon) {
+      formData.append('icon', icon[iconKey])
+    }
     const result = await axios.put(
       `http://localhost:4000/admin/package/${params.packageId}`,
-      packageUpdated
+      formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      }
     );
     navigate("/admin");
   };
@@ -173,14 +183,19 @@ function PackageEditPage() {
               <div className="text-ppurple-600 text-sm">Upload icon</div>
               <input id="upload" name="icon" type="file" onChange={handleFileChange} hidden />
             </label>
-            {icon}
-            
-            <img src={icon} />
+            {Object.keys(icon).map((iconKey) => {
+              const file = icon[iconKey];
+              return (
+                <div key={iconKey} className="w-24 h-24 bg-pgray-100 rounded-2xl relative flex justify-center items-center">
+                  <img src={file instanceof Blob ? URL.createObjectURL(file) : file } />
+                  <button onClick={(event) => { handleRemoveImage(event, iconKey) }} className="rounded-full absolute -top-1 -right-1 w-6 h-6 bg-putility-300 text-white text-sm">✕</button>
+                </div>
+              )
+            })}
 
 
             <div className="grid gap-4">
               <Label htmlFor="description">PackageDetail</Label>
-
               <ul>
                 {detailList.map((detailItem, index) => (
                   <li key={index}>

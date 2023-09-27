@@ -217,18 +217,39 @@ adminRouter.get("/complaintz", async (req, res) => {
 
 
 // แก้ไข package
-adminRouter.put("/package/:packageId", async (req, res) => {
+adminRouter.put("/package/:packageId", iconUpload , async (req, res) => {
   try {
+    let fileUrl;
+    if(req.files.icon != undefined) {
+      const files = req.files.icon
+      for (let i=0; i<files.length; i++) {
+        const fileName = `${Date.now()}`;
+        const { data, error } = await supabase.storage.from('packageIcon').upload( fileName, files[i].buffer, {
+          cacheControl: 3600,
+          upsert: false,
+          contentType: files[i].mimetype
+        })
+        const result = supabase.storage.from('packageIcon').getPublicUrl(data.path);
+        fileUrl = result.data.publicUrl
+        if(error) {
+          console.log(error)
+        }
+      }
+    }
+    console.log(req.files.icon)
     const packageId = req.params.packageId;
     const updatePackage = {
       package_name: req.body.package_name,
       package_limit: req.body.package_limit,
       price: req.body.price,
-      // package_icon : req.body.icon,
       // package_detail : req.body.package_detail,
       update_at: new Date(),
     };
-    console.log(updatePackage);
+    if (req.body.icon) {
+      updatePackage.package_icon = req.body.icon
+    } else {
+      updatePackage.package_icon = fileUrl
+    }
     const result = await supabase
       .from("merry_packages")
       .update(updatePackage)
