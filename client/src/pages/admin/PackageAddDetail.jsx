@@ -17,64 +17,117 @@ import { useNavigate } from "react-router-dom";
 function PackageAddDetail() {
   const [name, setName] = useState("");
   const [limit, setLimit] = useState(0);
-  const [icon, setIcon] = useState("https://files.vogue.co.th/uploads/makeup_steps_to_natural_look3.jpg");
+  const [icon, setIcon] = useState({});
   const [detail, setDetail] = useState("");
-  console.log(limit)
+  const [price, setPrice] = useState(0)
+
+  // set error message
+  const [errorName, setErrorName] = useState("")
+  const [errorPrice, setErrorPrice] = useState("")
+  const [errorLimit, setErrorLimit] = useState("")
+
   const navigate = useNavigate();
+
+  const handleFileChange = (event) => {
+    const uniqueId = Date.now();
+    setIcon({
+      ...icon,
+      [uniqueId]: event.target.files[0],
+    })
+  }
+
+  const handleRemoveImage = (event, iconKey) => {
+    event.preventDefault();
+    delete icon[iconKey];
+    setIcon({...icon});
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addPackage();
+    let isValid = true;
+
+    if(name.length == 0) {
+      setErrorName("Please enter a package name")
+      isValid = false;
+    } else {
+      setErrorName("")
+    }
+
+    if(price == 0) {
+      setErrorPrice("Please enter a price")
+      isValid = false;
+    } else {
+      setErrorPrice("")
+    }
+
+    if(limit == 0) {
+      setErrorLimit("Please select a package limit")
+      isValid = false;
+    } else {
+      setErrorLimit("")
+    }
+    console.log(isValid)
+    if(isValid){
+      addPackage();
+    }
   }
 
   const addPackage = async () => {
-    const newPackage = {
-      package_icon: icon,
-      package_name: name,
-      package_limit: limit,
-      price: 2000,
+    const formData = new FormData();
+    formData.append("package_icon", icon);
+    formData.append("package_name", name);
+    formData.append("package_limit", limit);
+    formData.append("price", price);
+    for (let iconKey in icon) {
+      formData.append("icon", icon[iconKey])
     }
-    console.log(newPackage)
-    const result = await axios.post('http://localhost:4000/admin/package', newPackage);
+    const result = await axios.post('http://localhost:4000/admin/package', formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     console.log(result)
     navigate("/admin")
   }
 
   return (
     <CardContent className="grid gap-6 p-5">
-      {/* <select value={limit} onChange={(event) => { setLimit(event.target.value)}}>
-        <option value={25}>25</option>
-        <option value={45}>45</option>
-      </select> */}
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="subject">Package name *</Label>
-          <Input id="Package" placeholder="" onChange={(event) => { setName(event.target.value)}} />
+          <Input id="Package" onChange={(event) => { setName(event.target.value)}} />
+          {errorName && <p className="text-red-500 text-sm font-bold mt-1">{errorName}</p>}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="area">Merry limit *</Label>
-          {/* <Select defaultValue="billing">
-            <SelectTrigger id="limit">
+          <Select onValueChange={(event) => { setLimit(event) }}>
+            <SelectTrigger>
               <SelectValue placeholder="Select" />
             </SelectTrigger>
-          </Select> */}
-          <select  value={limit} onChange={(event) => { setLimit(event.target.value)}} >
-              <option value={0} disabled></option>
-              <option value={25}>25</option>
-              <option value={45}>45</option>
-              <option value={75}>75</option>
-            </select>
+            <SelectContent>
+              <SelectItem value={25}>25</SelectItem>
+              <SelectItem value={45}>45</SelectItem>
+              <SelectItem value={75}>75</SelectItem>
+              <SelectItem value={100}>100</SelectItem>
+            </SelectContent>
+          </Select>
+          {errorLimit && <p className="text-red-500 text-sm font-bold mt-1">{errorLimit}</p>}
         </div>
       </div>
+      <div>
+        <Label htmlFor="price">Price</Label>
+        <div className="flex items-center mt-1">
+          <Input id="price" type="number" onChange={(event) => { setPrice(event.target.value) }} className="w-40" />
+          <span className="ml-3">Baht</span>
+        </div>
+        {errorPrice && <p className="text-red-500 text-sm font-bold mt-1">{errorPrice}</p>}
+      </div>
       <Label htmlFor="subject">Icon *</Label>
-      <Button
-        variant="link"
-        className=" bg-pgray-100 text-ppurple-600 text-xs flex flex-col h-20 w-20 align-center"
+      <label
+        className={`bg-pgray-100 h-24 w-24 rounded-xl flex flex-col justify-center items-center ${Object.keys(icon).length == 1 ? "hidden" : ""}`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="100"
-          height="100"
+          width="30"
+          height="30"
           viewBox="0 0 25 24"
           fill="none"
         >
@@ -86,10 +139,21 @@ function PackageAddDetail() {
             stroke-linejoin="round"
           />
         </svg>
-        Upload icon
-      </Button>
+        <div className="text-ppurple-600 text-sm">Upload icon</div>
+        <input id="upload" name="icon" type="file" onChange={handleFileChange} hidden />
+      </label>
+      {Object.keys(icon).map((iconKey) => {
+        const file = icon[iconKey];
+        return (
+          <div key={iconKey} className="w-24 h-24 bg-pgray-100 rounded-2xl relative flex justify-center items-center">
+            <img src={URL.createObjectURL(file)} alt={file.name} className="object-cover rounded-2xl" />
+            <button onClick={(event) => { handleRemoveImage(event, iconKey) }} className="rounded-full absolute -top-1 -right-1 w-6 h-6 bg-putility-300 text-white text-sm">✕</button>
+          </div>
+        )
+      })}
+      <div className="border-t"></div>
       <div className="grid gap-4">
-        <Label htmlFor="description">PackageDetail</Label>
+        <Label htmlFor="description" className="font-semibold text-pgray-700 text-lg">Package Detail</Label>
         <div className="flex h-20 space-x-2 justify-between items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +172,7 @@ function PackageAddDetail() {
             />
           </svg>
           <Input id="Package" placeholder="" value={detail} onChange={(event) => { setDetail(event.target.value)}} />
-          <Button className="bg-white text-pgray-500">Delete</Button>
+          <Button variant="link" className="font-bold text-pred-500">Delete</Button>
         </div>
       </div>
       <div className="flex h-20 justify-start items-start">

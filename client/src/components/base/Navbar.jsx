@@ -33,53 +33,45 @@ import axios from "axios";
 const Navbar = () => {
   return (
     <nav className="h-20 flex justify-around items-center shadow-3xl">
-      <div>
-        <MerryLogo />
-      </div>
-      <div className="menuBar">
-        <div className=" h-[60px] w-[550px] flex items-center">
-          <a href="/#sec2">
-            <span className=" mx-[24px] text-xl">Why Merry Match?</span>
-          </a>
-          <a href="/#sec4">
-            <span className=" mx-[24px] text-xl">How to Merry</span>
-          </a>
-          <ButtonPrimary>
-            <a href="/login">Login</a>
-          </ButtonPrimary>
-        </div>
+      <MerryLogo />
+      <div className="flex items-center font-bold text-ppurple-600">
+        <a href="/#sec2">
+          <span className="mr-8">Why Merry Match?</span>
+        </a>
+        <a href="/#sec4">
+          <span className="mr-8">How to Merry</span>
+        </a>
+        <a href="/login">
+          <ButtonPrimary>Login</ButtonPrimary>
+        </a>
       </div>
     </nav>
   );
 };
 
 function NavbarRegistered() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [userImg, setUserImg] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [userImg, setUserImg] = useState("");
 
   const getMyProfile = async () => {
-    setIsLoading(true)
-    const result = await axios.get('http://localhost:4000/post/profile');
-    setIsLoading(false)
-    setUserImg(Object.values(result.data.data.profile_image)[0])
-  }
-  useEffect(()=>{
+    setIsLoading(true);
+    const result = await axios.get("http://localhost:4000/post/profile");
+    setIsLoading(false);
+    setUserImg(Object.values(result.data.data.profile_image)[0]);
+  };
+  useEffect(() => {
     getMyProfile();
-  }, [])
+  }, []);
   const { logout } = useAuth();
   return (
     <nav className="w-full h-20 flex justify-around items-center shadow-md">
       <MerryLogo />
       <div className="flex">
         <Button variant="link" className="font-bold text-[#191C77]">
-          <a href="/matching">
-          Start Matching!
-          </a>
+          <a href="/matching">Start Matching!</a>
         </Button>
         <Button variant="link" className="font-bold text-[#191C77]">
-          <a href="/package">
-          Merry Membership
-          </a>
+          <a href="/package">Merry Membership</a>
         </Button>
         {/* Notification's Menu */}
         <DropdownMenu>
@@ -254,44 +246,45 @@ function NavbarRegistered() {
               <ButtonMerryPackageProfile />
             </DropdownMenuLabel>
             <DropdownMenuGroup>
-            <a href="/profile">
-              <DropdownMenuItem>
-                {/* <User className="mr-2 h-4 w-4" /> */}
-                <svg
-                  width="12"
-                  height="15"
-                  viewBox="0 0 12 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ml-2 w-5"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M3.00039 3.5C3.00039 2.70435 3.31646 1.94129 3.87907 1.37868C4.44168 0.81607 5.20474 0.5 6.00039 0.5C6.79604 0.5 7.5591 0.81607 8.12171 1.37868C8.68432 1.94129 9.00039 2.70435 9.00039 3.5C9.00039 4.29565 8.68432 5.05871 8.12171 5.62132C7.5591 6.18393 6.79604 6.5 6.00039 6.5C5.20474 6.5 4.44168 6.18393 3.87907 5.62132C3.31646 5.05871 3.00039 4.29565 3.00039 3.5ZM0.501056 12.9033C0.523536 11.4596 1.11282 10.0827 2.1417 9.06972C3.17058 8.05674 4.55653 7.48897 6.00039 7.48897C7.44425 7.48897 8.8302 8.05674 9.85908 9.06972C10.888 10.0827 11.4772 11.4596 11.4997 12.9033C11.5015 13.0005 11.4748 13.0961 11.4231 13.1784C11.3713 13.2607 11.2967 13.3261 11.2084 13.3667C9.5745 14.1158 7.79783 14.5024 6.00039 14.5C4.14306 14.5 2.37839 14.0947 0.79239 13.3667C0.704047 13.3261 0.62944 13.2607 0.577698 13.1784C0.525955 13.0961 0.499322 13.0005 0.501056 12.9033Z"
-                    fill="#FFE1EA"
-                  />
-                </svg>
-                <span className="ml-2 text-pgray-700">Profile</span>
-              </DropdownMenuItem>
+              <a href="/profile">
+                <DropdownMenuItem>
+                  {/* <User className="mr-2 h-4 w-4" /> */}
+                  <svg
+                    width="12"
+                    height="15"
+                    viewBox="0 0 12 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="ml-2 w-5"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M3.00039 3.5C3.00039 2.70435 3.31646 1.94129 3.87907 1.37868C4.44168 0.81607 5.20474 0.5 6.00039 0.5C6.79604 0.5 7.5591 0.81607 8.12171 1.37868C8.68432 1.94129 9.00039 2.70435 9.00039 3.5C9.00039 4.29565 8.68432 5.05871 8.12171 5.62132C7.5591 6.18393 6.79604 6.5 6.00039 6.5C5.20474 6.5 4.44168 6.18393 3.87907 5.62132C3.31646 5.05871 3.00039 4.29565 3.00039 3.5ZM0.501056 12.9033C0.523536 11.4596 1.11282 10.0827 2.1417 9.06972C3.17058 8.05674 4.55653 7.48897 6.00039 7.48897C7.44425 7.48897 8.8302 8.05674 9.85908 9.06972C10.888 10.0827 11.4772 11.4596 11.4997 12.9033C11.5015 13.0005 11.4748 13.0961 11.4231 13.1784C11.3713 13.2607 11.2967 13.3261 11.2084 13.3667C9.5745 14.1158 7.79783 14.5024 6.00039 14.5C4.14306 14.5 2.37839 14.0947 0.79239 13.3667C0.704047 13.3261 0.62944 13.2607 0.577698 13.1784C0.525955 13.0961 0.499322 13.0005 0.501056 12.9033Z"
+                      fill="#FFE1EA"
+                    />
+                  </svg>
+                  <span className="ml-2 text-pgray-700">Profile</span>
+                </DropdownMenuItem>
               </a>
               <a href="/merry-list">
-              <DropdownMenuItem>
-                <svg
-                  width="14"
-                  height="13"
-                  viewBox="0 0 14 13"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="ml-2 w-5"
-                >
-                  <path
-                    d="M6.72201 12.0321L6.71801 12.0297L6.70281 12.0217C6.38712 11.8499 6.07709 11.6679 5.77321 11.476C5.0487 11.0202 4.35834 10.5122 3.70761 9.95605C2.23561 8.68645 0.599609 6.78165 0.599609 4.50005C0.59968 3.75562 0.830529 3.02952 1.26037 2.42172C1.69021 1.81393 2.2979 1.35433 2.99977 1.10622C3.70164 0.858111 4.46316 0.833687 5.17949 1.03631C5.89581 1.23894 6.53171 1.65865 6.99961 2.23765C7.46751 1.65865 8.10341 1.23894 8.81973 1.03631C9.53606 0.833687 10.2976 0.858111 10.9994 1.10622C11.7013 1.35433 12.309 1.81393 12.7388 2.42172C13.1687 3.02952 13.3995 3.75562 13.3996 4.50005C13.3996 6.78165 11.7644 8.68645 10.2916 9.95605C9.36708 10.746 8.36334 11.4382 7.29641 12.0217L7.28121 12.0297L7.27721 12.0321H7.27561C7.19061 12.0771 7.0959 12.1007 6.99971 12.1008C6.90352 12.101 6.80874 12.0776 6.72361 12.0329L6.72201 12.0321Z"
-                    fill="#FFE1EA"
-                  />
-                </svg>
-                <span className="ml-2 text-pgray-700">Merry list</span>
-              </DropdownMenuItem></a>
+                <DropdownMenuItem>
+                  <svg
+                    width="14"
+                    height="13"
+                    viewBox="0 0 14 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="ml-2 w-5"
+                  >
+                    <path
+                      d="M6.72201 12.0321L6.71801 12.0297L6.70281 12.0217C6.38712 11.8499 6.07709 11.6679 5.77321 11.476C5.0487 11.0202 4.35834 10.5122 3.70761 9.95605C2.23561 8.68645 0.599609 6.78165 0.599609 4.50005C0.59968 3.75562 0.830529 3.02952 1.26037 2.42172C1.69021 1.81393 2.2979 1.35433 2.99977 1.10622C3.70164 0.858111 4.46316 0.833687 5.17949 1.03631C5.89581 1.23894 6.53171 1.65865 6.99961 2.23765C7.46751 1.65865 8.10341 1.23894 8.81973 1.03631C9.53606 0.833687 10.2976 0.858111 10.9994 1.10622C11.7013 1.35433 12.309 1.81393 12.7388 2.42172C13.1687 3.02952 13.3995 3.75562 13.3996 4.50005C13.3996 6.78165 11.7644 8.68645 10.2916 9.95605C9.36708 10.746 8.36334 11.4382 7.29641 12.0217L7.28121 12.0297L7.27721 12.0321H7.27561C7.19061 12.0771 7.0959 12.1007 6.99971 12.1008C6.90352 12.101 6.80874 12.0776 6.72361 12.0329L6.72201 12.0321Z"
+                      fill="#FFE1EA"
+                    />
+                  </svg>
+                  <span className="ml-2 text-pgray-700">Merry list</span>
+                </DropdownMenuItem>
+              </a>
               <DropdownMenuItem>
                 <svg
                   width="16"
@@ -306,7 +299,9 @@ function NavbarRegistered() {
                     fill="#FFE1EA"
                   />
                 </svg>
-                <span className="ml-2 text-pgray-700"><a href="/package">Merry Membership</a></span>
+                <span className="ml-2 text-pgray-700">
+                  <a href="/package">Merry Membership</a>
+                </span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <svg

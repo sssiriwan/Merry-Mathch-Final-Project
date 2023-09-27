@@ -10,6 +10,7 @@ import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ConfirmationModal from "./admin/ConfirmationModal";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function PackageEditPage() {
   const navigate = useNavigate();
@@ -17,13 +18,24 @@ function PackageEditPage() {
 
   const [name, setName] = useState("");
   const [limit, setLimit] = useState(0);
-  const [icon, setIcon] = useState("");
+  const [icon, setIcon] = useState({});
   const [detail, setDetail] = useState([]);
+  const [price, setPrice] = useState(0)
+  const [urlString, setUrlString] = useState("")
+  
 
   const [detailList, setDetailList] = useState([]);
   const [newDetail, setNewDetail] = useState("");
 
   const [showConfirmation, setShowConfirmation] = useState(false)
+
+  const handleFileChange = (event) => {
+    const uniqueId = Date.now();
+    setIcon({
+      ...icon,
+      [uniqueId]: event.target.files[0]
+    })
+  }
 
   const handleAddDetail = () => {
     if (newDetail.trim() !== "") {
@@ -38,12 +50,14 @@ function PackageEditPage() {
     setLimit(response.data.data.package_limit);
     setIcon(response.data.data.package_icon);
     setDetail(response.data.data.package_detail);
+    setPrice(response.data.data.price)
   };
 
   const handleEditSubmit = async () => {
     const packageUpdated = {
       package_name: name,
       package_limit: limit,
+      price,
     };
 
     const result = await axios.put(
@@ -73,8 +87,6 @@ function PackageEditPage() {
     setShowConfirmation(false);
   };
   
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
     handleEditSubmit();
@@ -117,28 +129,36 @@ function PackageEditPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="area">Merry limit *</Label>
-                <select
-                  value={limit}
-                  onChange={(event) => {
-                    setLimit(event.target.value);
-                  }}
-                >
-                  <option value={0} disabled></option>
-                  <option value={25}>25</option>
-                  <option value={45}>45</option>
-                  <option value={75}>75</option>
-                </select>
+                <Select onValueChange={(event) => { setLimit(event) }}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={limit} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={25}>25</SelectItem>
+                    <SelectItem value={45}>45</SelectItem>
+                    <SelectItem value={75}>75</SelectItem>
+                    <SelectItem value={100}>100</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
+
+            <div>
+              <Label htmlFor="price">Price</Label>
+              <div className="flex items-center mt-1">
+                <Input id="price" type="number" value={price} onChange={(event) => { setPrice(event.target.value) }} className="w-40" />
+                <span className="ml-3">Baht</span>
+              </div>
+            </div>
+
             <Label htmlFor="subject">Icon *</Label>
-            <Button
-              variant="link"
-              className=" bg-pgray-100 text-ppurple-600 text-xs flex flex-col h-20 w-20 align-center"
+            <label
+              className={`bg-pgray-100 h-24 w-24 rounded-xl flex flex-col justify-center items-center ${Object.keys(icon).length == 1 ? "hidden" : ""}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="100"
-                height="100"
+                width="30"
+                height="30"
                 viewBox="0 0 25 24"
                 fill="none"
               >
@@ -150,8 +170,14 @@ function PackageEditPage() {
                   stroke-linejoin="round"
                 />
               </svg>
-              Upload icon
-            </Button>
+              <div className="text-ppurple-600 text-sm">Upload icon</div>
+              <input id="upload" name="icon" type="file" onChange={handleFileChange} hidden />
+            </label>
+            {icon}
+            
+            <img src={icon} />
+
+
             <div className="grid gap-4">
               <Label htmlFor="description">PackageDetail</Label>
 

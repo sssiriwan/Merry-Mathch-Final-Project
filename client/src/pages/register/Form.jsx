@@ -295,11 +295,11 @@ function Form() {
 
   return (
     <>
-      <div>
+      <div className="relative z-10">
         <Navbar />
       </div>
 
-      <div className="bg-putility-500">
+      <div className="bg-putility-500 pt-14">
         <div className="ml-[255px] mr-[255px]">
           <div className="text-pbeige-700 text-[14px]">REGISTER</div>
           <div className="text-[46px] font-[800] text-ppurple-500">

@@ -60,7 +60,7 @@ function ProfilePictures({ avatars, updateAvatars }) {
       </div>
 
       <div className="input-container relative">
-        <div className="flex mb-[347px]">
+        <div className="flex mt-5 mb-[300px]">
           {Object.keys(avatars).map((avatarKey, index) => (
             <div
               key={avatarKey}

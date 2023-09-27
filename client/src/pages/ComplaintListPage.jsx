@@ -31,25 +31,15 @@ function ComplaintListPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("");
-
+  
   const navigate = useNavigate();
 
-  const fetchComplaints = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const result = await axios.get("http://localhost:4000/admin/complaint");
-      setFilteredComplaints(result.data.data);
-    } catch (error) {
-      setError("An error occurred while fetching data");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const fetchComplaints = async () => {
+  //   setIsLoading(true);
+  //   setError(null);
 
   //   try {
-  //     const result = await axios.get(`http://localhost:4001/admin/complaint?keywords=${searchInput}&category=${selectedStatus}`);
+  //     const result = await axios.get("http://localhost:4000/admin/complaint");
   //     setFilteredComplaints(result.data.data);
   //   } catch (error) {
   //     setError("An error occurred while fetching data");
@@ -57,6 +47,19 @@ function ComplaintListPage() {
   //     setIsLoading(false);
   //   }
   // };
+
+  const getDataFromSearchBar = async () => {
+    try {
+      setIsLoading(true)
+      console.log(selectedStatus)
+      const result = await axios.get(`http://localhost:4000/admin/complaintz?keywords=${searchInput}&status=${selectedStatus}`)
+      console.log("จากเซิช",result.data)
+      setFilteredComplaints(result.data.data)
+      setIsLoading(false)
+    } catch (error) {
+      console.log("เออเร่อจาก complainList",error)
+    }
+  }
 
   const handleRowClick = async (complaint) => {
     // Update the status of the complaint to Pending
@@ -88,11 +91,6 @@ function ComplaintListPage() {
     setSearchInput(e.target.value);
   };
 
-  const handleSelectedStatus = (e) => {
-    e.preventDefault();
-    setSelectedStatus(e.target.value);
-  };
-
   function formatDate(inputDate) {
     const date = new Date(inputDate);
     const day = date.getDate().toString().padStart(2, "0");
@@ -103,7 +101,8 @@ function ComplaintListPage() {
   }
 
   useEffect(() => {
-    fetchComplaints();
+    // fetchComplaints();
+    getDataFromSearchBar();
   }, [searchInput, selectedStatus]);
 
   return (
@@ -124,15 +123,12 @@ function ComplaintListPage() {
               onChange={handleSearchInput}
             />
             <div>
-              <Select>
+              <Select onValueChange={(event) => { setSelectedStatus(event) }}>
                 <SelectTrigger className="w-[200px] flex p-3  items-start gap-8  rounded-md border border-gray-400 bg-neutral-0">
-                  <SelectValue
-                    placeholder="All status"
-                    value={selectedStatus}
-                    onChange={handleSelectedStatus}
-                  />
+                  <SelectValue placeholder="All status" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="All">All</SelectItem>
                   <SelectItem value="New">New</SelectItem>
                   <SelectItem value="Pending">Pending</SelectItem>
                   <SelectItem value="Resolved">Resolved</SelectItem>
@@ -158,7 +154,7 @@ function ComplaintListPage() {
               </TableHeader>
 
               <TableBody>
-                {filteredComplaints.map((complaint, index) => (
+                {filteredComplaints?.map((complaint, index) => (
                   <TableRow
                     key={index}
                     onClick={() => handleRowClick(complaint)}

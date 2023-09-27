@@ -1,8 +1,13 @@
 import { Router } from "express";
 import { supabase } from "../utils/supabaseClient.js";
 import { protect } from "../middlewares/protect.js";
+import multer from "multer";
 
 const adminRouter = Router();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const iconUpload = upload.fields([{name: "icon", maxCount:1 }]);
 
 adminRouter.use(protect);
 
@@ -40,27 +45,33 @@ adminRouter.get("/package/:packageId", async (req, res) => {
   }
 });
 
-adminRouter.post("/package", async (req, res) => {
+adminRouter.post("/package", iconUpload , async (req, res) => {
   try {
-    console.log(req.body);
+    const files = req.files.icon;
+    let fileUrl;
+    for(let i=0; i<files.length; i++) {
+      const fileName = `${Date.now()}`
+      const { data, error } = await supabase.storage.from('packageIcon').upload( fileName, files[i].buffer , {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: files[i].mimetype
+      })
+      const result = supabase.storage.from('packageIcon').getPublicUrl(data.path)
+      fileUrl = result.data.publicUrl;
+      if(error) {
+        console.log(error)
+      }
+    }
+    console.log(req.user)
     const packageItem = {
       package_name: req.body.package_name,
-      package_icon: req.body.package_icon,
+      package_icon: fileUrl,
       package_limit: req.body.package_limit,
       created_at: new Date(),
-      admin_id: req.body.admin_id,
+      admin_id: req.user.id,
       price: req.body.price,
     };
-    const result = await supabase.from("merry_packages").insert([
-      {
-        package_name: packageItem.package_name,
-        package_limit: packageItem.package_limit,
-        price: packageItem.price,
-        created_at: packageItem.created_at,
-        // admin_id: packageItem.admin_id,
-        package_icon: packageItem.package_icon,
-      },
-    ]);
+    const result = await supabase.from("merry_packages").insert([packageItem]);
     return res.json({
       message: "add package successfully",
       data: result,
@@ -91,16 +102,19 @@ adminRouter.get("/complaint", async (req, res) => {
   }
 });
 
-adminRouter.get('/package/:packageId', async (req,res) => {
+adminRouter.get("/package/:packageId", async (req, res) => {
   try {
-      const result = await supabase.from('merry_packages').select('*').eq('package_id', req.params.packageId);
-      return res.json({
-          data: result.data[0]
-      })
-  } catch(error) {
-      console.log(error)
+    const result = await supabase
+      .from("merry_packages")
+      .select("*")
+      .eq("package_id", req.params.packageId);
+    return res.json({
+      data: result.data[0],
+    });
+  } catch (error) {
+    console.log(error);
   }
-})
+});
 
 //admin สาม่ารถเรียกดูคอมเพลนครั้งละ 1 id ได้
 adminRouter.get("/complaint/:id", async (req, res) => {
@@ -143,48 +157,63 @@ adminRouter.put("/complaint/:id", async (req, res) => {
   }
 });
 
-
 //admin สามารถเสริชหาข้อมูลคอมเพลนได้ และกรอง status
 adminRouter.get("/complaintz", async (req, res) => {
   try {
     const issue = req.query.keywords;
-    const status = req.query.complaint_status;
-    // const query = {};
-    console.log(issue)
+    const status = req.query.status;
+    console.log(issue.length, "กับ", status);
+
+    if (status && status != 'All') {
+      const result = await supabase
+        .from("complaints")
+        .select("*")
+        .or(`complaint_status.ilike.%${status}%`)
+        .order("created_at", { ascending: false });
+      return res.json({
+        data: result.data,
+      });
+    }
+
+    if (issue) {
+      const result = await supabase
+        .from("complaints")
+        .select("*")
+        .or(`issue.ilike.%${issue}%`) 
+        .order("created_at", { ascending: false });
+      // if(result.data.length == 0) {
+      //   console.log("ไม่มีข้อมูล")
+      // }
+      return res.json({
+        data: result.data,
+      });
+    }
+
+    if (status == 'All') { // || status.length == 0
+      const result = await supabase
+        .from("complaints")
+        .select("*")
+        .order("created_at", { ascending: false });
+      return res.json({
+        data: result.data,
+      });
+    }
+
     const result = await supabase
       .from("complaints")
       .select("*")
-      .or(`issue.ilike.%${issue}%, issue.eq.${status}`)
       .order("created_at", { ascending: false });
     return res.json({
       data: result.data,
     });
+    
+
   } catch (error) {
     return res.json({
       message: `${error}`,
     });
   }
 });
-// API GET ดูข้อมูลตาม keyword
-// adminRouter.get("/keyword", async (req, res) => {
-//   try {
-//     const keyword = req.query.keyword;
-//     console.log(keyword)
-
-//     const { data, error } = await supabase
-//       .from("profiles")
-//       .select(
-//         "*, users(email, username), hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
-//       )
-//       .eq("issue", `${keyword}`);
-//     return res.json({
-//       data,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// });
-
 
 
 // แก้ไข package
@@ -241,7 +270,5 @@ adminRouter.delete("/package/:packageId", async (req, res) => {
     console.log(error);
   }
 });
-
-
 
 export default adminRouter;

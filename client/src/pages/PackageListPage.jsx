@@ -138,7 +138,7 @@ function PackageListPage() {
                       </TableCell>
                       <TableCell>{index+1}</TableCell>
                       <TableCell>
-                      <img src={merryicon} className="w-10 h-10" />
+                      <img src={packagedetail.package_icon} className="w-10 h-10 object-scale-down" />
                       </TableCell>
                       <TableCell>{packagedetail.package_name}</TableCell>
                       <TableCell>{packagedetail.package_limit}</TableCell>
