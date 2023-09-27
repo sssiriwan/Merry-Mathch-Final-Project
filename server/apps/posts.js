@@ -2,6 +2,7 @@ import { Router } from "express";
 import { protect } from "../middlewares/protect.js";
 import { supabase } from "../utils/supabaseClient.js";
 import { count } from "console";
+import multer from "multer";
 
 const postRouter = Router();
 postRouter.use(protect);
@@ -50,8 +51,11 @@ postRouter.get("/profile/:userId", async (req, res) => {
   });
 });
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const avatarUpload = upload.fields([{ name: "avatars", maxCount: 5 }]);
 // API ใช้ update ข้อมูล profile
-postRouter.put("/profile", async (req, res) => {
+postRouter.put("/profile", avatarUpload, async (req, res) => {
   console.log(req.user);
   const updatedProfile = {
     // username: req.body.username,
@@ -67,6 +71,7 @@ postRouter.put("/profile", async (req, res) => {
     about_me: req.body.about_me,
     // hobbies_tag: req.body.hobbies_tag,
   };
+  console.log(req.body);
   const { data, error } = await supabase
     .from("profiles")
     .update(updatedProfile)

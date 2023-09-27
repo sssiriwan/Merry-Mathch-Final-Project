@@ -79,13 +79,69 @@ function ProfileEditPage() {
     setAvatars(newAvatars);
   };
   // ปุ่มกด update profile
+  // const handleUpdateProfile = async () => {
+  //   const result = await axios.put(
+  //     "http://localhost:4000/post/profile",
+  //     profile
+  //   );
+  //   console.log(result);
+  //   navigate("/matching");
+  // };
+
+  //     console.log(result);
+  //     navigate("/matching");
+  //   } catch (error) {
+  //     // Handle any errors here
+  //     console.error("Error updating profile:", error);
+  //   }
+  // };
+
   const handleUpdateProfile = async () => {
-    const result = await axios.put(
-      "http://localhost:4000/post/profile",
-      profile
-    );
-    console.log(result);
-    navigate("/matching");
+    try {
+      const formData = new FormData();
+
+      // Append profile data to formData
+      formData.append("user_id", profile.user_id);
+      formData.append("fullname", profile.fullname);
+      formData.append("date_of_birth", profile.date_of_birth);
+      formData.append("location", profile.location);
+      formData.append("city", profile.city);
+      formData.append("sexual_identity", profile.sexual_identity);
+      formData.append("sexual_preference", profile.sexual_preference);
+      formData.append("racial_preference", profile.racial_preference);
+      formData.append("meeting_interest", profile.meeting_interest);
+      formData.append("about_me", profile.about_me);
+
+      // Append avatars to formData
+      for (const avatarKey in avatars) {
+        if (avatars.hasOwnProperty(avatarKey)) {
+          formData.append(`avatars[${avatarKey}]`, avatars[avatarKey]);
+        }
+      }
+
+      // Append tags to formData
+      for (const tagKey in tags) {
+        if (tags.hasOwnProperty(tagKey)) {
+          formData.append(`tags[${tagKey}]`, tags[tagKey]);
+        }
+      }
+
+      const result = await axios.put(
+        "http://localhost:4000/post/profile",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set the Content-Type header
+          },
+        }
+      );
+
+      console.log(result);
+      navigate("/matching");
+    } catch (error) {
+      // Handle any errors here
+      console.error("Error updating profile:", error);
+    }
   };
 
   // สำหรับรูป
@@ -506,7 +562,7 @@ function ProfileEditPage() {
                     <div className="flex mb-[347px]">
                       {Object.keys(avatars).map((avatarKey, index) => {
                         const avatar = avatars[avatarKey];
-                        const imageUrl = avatar.objectURL || avatar; // ใช้ URL จาก objectURL ถ้ามี ไม่然แล้วใช้ URL จาก avatars[avatarKey]
+                        const imageUrl = avatar.objectURL || avatar; // ใช้ URL จาก objectURL ถ้ามี ไม่แล้วใช้ URL จาก avatars[avatarKey]
 
                         return (
                           <div
