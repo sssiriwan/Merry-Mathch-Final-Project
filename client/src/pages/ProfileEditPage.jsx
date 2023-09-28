@@ -243,6 +243,7 @@ function ProfileEditPage() {
                       onChange={(event) => {
                         setUsername(event.target.value);
                       }}
+                      disabled
                     />
                   </Label>
                 </div>
@@ -294,6 +295,7 @@ function ProfileEditPage() {
                       onChange={(event) => {
                         setEmail(event.target.value);
                       }}
+                      disabled
                     />
                   </Label>
                 </div>
@@ -466,10 +468,9 @@ function ProfileEditPage() {
                 Upload at least photos. {/* {countTags()} */}
               </div>
 
-              <div className="input-container relative">
-                <div className="flex mb-[347px]">
+              
                   <div className="input-container relative">
-                    <div className="flex mb-[347px]">
+                    <div className="flex mt-5 mb-[200px]">
                       {Object.keys(avatars).map((avatarKey, index) => {
                         const avatar = avatars[avatarKey];
                         return ( //avatar != null &&
@@ -531,8 +532,6 @@ function ProfileEditPage() {
                         )}
                       )}
                     </div>
-                  </div>
-                </div>
               </div>
             </section>
           </section>
