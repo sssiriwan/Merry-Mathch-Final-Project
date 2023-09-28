@@ -1,7 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import PreviewCard from "../PreviewCard";
 import { supabase } from "@/utils/supabaseClient";
 
@@ -13,7 +12,7 @@ function MerryCard(props) {
   const matchStatus = matchList.status;
 
 
-  // console.log(userId, matchList);
+  
 
   const [proUserId, setProUserId] = useState();
   const [fullname, setFullname] = useState();
@@ -28,7 +27,7 @@ function MerryCard(props) {
 
   const [clicked, setClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [updateStatus, setUpdateStatus] = useState(profile.status)
+  
 
   const getProfile = async (item, userId) => {
     console.log(item);

@@ -71,12 +71,8 @@ export const Matching = () => {
   };
 
   const unmatchSomeone = async () => {
-    const data = {
-      user_id: profile.user_id,
-    };
     console.log("จะไม่แมชคนนี้", profile.profile_id);
-    //const result = await axios.post("http://localhost:4000/post/unmatch", data);
-    // console.log(result);
+   
     setCount(count + 1);
   };
 
@@ -145,9 +141,6 @@ export const Matching = () => {
         centeredSlides={true}
         navigation={true}
         spaceBetween={50}
-        // pagination={{
-        //   clickable: true,
-        // }}
         modules={[Pagination, Navigation]}
         className="mySwiper relative"
       >

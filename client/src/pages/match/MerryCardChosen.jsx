@@ -26,7 +26,7 @@ function MerryCardChosen(props) {
 
   const [clicked, setClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [updateStatus, setUpdateStatus] = useState(profile.status)
+  
 
   const getProfile = async (item, userId) => {
     console.log(item);
