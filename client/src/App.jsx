@@ -17,6 +17,8 @@ import PackageListPage from "./pages/PackageListPage";
 import { useAuth } from "./contexts/authentication";
 import UnauthenticatedApp from "./pages/unauthenticated/UnauthenticatedApp";
 import CheckAuthenticateUser from "./pages/authenticated/CheckAuthenticateUser";
+
+
 function App() {
   const auth = useAuth();
   return (
