@@ -70,14 +70,28 @@ function MerryList() {
               //เหมือนต้องเขียนเช็ค status ที่ match ด้วย ให้แค่ merry กับ match มา render เท่านั้น
               //item.chooser !== userId && item.status.toLowerCase() !== "unmatch"
               //mapคนที่เขาปัดเรา
-              if (item.chooser !== userId ) {
-                return <MerryCard user={item} id={userId} status={item.status} key={index} />;
+              if (item.chooser !== userId) {
+                return (
+                  <MerryCard
+                    user={item}
+                    id={userId}
+                    status={item.status}
+                    key={index}
+                  />
+                );
               }
-             //mapคนที่เราปัดเขา
-             //item.chooser == userId && item.status.toLowerCase() !== "unmatch"
-                if (item.chooser == userId ) {
-                  console.log("ทดสอยฮะ")
-                  return <MerryCardChosen user={item} id={userId} status={item.status} key={index} />;
+              //mapคนที่เราปัดเขา
+              //item.chooser == userId && item.status.toLowerCase() !== "unmatch"
+              if (item.chooser == userId) {
+                console.log("ทดสอยฮะ");
+                return (
+                  <MerryCardChosen
+                    user={item}
+                    id={userId}
+                    status={item.status}
+                    key={index}
+                  />
+                );
               }
             })}
           </div>

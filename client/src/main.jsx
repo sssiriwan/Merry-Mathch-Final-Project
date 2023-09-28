@@ -6,14 +6,13 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/authentication";
 import jwtInterceptor from "./utils/jwtInterceptor.js";
 import { ValindateProvider } from "./pages/register/valindatecontext/Valindatecontext.jsx";
-import { createClient } from '@supabase/supabase-js'
 
 jwtInterceptor();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>        
+      <AuthProvider>
         <ValindateProvider>
           <App />
         </ValindateProvider>

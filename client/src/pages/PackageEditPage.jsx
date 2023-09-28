@@ -3,14 +3,20 @@ import AdminControlPanel from "./admin/AdminControlPanel";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ButtonDemo, ButtonSecondary } from "@/components/base/button/Button";
+import { ButtonSecondary } from "@/components/base/button/Button";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ConfirmationModal from "./admin/ConfirmationModal";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function PackageEditPage() {
   const navigate = useNavigate();
@@ -20,27 +26,26 @@ function PackageEditPage() {
   const [limit, setLimit] = useState(0);
   const [icon, setIcon] = useState({});
   const [detail, setDetail] = useState([]);
-  const [price, setPrice] = useState(0)
-  
+  const [price, setPrice] = useState(0);
 
   const [detailList, setDetailList] = useState([]);
   const [newDetail, setNewDetail] = useState("");
 
-  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   // function จัดการรูป
   const handleFileChange = (event) => {
     const uniqueId = Date.now();
     setIcon({
       ...icon,
-      [uniqueId]: event.target.files[0]
-    })
-  }
+      [uniqueId]: event.target.files[0],
+    });
+  };
   const handleRemoveImage = (event, iconKey) => {
     event.preventDefault();
     delete icon[iconKey];
-    setIcon({...icon})
-  }
+    setIcon({ ...icon });
+  };
 
   const handleAddDetail = () => {
     if (newDetail.trim() !== "") {
@@ -50,45 +55,48 @@ function PackageEditPage() {
   };
 
   const getCurrentPackage = async () => {
-    const response = await axios.get(`http://localhost:4000/admin/package/${params.packageId}`);
+    const response = await axios.get(
+      `http://localhost:4000/admin/package/${params.packageId}`
+    );
     const uniqueId = Date.now();
-    const testObject = {[uniqueId]: response.data.data.package_icon}
+    const testObject = { [uniqueId]: response.data.data.package_icon };
     setName(response.data.data.package_name);
     setLimit(response.data.data.package_limit);
     setIcon(testObject);
     setDetail(response.data.data.package_detail);
-    setPrice(response.data.data.price)
+    setPrice(response.data.data.price);
   };
 
   const handleEditSubmit = async () => {
     const formData = new FormData();
-    formData.append('package_name', name);
-    formData.append('package_limit', limit);
-    formData.append('price', price);
+    formData.append("package_name", name);
+    formData.append("package_limit", limit);
+    formData.append("price", price);
     for (let iconKey in icon) {
-      formData.append('icon', icon[iconKey])
+      formData.append("icon", icon[iconKey]);
     }
     const result = await axios.put(
       `http://localhost:4000/admin/package/${params.packageId}`,
-      formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
       }
     );
     navigate("/admin");
   };
 
-
   const handleDeletePackage = async () => {
     setShowConfirmation(true);
-  }
-    
+  };
+
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:4000/admin/package/${params.packageId}`);
+      await axios.delete(
+        `http://localhost:4000/admin/package/${params.packageId}`
+      );
       navigate("/admin");
     } catch (error) {
       console.error(error);
-      
     }
     setShowConfirmation(false);
   };
@@ -96,7 +104,7 @@ function PackageEditPage() {
   const cancelDelete = () => {
     setShowConfirmation(false);
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
     handleEditSubmit();
@@ -117,7 +125,10 @@ function PackageEditPage() {
             <ButtonSecondary>
               <Link to="/admin">Cancel</Link>
             </ButtonSecondary>
-            <button onClick={handleSubmit} className="bg-pred-500 px-4 text-white rounded-full">
+            <button
+              onClick={handleSubmit}
+              className="bg-pred-500 px-4 text-white rounded-full"
+            >
               Edit
             </button>
           </div>
@@ -139,7 +150,11 @@ function PackageEditPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="area">Merry limit *</Label>
-                <Select onValueChange={(event) => { setLimit(event) }}>
+                <Select
+                  onValueChange={(event) => {
+                    setLimit(event);
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder={limit} />
                   </SelectTrigger>
@@ -156,14 +171,24 @@ function PackageEditPage() {
             <div>
               <Label htmlFor="price">Price</Label>
               <div className="flex items-center mt-1">
-                <Input id="price" type="number" value={price} onChange={(event) => { setPrice(event.target.value) }} className="w-40" />
+                <Input
+                  id="price"
+                  type="number"
+                  value={price}
+                  onChange={(event) => {
+                    setPrice(event.target.value);
+                  }}
+                  className="w-40"
+                />
                 <span className="ml-3">Baht</span>
               </div>
             </div>
 
             <Label htmlFor="subject">Icon *</Label>
             <label
-              className={`bg-pgray-100 h-24 w-24 rounded-xl flex flex-col justify-center items-center ${Object.keys(icon).length == 1 ? "hidden" : ""}`}
+              className={`bg-pgray-100 h-24 w-24 rounded-xl flex flex-col justify-center items-center ${
+                Object.keys(icon).length == 1 ? "hidden" : ""
+              }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -181,18 +206,37 @@ function PackageEditPage() {
                 />
               </svg>
               <div className="text-ppurple-600 text-sm">Upload icon</div>
-              <input id="upload" name="icon" type="file" onChange={handleFileChange} hidden />
+              <input
+                id="upload"
+                name="icon"
+                type="file"
+                onChange={handleFileChange}
+                hidden
+              />
             </label>
             {Object.keys(icon).map((iconKey) => {
               const file = icon[iconKey];
               return (
-                <div key={iconKey} className="w-24 h-24 bg-pgray-100 rounded-2xl relative flex justify-center items-center">
-                  <img src={file instanceof Blob ? URL.createObjectURL(file) : file } />
-                  <button onClick={(event) => { handleRemoveImage(event, iconKey) }} className="rounded-full absolute -top-1 -right-1 w-6 h-6 bg-putility-300 text-white text-sm">✕</button>
+                <div
+                  key={iconKey}
+                  className="w-24 h-24 bg-pgray-100 rounded-2xl relative flex justify-center items-center"
+                >
+                  <img
+                    src={
+                      file instanceof Blob ? URL.createObjectURL(file) : file
+                    }
+                  />
+                  <button
+                    onClick={(event) => {
+                      handleRemoveImage(event, iconKey);
+                    }}
+                    className="rounded-full absolute -top-1 -right-1 w-6 h-6 bg-putility-300 text-white text-sm"
+                  >
+                    ✕
+                  </button>
                 </div>
-              )
+              );
             })}
-
 
             <div className="grid gap-4">
               <Label htmlFor="description">PackageDetail</Label>
@@ -226,7 +270,9 @@ function PackageEditPage() {
                           setDetailList(updatedDetailsList);
                         }}
                       />
-                      <Button className="bg-white text-pgray-500">Delete</Button>
+                      <Button className="bg-white text-pgray-500">
+                        Delete
+                      </Button>
                     </div>
                   </li>
                 ))}
@@ -271,19 +317,23 @@ function PackageEditPage() {
         </div>
 
         <div className=" w-full flex   justify-end  mr-36">
-          <Button variant="ghost" className=" text-pgray-700"  onClick={handleDeletePackage}>
+          <Button
+            variant="ghost"
+            className=" text-pgray-700"
+            onClick={handleDeletePackage}
+          >
             Delete Package
           </Button>
         </div>
         {showConfirmation && (
-        <ConfirmationModal
-          message="Do you sure to delete this Package?"
-          confirmLabel="Yes, I want to delete"
-          cancelLabel="No, I don’t want"
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
-        />
-      )}
+          <ConfirmationModal
+            message="Do you sure to delete this Package?"
+            confirmLabel="Yes, I want to delete"
+            cancelLabel="No, I don’t want"
+            onConfirm={confirmDelete}
+            onCancel={cancelDelete}
+          />
+        )}
       </div>
     </div>
   );

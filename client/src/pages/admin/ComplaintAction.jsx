@@ -11,7 +11,6 @@ function ComplaintAction() {
   const [status, setStatus] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  
 
   const getComplaint = async () => {
     const result = await axios.get(
@@ -47,77 +46,41 @@ function ComplaintAction() {
     setIsCancelModalOpen(false);
   };
 
-
   const handleCloseCancelModal = () => {
     setIsCancelModalOpen(false);
   };
 
-  // const handleCancelClick = async () => {
-  //   // Update the status of the complaint to Cancel
-  //   try {
-  //     const updateComplaint = {
-  //       status: "Cancel",
-  //     };
-  //     const result = await axios.put(
-  //       `http://localhost:4000/admin/complaint/${param.complainId}`,
-  //       updateComplaint
-  //     );
+  // Function to handle "Resolve Complaint" button click
+  const handleResolvelClick = () => {
+    // Show the confirmation modal
+    setIsModalOpen(true);
+  };
 
-  //     //  Navigate to the complaint detail page
-  //     navigate(`/admin/complain/detail/${param.complainId}`);
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // };
-  // const handleResolvelClick = async () => {
-  //   // Update the status of the complaint to Resolved
-  //   try {
-  //     const updateComplaint = {
-  //       status: "Resolved",
-  //     };
-  //     const result = await axios.put(
-  //       `http://localhost:4000/admin/complaint/${param.complainId}`,
-  //       updateComplaint
-  //     );
+  // Function to handle confirmation of resolving the complaint
+  const handleConfirmResolve = async () => {
+    try {
+      const updateComplaint = {
+        status: "Resolved",
+      };
+      const result = await axios.put(
+        `http://localhost:4000/admin/complaint/${param.complainId}`,
+        updateComplaint
+      );
 
-  //     //  Navigate to the complaint detail page
-  //     navigate(`/admin/complain/detail/${param.complainId}`);
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // };
-    // Function to handle "Resolve Complaint" button click
-    const handleResolvelClick = () => {
-      // Show the confirmation modal
-      setIsModalOpen(true);
-    };
-  
-    // Function to handle confirmation of resolving the complaint
-    const handleConfirmResolve = async () => {
-      try {
-        const updateComplaint = {
-          status: "Resolved",
-        };
-        const result = await axios.put(
-          `http://localhost:4000/admin/complaint/${param.complainId}`,
-          updateComplaint
-        );
-  
-        // Navigate to the complaint detail page
-        navigate(`/admin/complain/detail/${param.complainId}`);
-      } catch (error) {
-        alert(error);
-      }
-  
-      // Close the modal
-      setIsModalOpen(false);
-    };
+      // Navigate to the complaint detail page
+      navigate(`/admin/complain/detail/${param.complainId}`);
+    } catch (error) {
+      alert(error);
+    }
 
-    const handleCancelResolve = () => {
-      // Close the modal
-      setIsModalOpen(false);
-    };
+    // Close the modal
+    setIsModalOpen(false);
+  };
 
+  const handleCancelResolve = () => {
+    // Close the modal
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     getComplaint();

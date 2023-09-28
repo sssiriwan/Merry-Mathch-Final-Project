@@ -10,7 +10,9 @@ function PackageSearch() {
           placeholder="Search..."
         />
         <div>
-          <ButtonDemo><a href="/admin/package">+ Add Package</a></ButtonDemo>
+          <ButtonDemo>
+            <a href="/admin/package">+ Add Package</a>
+          </ButtonDemo>
         </div>
       </div>
     </div>

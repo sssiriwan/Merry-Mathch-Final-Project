@@ -5,7 +5,6 @@ import {
   TypographyH1,
   TypographySmall,
 } from "@/components/base/button/Typography";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,8 +13,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PreviewCard from "./PreviewCard";
-import ListText from "./register/text";
-import ProfileImage from "./register/ProfileImage";
 import "../App.css";
 
 function ProfileEditPage() {
@@ -243,7 +240,6 @@ function ProfileEditPage() {
                       onChange={(event) => {
                         setUsername(event.target.value);
                       }}
-                      disabled
                     />
                   </Label>
                 </div>
@@ -295,7 +291,6 @@ function ProfileEditPage() {
                       onChange={(event) => {
                         setEmail(event.target.value);
                       }}
-                      disabled
                     />
                   </Label>
                 </div>
@@ -400,9 +395,7 @@ function ProfileEditPage() {
                   {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
                   <div className="mr-[150px] mb-[40px] mt-[40px]">
                     <div className="content">
-                      <p>
-                        Hobbies / Interests (Maximum 10)
-                      </p>
+                      <p>Hobbies / Interests (Maximum 10)</p>
                       <div className="border border-gray-300 rounded-md p-2 flex flex-wrap w-[930px]">
                         {tagKeys.map((tagKey, index) => {
                           return (
@@ -435,12 +428,7 @@ function ProfileEditPage() {
                         />
                       </div>
                     </div>
-                    {/* <div className="details flex justify-between">
-                      <p className="text-base">
-                        <span className="font-bold">{countTags()}</span> tags
-                        are remaining
-                      </p>
-                    </div> */}
+                    
                   </div>
                 </div>
                 <div className="mt-8">
@@ -468,70 +456,73 @@ function ProfileEditPage() {
                 Upload at least photos. {/* {countTags()} */}
               </div>
 
-              
-                  <div className="input-container relative">
-                    <div className="flex mt-5 mb-[200px]">
-                      {Object.keys(avatars).map((avatarKey, index) => {
-                        const avatar = avatars[avatarKey];
-                        return ( //avatar != null &&
-                          <div
-                            key={index}
-                            className="mr-[24px] relative"
-                            data-key={avatarKey}
-                          >
-                            <img
-                              className="w-40 h-40 object-cover rounded-2xl"
-                              src={avatar instanceof Blob ? URL.createObjectURL(avatar) : avatar}
-                            />
-                            <button
-                              className="image-remove-button bg-[#AF2758] text-white rounded-full p-2 absolute top-0 right-0"
-                              onClick={(event) =>
-                                handleRemoveImage(event, avatarKey)
-                              }
+              <div className="input-container relative">
+                <div className="flex mt-5 mb-[200px]">
+                  {Object.keys(avatars).map((avatarKey, index) => {
+                    const avatar = avatars[avatarKey];
+                    return (
+                      //avatar != null &&
+                      <div
+                        key={index}
+                        className="mr-[24px] relative"
+                        data-key={avatarKey}
+                      >
+                        <img
+                          className="w-40 h-40 object-cover rounded-2xl"
+                          src={
+                            avatar instanceof Blob
+                              ? URL.createObjectURL(avatar)
+                              : avatar
+                          }
+                        />
+                        <button
+                          className="image-remove-button bg-[#AF2758] text-white rounded-full p-2 absolute top-0 right-0"
+                          onClick={(event) =>
+                            handleRemoveImage(event, avatarKey)
+                          }
+                        >
+                          x
+                        </button>
+                      </div>
+                    );
+                  })}
+                  {[...Array(maxUploads - Object.keys(avatars).length)].map(
+                    (_, index) => {
+                      return (
+                        <label
+                          key={index}
+                          className={`button-avatar mr-[24px] bg-pgray-200 w-[167px] h-[167px] rounded-[12px] flex flex-col justify-center items-center relative `}
+                        >
+                          <div className="text-ppurple-600 text-lg">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="25"
+                              height="24"
+                              viewBox="0 0 25 24"
+                              fill="none"
                             >
-                              x
-                            </button>
+                              <path
+                                d="M12.5 4.5V19.5M20 12H5"
+                                stroke="#7D2262"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
                           </div>
-                        );
-                      })}
-                      {[...Array(maxUploads - Object.keys(avatars).length)].map(
-                        (_, index) => {
-                          return (
-                          <label
-                            key={index}
-                            className={`button-avatar mr-[24px] bg-pgray-200 w-[167px] h-[167px] rounded-[12px] flex flex-col justify-center items-center relative `}
-                          >
-                            <div className="text-ppurple-600 text-lg">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="25"
-                                height="24"
-                                viewBox="0 0 25 24"
-                                fill="none"
-                              >
-                                <path
-                                  d="M12.5 4.5V19.5M20 12H5"
-                                  stroke="#7D2262"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </div>
-                            <div className="text-ppurple-600 text-lg">
-                              Upload
-                            </div>
-                            <input
-                              id="avatar"
-                              name="avatar"
-                              type="file"
-                              onChange={handleFileChange}
-                              hidden
-                            />
-                          </label>
-                        )}
-                      )}
-                    </div>
+                          <div className="text-ppurple-600 text-lg">Upload</div>
+                          <input
+                            id="avatar"
+                            name="avatar"
+                            type="file"
+                            onChange={handleFileChange}
+                            hidden
+                          />
+                        </label>
+                      );
+                    }
+                  )}
+                </div>
               </div>
             </section>
           </section>

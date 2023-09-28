@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { protect } from "../middlewares/protect.js";
 import { supabase } from "../utils/supabaseClient.js";
-import { count } from "console";
 import multer from "multer";
 
 const postRouter = Router();
@@ -51,23 +50,28 @@ postRouter.get("/profile/:userId", async (req, res) => {
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-const avatarUpload = upload.fields([{ name: "avatars", maxCount: 5 }, { name: "tags", maxCount: 10 }]);
+const avatarUpload = upload.fields([
+  { name: "avatars", maxCount: 5 },
+  { name: "tags", maxCount: 10 },
+]);
 // API ใช้ update ข้อมูล profile
 postRouter.put("/profile", avatarUpload, async (req, res) => {
-  let fileUrl = []
+  let fileUrl = [];
   const files = req.files.avatars;
-  if(files) {
-    for (let i=0; i<files.length; i++) {
-      const fileName = `${Date.now()}`
-      const {data,error} = await supabase.storage.from('avatarImg').upload(fileName, files[i].buffer, {
-        cacheControl: 3600,
-        upsert: false,
-        contentType: files[i].mimetype
-      })
-      const result = supabase.storage.from('avatarImg').getPublicUrl(data.path)
-      fileUrl.push(result.data.publicUrl)
-      if(error) {
-        console.log(error)
+  if (files) {
+    for (let i = 0; i < files.length; i++) {
+      const fileName = `${Date.now()}`;
+      const { data, error } = await supabase.storage
+        .from("avatarImg")
+        .upload(fileName, files[i].buffer, {
+          cacheControl: 3600,
+          upsert: false,
+          contentType: files[i].mimetype,
+        });
+      const result = supabase.storage.from("avatarImg").getPublicUrl(data.path);
+      fileUrl.push(result.data.publicUrl);
+      if (error) {
+        console.log(error);
       }
     }
   }
@@ -84,13 +88,35 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
     meeting_interest: req.body.meeting_interest,
     about_me: req.body.about_me,
   };
-  let hobbies = req.body.tags.filter((word) => word != 'null' );
-  const userHobbies = await supabase.from('hobbies').update(
-    { hob_1: hobbies[0] ,hob_2: hobbies[1] ,hob_3: hobbies[2] ,hob_4: hobbies[3] ,hob_5: hobbies[4] ,
-      hob_6: hobbies[5] ,hob_7: hobbies[6] ,hob_8: hobbies[7] ,hob_9: hobbies[8] ,hob_10: hobbies[9] ,}
-  ).eq('user_id', req.user.id).select()
+  let hobbies = req.body.tags.filter((word) => word != "null");
+  const userHobbies = await supabase
+    .from("hobbies")
+    .update({
+      hob_1: hobbies[0],
+      hob_2: hobbies[1],
+      hob_3: hobbies[2],
+      hob_4: hobbies[3],
+      hob_5: hobbies[4],
+      hob_6: hobbies[5],
+      hob_7: hobbies[6],
+      hob_8: hobbies[7],
+      hob_9: hobbies[8],
+      hob_10: hobbies[9],
+    })
+    .eq("user_id", req.user.id)
+    .select();
 
-  const userImg = await supabase.from('profile_image').update({ img_1: fileUrl[4], img_2: fileUrl[3], img_3: fileUrl[2], img_4: fileUrl[1], img_5: fileUrl[0]}).eq('user_id', req.user.id).select()
+  const userImg = await supabase
+    .from("profile_image")
+    .update({
+      img_1: fileUrl[4],
+      img_2: fileUrl[3],
+      img_3: fileUrl[2],
+      img_4: fileUrl[1],
+      img_5: fileUrl[0],
+    })
+    .eq("user_id", req.user.id)
+    .select();
   const { data, error } = await supabase
     .from("profiles")
     .update(updatedProfile)
@@ -99,7 +125,7 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
   if (error) {
     console.log("อัพเดทโปรไฟล์ไม่สำเร็จ:", error);
   }
-  
+
   return res.json({
     message: "Updated profile successfully",
   });

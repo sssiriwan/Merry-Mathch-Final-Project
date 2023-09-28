@@ -21,8 +21,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // Convert date format from (created_at) column into dd/mm/yy form
-// อันนี้เดี่ยวน้องเซ็ทให้มาจากฝั่งหลังบ้าน
-
 
 function ComplaintListPage() {
   const [filteredComplaints, setFilteredComplaints] = useState([]);
@@ -31,35 +29,23 @@ function ComplaintListPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("");
-  
+
   const navigate = useNavigate();
-
-  // const fetchComplaints = async () => {
-  //   setIsLoading(true);
-  //   setError(null);
-
-  //   try {
-  //     const result = await axios.get("http://localhost:4000/admin/complaint");
-  //     setFilteredComplaints(result.data.data);
-  //   } catch (error) {
-  //     setError("An error occurred while fetching data");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const getDataFromSearchBar = async () => {
     try {
-      setIsLoading(true)
-      console.log(selectedStatus)
-      const result = await axios.get(`http://localhost:4000/admin/complaintz?keywords=${searchInput}&status=${selectedStatus}`)
-      console.log("จากเซิช",result.data)
-      setFilteredComplaints(result.data.data)
-      setIsLoading(false)
+      setIsLoading(true);
+      console.log(selectedStatus);
+      const result = await axios.get(
+        `http://localhost:4000/admin/complaintz?keywords=${searchInput}&status=${selectedStatus}`
+      );
+      console.log("จากเซิช", result.data);
+      setFilteredComplaints(result.data.data);
+      setIsLoading(false);
     } catch (error) {
-      console.log("เออเร่อจาก complainList",error)
+      console.log("เออเร่อจาก complainList", error);
     }
-  }
+  };
 
   const handleRowClick = async (complaint) => {
     // Update the status of the complaint to Pending
@@ -96,7 +82,7 @@ function ComplaintListPage() {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear().toString().slice(-2);
-  
+
     return `${day}/${month}/${year}`;
   }
 
@@ -123,7 +109,11 @@ function ComplaintListPage() {
               onChange={handleSearchInput}
             />
             <div>
-              <Select onValueChange={(event) => { setSelectedStatus(event) }}>
+              <Select
+                onValueChange={(event) => {
+                  setSelectedStatus(event);
+                }}
+              >
                 <SelectTrigger className="w-[200px] flex p-3  items-start gap-8  rounded-md border border-gray-400 bg-neutral-0">
                   <SelectValue placeholder="All status" />
                 </SelectTrigger>
@@ -199,38 +189,3 @@ function ComplaintListPage() {
 }
 
 export default ComplaintListPage;
-
-// //////////////
-// const handleSearchText = (e) => {
-//   e.preventDefault();
-//   setSearchText(e.target.value);
-// };
-
-// const handleCategory = (e) => {
-//   setCategory(e.target.value);
-// };
-
-// useEffect(() => {
-//   getComplaints();
-// }, [searchText, category]);
-
-// const [complaints, setComplaints] = useState([]);
-// const [isError, setIsError] = useState(null);
-// const [isLoading, setIsLoading] = useState(null);
-// const [searchText, setSearchText] = useState("");
-// const [category, setCategory] = useState("");
-
-// const getComplaints = async () => {
-//   try {
-//     setIsError(false);
-//     setIsLoading(true);
-//     const results = await axios(
-//       `http://localhost:4001/admin/complaint?keywords=${searchText}&category=${category}`
-//     );
-//     setComplaints(results.data.data);
-//     setIsLoading(false);
-//   } catch (error) {
-//     setIsLoading(false);
-//     setIsError(true);
-//   }
-// };

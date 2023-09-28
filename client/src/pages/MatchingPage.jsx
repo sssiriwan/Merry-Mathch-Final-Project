@@ -1,4 +1,3 @@
-import Footer from "@/components/base/Footer";
 import { NavbarRegistered } from "@/components/base/Navbar";
 import FilterUser from "@/pages/FilterUser";
 import SideBar from "./match/SideBar";

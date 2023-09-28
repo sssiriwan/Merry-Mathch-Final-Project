@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import ComplaintAction from "./admin/ComplaintAction";
-import ComplaintDetail from "./admin/ComplaintDetail";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
 import BadgeDemo from "@/components/base/button/Badge";
@@ -38,7 +37,7 @@ function ComplaintActionPage() {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const year = date.getFullYear().toString().slice(-2);
-  
+
     return `${day}/${month}/${year}`;
   }
 

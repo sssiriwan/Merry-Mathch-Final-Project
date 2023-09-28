@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
+import { NavbarRegistered } from "@/components/base/Navbar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ButtonPrimary } from "@/components/base/button/Button.jsx";

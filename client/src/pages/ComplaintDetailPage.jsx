@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import ComplaintAction from "./admin/ComplaintAction";
 import ComplaintDetail from "./admin/ComplaintDetail";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
@@ -25,7 +24,7 @@ function ComplaintDetailPage() {
   useEffect(() => {
     getComplaint();
   }, []);
-  
+
   return (
     <div className="flex">
       <AdminControlPanel />
