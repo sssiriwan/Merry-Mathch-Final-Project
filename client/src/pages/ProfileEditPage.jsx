@@ -46,8 +46,6 @@ function ProfileEditPage() {
   const tagKeys = Object.keys(tags);
   const imageKeys = Object.keys(avatars);
 
-  console.log("ลอง",tags)
-
   const countTags = () => {
     return maxTags - tags.length;
   };
@@ -75,28 +73,10 @@ function ProfileEditPage() {
 
   const handleRemoveImage = (event, avatarKey) => {
     event.preventDefault();
-    console.log("Object URL of the image:", avatars[avatarKey].objectURL);
     const newAvatars = { ...avatars };
     delete newAvatars[avatarKey];
     setAvatars(newAvatars);
   };
-  // ปุ่มกด update profile
-  // const handleUpdateProfile = async () => {
-  //   const result = await axios.put(
-  //     "http://localhost:4000/post/profile",
-  //     profile
-  //   );
-  //   console.log(result);
-  //   navigate("/matching");
-  // };
-
-  //     console.log(result);
-  //     navigate("/matching");
-  //   } catch (error) {
-  //     // Handle any errors here
-  //     console.error("Error updating profile:", error);
-  //   }
-  // };
 
   const handleUpdateProfile = async () => {
     try {
@@ -139,25 +119,18 @@ function ProfileEditPage() {
       );
 
       console.log(result);
-      // navigate("/matching");
+      navigate("/matching");
     } catch (error) {
       // Handle any errors here
       console.error("Error updating profile:", error);
     }
   };
 
-  // สำหรับรูป
-  // const countTags = () => {
-  //   return 5 - Object.keys(avatars).length;
-  // };
-
-  // ดึงข้อมูล
   const maxUploads = 5;
 
   const handleFileChange = (event) => {
     const files = event.target.files;
     const newAvatars = { ...avatars };
-
     for (let i = 0; i < files.length; i++) {
       if (Object.keys(newAvatars).length < maxUploads) {
         const uniqueId = Date.now() + i;
@@ -171,12 +144,9 @@ function ProfileEditPage() {
     setAvatars(newAvatars);
   };
 
-  console.log(avatars);
-
   const getMyProfile = async () => {
     setIsLoading(true);
     const result = await axios.get("http://localhost:4000/post/profile");
-    console.log(result.data.data);
     setIsLoading(false);
     setAvatars(result.data.data.profile_image);
     setTags(result.data.data.hobbies);
@@ -425,16 +395,14 @@ function ProfileEditPage() {
                   </div>
                 </div>
                 <div className="mt-8">
-                  <label>Hobbies / Interests (Maximum 10)</label>
                   {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
                   <div className="mr-[150px] mb-[40px] mt-[40px]">
                     <div className="content">
-                      <p className="text-base font-semibold">
+                      <p>
                         Hobbies / Interests (Maximum 10)
                       </p>
                       <div className="border border-gray-300 rounded-md p-2 flex flex-wrap w-[930px]">
                         {tagKeys.map((tagKey, index) => {
-                          console.log(tags[tagKey] != null);
                           return (
                             tags[tagKey] != null && (
                               <div
@@ -465,12 +433,12 @@ function ProfileEditPage() {
                         />
                       </div>
                     </div>
-                    <div className="details flex justify-between">
+                    {/* <div className="details flex justify-between">
                       <p className="text-base">
                         <span className="font-bold">{countTags()}</span> tags
                         are remaining
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="mt-8">
@@ -500,78 +468,11 @@ function ProfileEditPage() {
 
               <div className="input-container relative">
                 <div className="flex mb-[347px]">
-                  {/* {imageKeys.map((avatarKey, index) => (
-                    <div
-                      key={index}
-                      className="mr-[24px] relative"
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                      }}
-                      data-key={avatarKey}
-                    >
-                      <div className="mr-[24px] relative">
-                        <img
-                          className="w-40 h-40 object-cover rounded-2xl"
-                          src={avatars[avatarKey]} // เปลี่ยน src เป็น avatars[avatarKey]
-                          alt={avatarKey} // หรือใส่ข้อมูลเกี่ยวกับรูปภาพที่เหมาะสม
-                        />
-                        <button
-                          className="image-remove-button bg-[#AF2758] text-white rounded-full h-10 w-10 p-2 absolute top-0 right-0"
-                          onClick={(event) =>
-                            handleRemoveImage(event, avatarKey)
-                          }
-                        >
-                          x
-                        </button>
-                      </div>
-                    </div>
-                  ))} */}
-
-                  {/* {[...Array(maxUploads - Object.keys(avatars).length)].map(
-                (_, index) => (
-                  <label
-                    key={index}
-                    className={`button-avatar mr-[24px] bg-pgray-200 w-[167px] h-[167px] rounded-[12px] flex flex-col justify-center items-center relative ${
-                      Object.keys(avatars).length >= maxUploads ? "hidden" : ""
-                    }`}
-                  >
-                    <div className="text-ppurple-600 text-lg">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="25"
-                        height="24"
-                        viewBox="0 0 25 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M12.5 4.5V19.5M20 12H5"
-                          stroke="#7D2262"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-                    <div className="text-ppurple-600 text-lg">Upload</div>
-
-                    <input
-                      //   id={`avatar${index}`}
-                      //   name={`avatar${index}`}
-                      type="file"
-                      onChange=""
-                      hidden
-                    />
-                  </label>
-                )
-              )} */}
-
                   <div className="input-container relative">
                     <div className="flex mb-[347px]">
                       {Object.keys(avatars).map((avatarKey, index) => {
                         const avatar = avatars[avatarKey];
-                        const imageUrl = avatar.objectURL || avatar; // ใช้ URL จาก objectURL ถ้ามี ไม่แล้วใช้ URL จาก avatars[avatarKey]
-
-                        return (
+                        return ( //avatar != null &&
                           <div
                             key={index}
                             className="mr-[24px] relative"
@@ -579,7 +480,7 @@ function ProfileEditPage() {
                           >
                             <img
                               className="w-40 h-40 object-cover rounded-2xl"
-                              src={imageUrl}
+                              src={avatar instanceof Blob ? URL.createObjectURL(avatar) : avatar}
                             />
                             <button
                               className="image-remove-button bg-[#AF2758] text-white rounded-full p-2 absolute top-0 right-0"
@@ -593,14 +494,11 @@ function ProfileEditPage() {
                         );
                       })}
                       {[...Array(maxUploads - Object.keys(avatars).length)].map(
-                        (_, index) => (
+                        (_, index) => {
+                          return (
                           <label
                             key={index}
-                            className={`button-avatar mr-[24px] bg-pgray-200 w-[167px] h-[167px] rounded-[12px] flex flex-col justify-center items-center relative ${
-                              Object.keys(avatars).length >= maxUploads
-                                ? "hidden"
-                                : ""
-                            }`}
+                            className={`button-avatar mr-[24px] bg-pgray-200 w-[167px] h-[167px] rounded-[12px] flex flex-col justify-center items-center relative `}
                           >
                             <div className="text-ppurple-600 text-lg">
                               <svg
@@ -623,14 +521,14 @@ function ProfileEditPage() {
                               Upload
                             </div>
                             <input
-                              id={`avatar${index}`}
-                              name={`avatar${index}`}
+                              id="avatar"
+                              name="avatar"
                               type="file"
                               onChange={handleFileChange}
                               hidden
                             />
                           </label>
-                        )
+                        )}
                       )}
                     </div>
                   </div>
