@@ -10,6 +10,8 @@ function MerryCard(props) {
 
   const matchList = props.user;
   const userId = props.id;
+  const matchStatus = matchList.status;
+
 
   // console.log(userId, matchList);
 
@@ -24,8 +26,6 @@ function MerryCard(props) {
   const [meetingInterest, setMeetingInterest] = useState();
   const [image, setImage] = useState();
 
-
-
   const [clicked, setClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // const [updateStatus, setUpdateStatus] = useState(profile.status)
@@ -38,7 +38,7 @@ function MerryCard(props) {
       .select(
         "*, users(email, username, user_id),hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
       )
-      .eq("user_id", item.chooser || item.chosen_one)
+      .eq("user_id", item.chooser)
       .neq("user_id", userId);
 
     setProUserId(data[0].user_id);
@@ -69,24 +69,45 @@ function MerryCard(props) {
       return userAge;
     };
 
-    const handleMatchClick = async (item) => {
-      try {
-        // if (item.status === "merry"){
+    const handleMatchClick = async (matchList) => {
+      if (matchList.status.toLowerCase() === "merry") {
+        console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
         const updateStatus = {
-          match_list_id: item.match_list_id,
-          status: "unmerry",
+          status: "match",
+          updated_at: new Date(),
         };
-         const result = await axios.put(
-          `http://localhost:4000/post/match`,
-          updateStatus
-        );
-      } catch (error) {
-        alert(error);
+        const { data, error } = await supabase
+          .from("match_list")
+          .update(updateStatus)
+          .eq("matchlist_id", matchList.matchlist_id);
+      } else if (matchList.status.toLowerCase() === "match") {
+        console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+        const updateStatus = {
+          status: "unmatch",
+          updated_at: new Date(),
+        };
+        const { data, error } = await supabase
+          .from("match_list")
+          .update(updateStatus)
+          .eq("matchlist_id", matchList.matchlist_id);
+      } else {
+        console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+        const updateStatus = {
+          status: "match",
+          updated_at: new Date(),
+        };
+        const { data, error } = await supabase
+          .from("match_list")
+          .update(updateStatus)
+          .eq("matchlist_id", matchList.matchlist_id);
       }
     };
-
+  
     const merryMatchButton = (status) => {
-      if (status.toLowerCase() === "merry") {
+      if (
+        status.toLowerCase() === "match" ||
+        status.toLowerCase() === "unmatch"
+      ) {
         return (
           <div className="border-2 border-pred-500 rounded-full flex items-center justify-center py-1 px-4 w-fit">
             <svg
@@ -140,9 +161,9 @@ function MerryCard(props) {
         );
       }
     };
-
+  
     const merryButtonStyle = (status) => {
-      if (status.toLowerCase() === "merry") {
+      if (status.toLowerCase() === "merry" || status.toLowerCase() === "match") {
         const style = "w-10 h-10 rounded-2xl shadow-3xl bg-pred-500";
         return style;
       } else {
@@ -150,9 +171,9 @@ function MerryCard(props) {
         return style;
       }
     };
-
+  
     const heartStyle = (status) => {
-      if (status.toLowerCase() === "merry") {
+      if (status.toLowerCase() === "merry" || status.toLowerCase() === "match") {
         const style = "white";
         return style;
       } else {
@@ -164,6 +185,13 @@ function MerryCard(props) {
   useEffect(() => {
     getProfile(matchList, userId);
   }, [matchList, userId]);
+
+  //มันไม่ทำงานเพราะ status ตัวใหม่ยังไม่ได้ส่งมาจากหน้าบ้าน
+  useEffect(()=>{
+    merryMatchButton(matchStatus);
+    merryButtonStyle(matchStatus);
+    heartStyle(matchStatus)
+  },[matchStatus])
 
  
   return (
@@ -213,106 +241,118 @@ function MerryCard(props) {
           </div>
         </div>
         <div className="w-[200px] h-[180px] flex flex-col items-end">
-        {merryMatchButton(matchList.status)}
-          <div className="w-10/12 justify-between flex flex-row-reverse mt-5">
-            {/* เช็ค status แล้วเลือกแสดงปุ่ม เมื่อคลิกแล้วให้เปลี่ยน state status */}
-            <button className={merryButtonStyle(matchList.status)} onClick={() => handleMatchClick(profile)}>
-              
-              <svg
-                width="44"
-                height="42"
-                viewBox="0 0 44 42"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            {merryMatchButton(matchStatus)}
+            <div className="w-10/12 mt-5 flex flex-row-reverse items-start justify-center ">
+              {/* เช็ค status แล้วเลือกแสดงปุ่ม เมื่อคลิกแล้วให้เปลี่ยน state status */}
+              {/* ปุ่มทำmerry */}
+              <button
+                className={merryButtonStyle(matchStatus)}
+                onClick={() => handleMatchClick(matchList)}
               >
-                <g filter="url(#filter0_d_5071_59)">
+                <svg
+                  width="44"
+                  height="42"
+                  viewBox="0 0 44 42"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g filter="url(#filter0_d_5071_59)">
+                    <path
+                      d="M19.584 27.298L19.578 27.2944L19.5552 27.2824C19.0817 27.0248 18.6166 26.7518 18.1608 26.464C17.074 25.7802 16.0385 25.0182 15.0624 24.184C12.8544 22.2796 10.4004 19.4224 10.4004 16C10.4005 14.8834 10.7468 13.7942 11.3915 12.8825C12.0363 11.9708 12.9478 11.2814 14.0006 10.9093C15.0534 10.5371 16.1957 10.5005 17.2702 10.8044C18.3447 11.1083 19.2985 11.7379 20.0004 12.6064C20.7022 11.7379 21.6561 11.1083 22.7306 10.8044C23.8051 10.5005 24.9473 10.5371 26.0001 10.9093C27.053 11.2814 27.9645 11.9708 28.6093 12.8825C29.254 13.7942 29.6003 14.8834 29.6004 16C29.6004 19.4224 27.1476 22.2796 24.9384 24.184C23.5516 25.3689 22.046 26.4072 20.4456 27.2824L20.4228 27.2944L20.4168 27.298H20.4144C20.2869 27.3656 20.1448 27.401 20.0005 27.4012C19.8563 27.4014 19.7141 27.3664 19.5864 27.2992L19.584 27.298Z"
+                      fill={heartStyle(matchStatus)}
+                    />
+                  </g>
+                  <defs>
+                    <filter
+                      id="filter0_d_5071_59"
+                      x="0.400391"
+                      y="0.600525"
+                      width="43.1992"
+                      height="40.8007"
+                      filterUnits="userSpaceOnUse"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feColorMatrix
+                        in="SourceAlpha"
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        result="hardAlpha"
+                      />
+                      <feOffset dx="2" dy="2" />
+                      <feGaussianBlur stdDeviation="6" />
+                      <feComposite in2="hardAlpha" operator="out" />
+                      <feColorMatrix
+                        type="matrix"
+                        values="0 0 0 0 0.249604 0 0 0 0 0.196181 0 0 0 0 0.520833 0 0 0 0.12 0"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in2="BackgroundImageFix"
+                        result="effect1_dropShadow_5071_59"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="effect1_dropShadow_5071_59"
+                        result="shape"
+                      />
+                    </filter>
+                  </defs>
+                </svg>
+              </button>
+              {/* ปุ่มดูประวัติ */}
+              <button
+                onClick={() => {
+                  setClicked(!clicked);
+                }}
+                className="w-10 h-10 bg-white rounded-2xl shadow-3xl grid place-items-center aspect-square"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
-                    d="M19.584 27.298L19.578 27.2944L19.5552 27.2824C19.0817 27.0248 18.6166 26.7518 18.1608 26.464C17.074 25.7802 16.0385 25.0182 15.0624 24.184C12.8544 22.2796 10.4004 19.4224 10.4004 16C10.4005 14.8834 10.7468 13.7942 11.3915 12.8825C12.0363 11.9708 12.9478 11.2814 14.0006 10.9093C15.0534 10.5371 16.1957 10.5005 17.2702 10.8044C18.3447 11.1083 19.2985 11.7379 20.0004 12.6064C20.7022 11.7379 21.6561 11.1083 22.7306 10.8044C23.8051 10.5005 24.9473 10.5371 26.0001 10.9093C27.053 11.2814 27.9645 11.9708 28.6093 12.8825C29.254 13.7942 29.6003 14.8834 29.6004 16C29.6004 19.4224 27.1476 22.2796 24.9384 24.184C23.5516 25.3689 22.046 26.4072 20.4456 27.2824L20.4228 27.2944L20.4168 27.298H20.4144C20.2869 27.3656 20.1448 27.401 20.0005 27.4012C19.8563 27.4014 19.7141 27.3664 19.5864 27.2992L19.584 27.298Z"
-                    fill={heartStyle(matchList.status)}
+                    d="M12 15C12.7956 15 13.5587 14.6839 14.1213 14.1213C14.6839 13.5587 15 12.7956 15 12C15 11.2044 14.6839 10.4413 14.1213 9.87868C13.5587 9.31607 12.7956 9 12 9C11.2044 9 10.4413 9.31607 9.87868 9.87868C9.31607 10.4413 9 11.2044 9 12C9 12.7956 9.31607 13.5587 9.87868 14.1213C10.4413 14.6839 11.2044 15 12 15Z"
+                    fill="#646D89"
                   />
-                </g>
-                <defs>
-                  <filter
-                    id="filter0_d_5071_59"
-                    x="0.400391"
-                    y="0.600525"
-                    width="43.1992"
-                    height="40.8007"
-                    filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M0.796268 12.708C0.619994 12.25 0.619994 11.7428 0.796268 11.2848C1.66894 9.02217 3.20641 7.07691 5.20622 5.70514C7.20603 4.33338 9.5744 3.59945 11.9995 3.59998C17.1079 3.59998 21.4711 6.79198 23.2027 11.292C23.3791 11.7492 23.3779 12.2568 23.2027 12.7152C22.33 14.9778 20.7925 16.923 18.7927 18.2948C16.7929 19.6666 14.4245 20.4005 11.9995 20.4C6.89107 20.4 2.52787 17.208 0.796268 12.708ZM16.7995 12C16.7995 13.273 16.2938 14.4939 15.3936 15.3941C14.4934 16.2943 13.2725 16.8 11.9995 16.8C10.7264 16.8 9.50553 16.2943 8.60536 15.3941C7.70518 14.4939 7.19947 13.273 7.19947 12C7.19947 10.7269 7.70518 9.50604 8.60536 8.60586C9.50553 7.70569 10.7264 7.19998 11.9995 7.19998C13.2725 7.19998 14.4934 7.70569 15.3936 8.60586C16.2938 9.50604 16.7995 10.7269 16.7995 12Z"
+                    fill="#646D89"
+                  />
+                </svg>
+              </button>
+              {/* ปุ่มแชท */}
+              {matchStatus.toLowerCase() === "match" && (
+                <button
+                  className="w-10 h-10 bg-white rounded-2xl shadow-3xl grid place-items-center aspect-square"
+                  onClick={() => {
+                    navigate(`/chat/${matchList.matchlist_id}`);
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="19"
+                    viewBox="0 0 20 19"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                    <feColorMatrix
-                      in="SourceAlpha"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                      result="hardAlpha"
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M10 0.599976C4.82802 0.599976 0.400024 4.23958 0.400024 8.99998C0.400024 11.4288 1.57362 13.59 3.39882 15.102C3.38209 15.8477 3.16578 16.5754 2.77242 17.2092C2.69087 17.3409 2.64467 17.4913 2.63831 17.6461C2.63195 17.8009 2.66563 17.9546 2.7361 18.0926C2.80657 18.2305 2.91145 18.3479 3.04058 18.4334C3.16971 18.519 3.31873 18.5697 3.47322 18.5808C5.15499 18.7067 6.82735 18.236 8.19642 17.2512C8.78082 17.3496 9.38443 17.4 10 17.4C15.172 17.4 19.6 13.7604 19.6 8.99998C19.6 4.23958 15.172 0.599976 10 0.599976ZM10 10.2C10.3183 10.2 10.6235 10.0735 10.8486 9.8485C11.0736 9.62346 11.2 9.31824 11.2 8.99998C11.2 8.68172 11.0736 8.37649 10.8486 8.15145C10.6235 7.9264 10.3183 7.79998 10 7.79998C9.68176 7.79998 9.37654 7.9264 9.1515 8.15145C8.92645 8.37649 8.80002 8.68172 8.80002 8.99998C8.80002 9.31824 8.92645 9.62346 9.1515 9.8485C9.37654 10.0735 9.68176 10.2 10 10.2ZM7.60002 8.99998C7.60002 9.31824 7.4736 9.62346 7.24855 9.8485C7.02351 10.0735 6.71828 10.2 6.40002 10.2C6.08176 10.2 5.77654 10.0735 5.5515 9.8485C5.32645 9.62346 5.20002 9.31824 5.20002 8.99998C5.20002 8.68172 5.32645 8.37649 5.5515 8.15145C5.77654 7.9264 6.08176 7.79998 6.40002 7.79998C6.71828 7.79998 7.02351 7.9264 7.24855 8.15145C7.4736 8.37649 7.60002 8.68172 7.60002 8.99998ZM13.6 10.2C13.9183 10.2 14.2235 10.0735 14.4486 9.8485C14.6736 9.62346 14.8 9.31824 14.8 8.99998C14.8 8.68172 14.6736 8.37649 14.4486 8.15145C14.2235 7.9264 13.9183 7.79998 13.6 7.79998C13.2818 7.79998 12.9765 7.9264 12.7515 8.15145C12.5265 8.37649 12.4 8.68172 12.4 8.99998C12.4 9.31824 12.5265 9.62346 12.7515 9.8485C12.9765 10.0735 13.2818 10.2 13.6 10.2Z"
+                      fill="#646D89"
                     />
-                    <feOffset dx="2" dy="2" />
-                    <feGaussianBlur stdDeviation="6" />
-                    <feComposite in2="hardAlpha" operator="out" />
-                    <feColorMatrix
-                      type="matrix"
-                      values="0 0 0 0 0.249604 0 0 0 0 0.196181 0 0 0 0 0.520833 0 0 0 0.12 0"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in2="BackgroundImageFix"
-                      result="effect1_dropShadow_5071_59"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in="SourceGraphic"
-                      in2="effect1_dropShadow_5071_59"
-                      result="shape"
-                    />
-                  </filter>
-                </defs>
-              </svg>
-            </button>
-            <button
-              onClick={() => {
-                setClicked(!clicked);
-              }}
-              className="w-10 h-10 bg-white rounded-2xl shadow-3xl grid place-items-center aspect-square"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 15C12.7956 15 13.5587 14.6839 14.1213 14.1213C14.6839 13.5587 15 12.7956 15 12C15 11.2044 14.6839 10.4413 14.1213 9.87868C13.5587 9.31607 12.7956 9 12 9C11.2044 9 10.4413 9.31607 9.87868 9.87868C9.31607 10.4413 9 11.2044 9 12C9 12.7956 9.31607 13.5587 9.87868 14.1213C10.4413 14.6839 11.2044 15 12 15Z"
-                  fill="#646D89"
-                />
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M0.796268 12.708C0.619994 12.25 0.619994 11.7428 0.796268 11.2848C1.66894 9.02217 3.20641 7.07691 5.20622 5.70514C7.20603 4.33338 9.5744 3.59945 11.9995 3.59998C17.1079 3.59998 21.4711 6.79198 23.2027 11.292C23.3791 11.7492 23.3779 12.2568 23.2027 12.7152C22.33 14.9778 20.7925 16.923 18.7927 18.2948C16.7929 19.6666 14.4245 20.4005 11.9995 20.4C6.89107 20.4 2.52787 17.208 0.796268 12.708ZM16.7995 12C16.7995 13.273 16.2938 14.4939 15.3936 15.3941C14.4934 16.2943 13.2725 16.8 11.9995 16.8C10.7264 16.8 9.50553 16.2943 8.60536 15.3941C7.70518 14.4939 7.19947 13.273 7.19947 12C7.19947 10.7269 7.70518 9.50604 8.60536 8.60586C9.50553 7.70569 10.7264 7.19998 11.9995 7.19998C13.2725 7.19998 14.4934 7.70569 15.3936 8.60586C16.2938 9.50604 16.7995 10.7269 16.7995 12Z"
-                  fill="#646D89"
-                />
-              </svg>
-            </button>
-            <button className="w-10 h-10 bg-white rounded-2xl shadow-3xl grid place-items-center aspect-square" onClick={()=>{navigate(`/chat/${matchList.matchlist_id}`)}}>
-              <svg
-                width="20"
-                height="19"
-                viewBox="0 0 20 19"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M10 0.599976C4.82802 0.599976 0.400024 4.23958 0.400024 8.99998C0.400024 11.4288 1.57362 13.59 3.39882 15.102C3.38209 15.8477 3.16578 16.5754 2.77242 17.2092C2.69087 17.3409 2.64467 17.4913 2.63831 17.6461C2.63195 17.8009 2.66563 17.9546 2.7361 18.0926C2.80657 18.2305 2.91145 18.3479 3.04058 18.4334C3.16971 18.519 3.31873 18.5697 3.47322 18.5808C5.15499 18.7067 6.82735 18.236 8.19642 17.2512C8.78082 17.3496 9.38443 17.4 10 17.4C15.172 17.4 19.6 13.7604 19.6 8.99998C19.6 4.23958 15.172 0.599976 10 0.599976ZM10 10.2C10.3183 10.2 10.6235 10.0735 10.8486 9.8485C11.0736 9.62346 11.2 9.31824 11.2 8.99998C11.2 8.68172 11.0736 8.37649 10.8486 8.15145C10.6235 7.9264 10.3183 7.79998 10 7.79998C9.68176 7.79998 9.37654 7.9264 9.1515 8.15145C8.92645 8.37649 8.80002 8.68172 8.80002 8.99998C8.80002 9.31824 8.92645 9.62346 9.1515 9.8485C9.37654 10.0735 9.68176 10.2 10 10.2ZM7.60002 8.99998C7.60002 9.31824 7.4736 9.62346 7.24855 9.8485C7.02351 10.0735 6.71828 10.2 6.40002 10.2C6.08176 10.2 5.77654 10.0735 5.5515 9.8485C5.32645 9.62346 5.20002 9.31824 5.20002 8.99998C5.20002 8.68172 5.32645 8.37649 5.5515 8.15145C5.77654 7.9264 6.08176 7.79998 6.40002 7.79998C6.71828 7.79998 7.02351 7.9264 7.24855 8.15145C7.4736 8.37649 7.60002 8.68172 7.60002 8.99998ZM13.6 10.2C13.9183 10.2 14.2235 10.0735 14.4486 9.8485C14.6736 9.62346 14.8 9.31824 14.8 8.99998C14.8 8.68172 14.6736 8.37649 14.4486 8.15145C14.2235 7.9264 13.9183 7.79998 13.6 7.79998C13.2818 7.79998 12.9765 7.9264 12.7515 8.15145C12.5265 8.37649 12.4 8.68172 12.4 8.99998C12.4 9.31824 12.5265 9.62346 12.7515 9.8485C12.9765 10.0735 13.2818 10.2 13.6 10.2Z"
-                  fill="#646D89"
-                />
-              </svg>
-            </button>
+                  </svg>
+                </button>
+              )}
+            </div>
           </div>
-        </div>
       </div>
     </>
     </div>

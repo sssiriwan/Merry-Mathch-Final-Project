@@ -22,9 +22,11 @@ export const Matching = () => {
   console.log(userId);
 
   const getData = async () => {
+    //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
     setIsLoading(true);
     const result = await axios.get("http://localhost:4000/post");
     console.log(result.data.data[count]);
+    //เขียนlogicให้เช็คตาราง meery list ก่อนถ้า status เป็น unmatch ไม่ให้เก็บเข้า state
     setProfile(result.data.data[count]);
     setProfileImg(result.data.data[count].profile_image);
     setIsLoading(false);
@@ -63,7 +65,7 @@ export const Matching = () => {
         .from("match_list")
         .update(updateStatus)
         .eq("matchlist_id", checkMatch.data[0].matchlist_id);
-        //เด้งป้อปอัพไปห้องแชท
+        //เด้งป้อปอัพไปห้องแชท set state true true fale ให้ ป้อปปัพเด้ง
       //  setCount(count + 1);
     }
   };
@@ -295,6 +297,7 @@ export const Matching = () => {
             </svg>
           </div>
         </Button>
+        
       </div>
       <footer className="h-5 absolute bottom-0 flex">
         <p className="text-pgray-700">Merry limit today</p>

@@ -7,11 +7,11 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import MerryCard from "./match/MerryCard";
-import { MerryCardChosen } from "./match/MerryCardChosen";
+import MerryCardChosen from "./match/MerryCardChosen";
 
 function MerryList() {
   const [user, setUser] = useState({});
-  console.log(user)
+  console.log(user);
   const [userId, setUserId] = useState(null);
   const [isLoading, setIsLading] = useState(false);
 
@@ -66,15 +66,18 @@ function MerryList() {
         </article>
         {user.length > 0 && (
           <div className="flex flex-col items-center">
-
-            {user?.map((item, index) => {          
-                if (item.chooser !== userId) {
-                return <MerryCard user={item} id={userId} key={index} />;
-              // }
-              //ทำ merrycard สองใบ render เลือก f7' ข้อมูลจาก db คนละแบบ
-              // if (item.chosen_one == userId) {
-              //   console.log(ทดสอยฮะ)
-              //   return <MerryCardChosen user={item} id={userId} key={index} />;
+            {user?.map((item, index) => {
+              //เหมือนต้องเขียนเช็ค status ที่ match ด้วย ให้แค่ merry กับ match มา render เท่านั้น
+              //item.chooser !== userId && item.status.toLowerCase() !== "unmatch"
+              //mapคนที่เขาปัดเรา
+              if (item.chooser !== userId ) {
+                return <MerryCard user={item} id={userId} status={item.status} key={index} />;
+              }
+             //mapคนที่เราปัดเขา
+             //item.chooser == userId && item.status.toLowerCase() !== "unmatch"
+                if (item.chooser == userId ) {
+                  console.log("ทดสอยฮะ")
+                  return <MerryCardChosen user={item} id={userId} status={item.status} key={index} />;
               }
             })}
           </div>
