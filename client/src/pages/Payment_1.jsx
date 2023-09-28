@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "@/components/base/Navbar";
+import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ButtonPrimary } from "@/components/base/button/Button.jsx";
@@ -11,8 +11,7 @@ const Payment_1 = () => {
 
   return (
     <div>
-      <Navbar />
-
+      <NavbarRegistered />
       <div className="w-screen h-[936px] flex justify-center">
         <div className="w-[928px] h-[554px] flex justify-between mt-[80px]">
           {/* left card */}
