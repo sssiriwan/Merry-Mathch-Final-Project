@@ -17,7 +17,6 @@ postRouter.get("/", async (req, res) => {
 });
 
 postRouter.get("/check", async (req, res) => {
-  console.log("จาก API GET checkuser", req.user);
   return res.json({
     data: req.user,
   });
@@ -25,7 +24,6 @@ postRouter.get("/check", async (req, res) => {
 
 // API get profile (เทียบ user_id)
 postRouter.get("/profile", async (req, res) => {
-  console.log("จากprofile", req.user);
   const { data, error } = await supabase
     .from("profiles")
     .select(
@@ -56,10 +54,27 @@ const upload = multer({ storage: storage });
 const avatarUpload = upload.fields([{ name: "avatars", maxCount: 5 }, { name: "tags", maxCount: 10 }]);
 // API ใช้ update ข้อมูล profile
 postRouter.put("/profile", avatarUpload, async (req, res) => {
+  let fileUrl = []
+  const files = req.files.avatars;
+  if(files) {
+    for (let i=0; i<files.length; i++) {
+      const fileName = `${Date.now()}`
+      const {data,error} = await supabase.storage.from('avatarImg').upload(fileName, files[i].buffer, {
+        cacheControl: 3600,
+        upsert: false,
+        contentType: files[i].mimetype
+      })
+      const result = supabase.storage.from('avatarImg').getPublicUrl(data.path)
+      fileUrl.push(result.data.publicUrl)
+      if(error) {
+        console.log(error)
+      }
+    }
+  }
   const updatedProfile = {
-    // username: req.body.username,
+    username: req.body.username,
     fullname: req.body.fullname,
-    // email: req.body.email,
+    email: req.body.email,
     date_of_birth: req.body.date_of_birth,
     location: req.body.location,
     city: req.body.city,
@@ -69,19 +84,22 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
     meeting_interest: req.body.meeting_interest,
     about_me: req.body.about_me,
   };
-  // let arr = req.body.tags.filter((word) => word != 'null' );
-  // console.log("filter tags",arr)
-  console.log("บอดี้",req.body);
-  console.log("แท็ก",req.files);
-  // const { data, error } = await supabase
-  //   .from("profiles")
-  //   .update(updatedProfile)
-  //   .eq("user_id", req.user.id);
-  // console.log(data);
-  // if (error) {
-  //   console.log("อัพเดทโปรไฟล์ไม่สำเร็จ:", error);
-  // }
-  // const { data, error } = await supabase.from('users').update(updatedProfile).eq('user_id', req.user.id);
+  let hobbies = req.body.tags.filter((word) => word != 'null' );
+  const userHobbies = await supabase.from('hobbies').update(
+    { hob_1: hobbies[0] ,hob_2: hobbies[1] ,hob_3: hobbies[2] ,hob_4: hobbies[3] ,hob_5: hobbies[4] ,
+      hob_6: hobbies[5] ,hob_7: hobbies[6] ,hob_8: hobbies[7] ,hob_9: hobbies[8] ,hob_10: hobbies[9] ,}
+  ).eq('user_id', req.user.id).select()
+
+  const userImg = await supabase.from('profile_image').update({ img_1: fileUrl[4], img_2: fileUrl[3], img_3: fileUrl[2], img_4: fileUrl[1], img_5: fileUrl[0]}).eq('user_id', req.user.id).select()
+  const { data, error } = await supabase
+    .from("profiles")
+    .update(updatedProfile)
+    .eq("user_id", req.user.id);
+  console.log(data);
+  if (error) {
+    console.log("อัพเดทโปรไฟล์ไม่สำเร็จ:", error);
+  }
+  
   return res.json({
     message: "Updated profile successfully",
   });
@@ -90,7 +108,6 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
 //logic เอา status มาเช็คว่าตรงกันไหมแล้วให้ปุ่มแชทขึ้นมา
 
 postRouter.get("/match-list", async (req, res) => {
-  console.log("จากprofile", req.user);
   const { data, error } = await supabase
     .from("match_list")
     .select("*")
@@ -103,8 +120,6 @@ postRouter.get("/match-list", async (req, res) => {
 //อัพเดต status เมื่อกด unmerry
 postRouter.put("/match", async (req, res) => {
   try {
-    console.log("จากprofile", req.user);
-    console.log(req.body);
     const matchListID = req.body.match_list_id;
     const updateStatus = {
       match_list_id: req.body.match_list_id,
@@ -124,7 +139,6 @@ postRouter.put("/match", async (req, res) => {
 });
 
 postRouter.post("/match", async (req, res) => {
-  console.log(req.body.profile_id, "กับ", req.body.status);
   const { data, error } = await supabase.from("match_list").insert([
     {
       chooser: req.user.id,
@@ -133,14 +147,12 @@ postRouter.post("/match", async (req, res) => {
       created_at: new Date(),
     },
   ]);
-  console.log(data);
   return res.json({
     message: "Merry! :)",
   });
 });
 
 postRouter.post("/unmatch", async (req, res) => {
-  console.log(req.body.profile_id, "กับ", req.body.status);
   const { data, error } = await supabase.from("unmatch").insert([
     {
       chooser: req.user.id,
@@ -149,7 +161,6 @@ postRouter.post("/unmatch", async (req, res) => {
       created_at: new Date(),
     },
   ]);
-  console.log(data);
   return res.json({
     message: "Unmerry! :(",
   });
@@ -158,7 +169,6 @@ postRouter.post("/unmatch", async (req, res) => {
 postRouter.get("/keyword", async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    console.log(keyword);
 
     const { data, error } = await supabase
       .from("profiles")
