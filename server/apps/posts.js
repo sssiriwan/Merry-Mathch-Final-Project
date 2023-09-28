@@ -210,4 +210,21 @@ postRouter.get("/keyword", async (req, res) => {
   }
 });
 
+postRouter.get("/membership", async (req, res) => {
+  console.log(req.user.id)
+  try {
+    const result = await supabase
+      .from('purchase')
+      .select('*, merry_packages(package_name, price, package_limit, package_icon)')
+      .eq('user_id', req.user.id);
+
+    return res.json({
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 export default postRouter;
