@@ -38,7 +38,7 @@ function MerryList() {
 
   useEffect(() => {
     handleGetdata();
-  }, []);
+  }, [user.status]);
 
   if (isLoading)
     return (
