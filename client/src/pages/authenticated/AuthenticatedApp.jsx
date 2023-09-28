@@ -12,6 +12,7 @@ import MerryList from "../MerryList";
 import PreviewCard from "../PreviewCard";
 import Package from "../Package";
 import ChatPage from "../Chat";
+import Payment_1 from "../Payment_1";
 
 function AuthenticatedApp() {
   return (
@@ -26,6 +27,7 @@ function AuthenticatedApp() {
           <Route path="/merry-list" element={<MerryList />} />
           <Route path="/package" element={<Package />} />
           <Route path="/chat/:matchListId" element={<ChatPage/>}/>
+          <Route path="/payment" element={<Payment_1 />} />
           <Route path="*" element={<Home />} />
         </Routes>
     </>

@@ -35,22 +35,24 @@ export function LoginPage() {
     console.log(state);
   };
   return (
-    <>
+    <div className="h-screen overflow-hidden">
+      <div className="relative">
       {!auth.isAuthenticated ? (
         <Navbar />
       ) : 
       ( <NavbarRegistered />
       // ( window.location.replace('/') ,<checkAuthenticateUser /> 
       )}
-      <div className="flex h-screen justify-center items-center space-x-2 ">
+      </div>
+      <section className="flex h-full justify-evenly items-center bg-[#FCFCFE]">
         {/* กล่องด้านขวา */}
-        <img src={boy} />
+        <img src={boy} className="pb-20" />
         {/* กล่องด้านซ้าย */}
         <form
-          className="w-1/2 h-[90%] mr-5 border-hidden flex flex-col justify-evenly py-20 pl-20"
+          className="w-1/3 h-[90%] border-hidden flex flex-col justify-evenly py-20"
           onSubmit={handleSubmit}
         >
-          <CardHeader className="">
+          <CardHeader>
             <CardTitle className="text-pbeige-700">
               <TypographySmall>LOGIN</TypographySmall>
             </CardTitle>
@@ -93,13 +95,13 @@ export function LoginPage() {
             <CardTitle className="text-black mr-2 text-base">
               <TypographySmall>Don’t have an account?</TypographySmall>
             </CardTitle>
-            <span className="text-base text-pred-500 cursor-pointer hover:text-pred-400 active:text-pred-200">
-              <a href="/register">register</a>
+            <span className="text-pred-500 font-bold cursor-pointer hover:text-pred-400 active:text-pred-200">
+              <a href="/register">Register</a>
             </span>
           </div>
           </CardContent>
         </form>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }
