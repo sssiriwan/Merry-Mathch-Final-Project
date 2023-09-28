@@ -53,10 +53,9 @@ postRouter.get("/profile/:userId", async (req, res) => {
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-const avatarUpload = upload.fields([{ name: "avatars", maxCount: 5 }]);
+const avatarUpload = upload.fields([{ name: "avatars", maxCount: 5 }, { name: "tags", maxCount: 10 }]);
 // API ใช้ update ข้อมูล profile
 postRouter.put("/profile", avatarUpload, async (req, res) => {
-  console.log(req.user);
   const updatedProfile = {
     // username: req.body.username,
     fullname: req.body.fullname,
@@ -69,17 +68,19 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
     racial_preference: req.body.racial_preference,
     meeting_interest: req.body.meeting_interest,
     about_me: req.body.about_me,
-    // hobbies_tag: req.body.hobbies_tag,
   };
-  console.log(req.body);
-  const { data, error } = await supabase
-    .from("profiles")
-    .update(updatedProfile)
-    .eq("user_id", req.user.id);
-  console.log(data);
-  if (error) {
-    console.log("อัพเดทโปรไฟล์ไม่สำเร็จ:", error);
-  }
+  // let arr = req.body.tags.filter((word) => word != 'null' );
+  // console.log("filter tags",arr)
+  console.log("บอดี้",req.body);
+  console.log("แท็ก",req.files);
+  // const { data, error } = await supabase
+  //   .from("profiles")
+  //   .update(updatedProfile)
+  //   .eq("user_id", req.user.id);
+  // console.log(data);
+  // if (error) {
+  //   console.log("อัพเดทโปรไฟล์ไม่สำเร็จ:", error);
+  // }
   // const { data, error } = await supabase.from('users').update(updatedProfile).eq('user_id', req.user.id);
   return res.json({
     message: "Updated profile successfully",
