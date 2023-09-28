@@ -13,6 +13,7 @@ import PreviewCard from "../PreviewCard";
 import Package from "../Package";
 import ChatPage from "../Chat";
 import Payment_1 from "../Payment_1";
+import Membership from "../Membership";
 
 function AuthenticatedApp() {
   return (
@@ -28,6 +29,7 @@ function AuthenticatedApp() {
           <Route path="/package" element={<Package />} />
           <Route path="/chat/:matchListId" element={<ChatPage/>}/>
           <Route path="/payment" element={<Payment_1 />} />
+          <Route path="/membership" element={<Membership />} />
           <Route path="*" element={<Home />} />
         </Routes>
     </>
