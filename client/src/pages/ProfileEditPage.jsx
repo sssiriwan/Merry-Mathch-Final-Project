@@ -46,6 +46,8 @@ function ProfileEditPage() {
   const tagKeys = Object.keys(tags);
   const imageKeys = Object.keys(avatars);
 
+  console.log("ลอง",tags)
+
   const countTags = () => {
     return maxTags - tags.length;
   };
@@ -115,14 +117,14 @@ function ProfileEditPage() {
       // Append avatars to formData
       for (const avatarKey in avatars) {
         if (avatars.hasOwnProperty(avatarKey)) {
-          formData.append(`avatars[${avatarKey}]`, avatars[avatarKey]);
+          formData.append(`avatars`, avatars[avatarKey]);
         }
       }
 
       // Append tags to formData
       for (const tagKey in tags) {
         if (tags.hasOwnProperty(tagKey)) {
-          formData.append(`tags[${tagKey}]`, tags[tagKey]);
+          formData.append(`tags`, tags[tagKey]);
         }
       }
 
@@ -137,7 +139,7 @@ function ProfileEditPage() {
       );
 
       console.log(result);
-      navigate("/matching");
+      // navigate("/matching");
     } catch (error) {
       // Handle any errors here
       console.error("Error updating profile:", error);
@@ -431,20 +433,25 @@ function ProfileEditPage() {
                         Hobbies / Interests (Maximum 10)
                       </p>
                       <div className="border border-gray-300 rounded-md p-2 flex flex-wrap w-[930px]">
-                        {tagKeys.map((tagKey, index) => (
-                          <div
-                            key={index}
-                            className="bg-ppurple-100 text-ppurple-600 rounded-md flex items-center mr-2 mb-2 px-2 py-1"
-                          >
-                            {tags[tagKey]}
-                            <i
-                              onClick={() => removeTag(tagKey)}
-                              className="ml-2 text-ppurple-600 cursor-pointer"
-                            >
-                              X
-                            </i>
-                          </div>
-                        ))}
+                        {tagKeys.map((tagKey, index) => {
+                          console.log(tags[tagKey] != null);
+                          return (
+                            tags[tagKey] != null && (
+                              <div
+                                key={index}
+                                className="bg-ppurple-100 text-ppurple-600 rounded-md flex items-center mr-2 mb-2 px-2 py-1"
+                              >
+                                {tags[tagKey]}
+                                <i
+                                  onClick={() => removeTag(tagKey)}
+                                  className="ml-2 text-ppurple-600 cursor-pointer"
+                                >
+                                  X
+                                </i>
+                              </div>
+                            )
+                          );
+                        })}
                         <input
                           id="tags"
                           name="tags"
