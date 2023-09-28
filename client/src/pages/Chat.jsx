@@ -23,6 +23,7 @@ const ChatPage = () => {
   const [userId, setUserId] = useState(null);
   console.log(userId);
   const [authen, setAuthen] = useState(false);
+  const [fullname, setFullname] = useState();
 
 
   const getAllMessage = async (roomId) => {
@@ -66,6 +67,7 @@ const ChatPage = () => {
     console.log(result.data.data.profile_id);
     setUser(result.data.data.profile_id);
     setUserId(result.data.data.user_id);
+    setFullname(data[0].fullname);
   };
 
   const sendMessageUser1 = async () => {
@@ -125,7 +127,7 @@ const ChatPage = () => {
   useEffect(() => {
     getRoomChat();
     getUserProfile();
-  }, []);
+  }, [param.matchListId]);
 
   useEffect(() => {
     authenUser();
@@ -158,7 +160,7 @@ const ChatPage = () => {
   return (
     <div>
       <NavbarRegistered />
-      <section className="h-[900px] flex">
+      <section className="h-[900px] flex justify-center">
         {/* แถบด้านซ้ายหลังจากทำแชทเสร็จจะกลับมาทำ */}
         <SideBar/>     
 

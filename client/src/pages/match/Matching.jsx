@@ -65,7 +65,7 @@ export const Matching = () => {
         .from("match_list")
         .update(updateStatus)
         .eq("matchlist_id", checkMatch.data[0].matchlist_id);
-        //เด้งป้อปอัพไปห้องแชท set state true true fale ให้ ป้อปปัพเด้ง
+       //เด้งป้อปอัพไปห้องแชท set state true true fale ให้ ป้อปปัพเด้ง
       //  setCount(count + 1);
     }
   };
