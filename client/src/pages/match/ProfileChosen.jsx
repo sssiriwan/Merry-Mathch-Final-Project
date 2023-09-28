@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
-import { TypographySmall } from "@/components/base/button/Typography";
 import { useNavigate } from "react-router-dom";
 
 const ProfileChooser = (props) => {
@@ -31,15 +30,13 @@ const ProfileChooser = (props) => {
   //console.log("รูป", image);
 
   useEffect(() => {
-    console.log("ทำงานไหม");
+   // console.log("ทำงานไหม");
     getProfile(userId);
   }, [userId]);
 
   return (
     <>
-      
       <button
-     
         onClick={() => {
           navigate(`/chat/${roomId}`);
         }}

@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  TypographyH3,
-  TypographySmall,
-} from "@/components/base/button/Typography";
+import { TypographyH3 } from "@/components/base/button/Typography";
 import { supabase } from "@/utils/supabaseClient";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -10,7 +7,6 @@ import ChatCard from "./ChatCard";
 import ChatCardChosen from "./ChatCardChosen";
 
 const ChatList = () => {
-  
   const [userId, setUserId] = useState(null);
   const [matchList, setMatchList] = useState();
   //console.log(matchList);
@@ -42,8 +38,6 @@ const ChatList = () => {
     getUserProfile();
   }, [userId]);
 
-  
-
   return (
     <>
       <TypographyH3>Chat with Merry Match</TypographyH3>
@@ -52,7 +46,7 @@ const ChatList = () => {
           {matchList?.map((item, index) => {
             //mapคนที่เขาปัดเราเขาเป็็น chooser
             if (item.chooser !== userId) {
-                //console.log("เขาปัดเรา");
+              //console.log("เขาปัดเรา");
               return <ChatCard matchList={item} key={index} />;
             }
             //mapคนที่เราปัดเขาเขาเป็น chosen ส่ง userid เขาเพื่อไป get profile เอารูปกับชื่อ ส่งเลขห้องเพื่อไปดึงแชทล่าสุดของห้องนี้
@@ -63,7 +57,7 @@ const ChatList = () => {
           })}
         </div>
       )}
-     
+
       {isLoading && (
         <>
           <div class="h-[500px] flex items-center">
