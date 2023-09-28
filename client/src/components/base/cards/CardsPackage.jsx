@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { usePackage } from "@/contexts/packageProvider";
 
 const merryDetailIcon = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.00022 15.6386C3.78126 15.6386 0.361328 12.2187 0.361328 7.99973C0.361328 3.78077 3.78126 0.36084 8.00022 0.36084C12.2192 0.36084 15.6391 3.78077 15.6391 7.99973C15.6391 12.2187 12.2192 15.6386 8.00022 15.6386ZM7.23862 11.0553L12.6393 5.65383L11.5592 4.57369L7.23862 8.89501L5.07758 6.73397L3.99744 7.8141L7.23862 11.0553Z" fill="#CF4FA9"/>
 </svg>;
 
 const CardsPackage = () => {
   const [packages, setPackages] = useState([]);
+  const navigate = useNavigate();
+  const { setPackageId } = usePackage();
 
   const fetchPackageData = async () => {
     try {
       const response = await axios.get("http://localhost:4000/auth/package");
-      console.log(response.data.data)
       setPackages(response.data.data)
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -22,6 +25,10 @@ const CardsPackage = () => {
     currency: 'THB',
   });
   
+  const handleClick = (data) => {
+    setPackageId(data)
+    navigate('/payment')
+  }
 
   useEffect(() => {
     fetchPackageData();
@@ -56,7 +63,7 @@ const CardsPackage = () => {
               </div>
             </div>
             <div>
-              <button className="w-[277px] h-[48px] text-base font-extrabold text-pred-600 rounded-full bg-pred-100 shadow-3xl">
+              <button onClick={() => { handleClick(packageItem.package_id) }} className="w-[277px] h-[48px] text-base font-extrabold text-pred-600 rounded-full bg-pred-100 shadow-3xl">
                 Choose Package
               </button>
             </div>

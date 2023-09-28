@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/authentication";
 import jwtInterceptor from "./utils/jwtInterceptor.js";
 import { ValindateProvider } from "./pages/register/valindatecontext/Valindatecontext.jsx";
+import { createClient } from '@supabase/supabase-js'
+import { PackageProvider } from "./contexts/packageProvider.jsx";
 
 jwtInterceptor();
 
@@ -14,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <AuthProvider>
         <ValindateProvider>
-          <App />
+          <PackageProvider>
+            <App />
+          </PackageProvider>
         </ValindateProvider>
       </AuthProvider>
     </BrowserRouter>
