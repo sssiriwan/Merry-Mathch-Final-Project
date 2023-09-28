@@ -11,24 +11,54 @@ import {
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "../admin/ConfirmationModal";
 
 
 function MembershipDetail() {
   const status = " text-base text-pbeige-600  bg-pbeige-200 flex ";
+  const navigate = useNavigate()
 
   const [name, setName] = useState("")
   const [price, setPrice] = useState(0)
   const [limit, setLimit] = useState(0);
   const [icon, setIcon] = useState({});
+  const [packageStatus, setPackageStatus] = useState("Active");
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const getMembershipData = async () => {
       const response = await axios.get(`http://localhost:4000/post/membership`);
-      console.log(response)
-      setName(response.data.data[0].merry_packages.package_name)
-      setPrice(response.data.data[0].merry_packages.price)
-      setLimit(response.data.data[0].merry_packages.package_limit)
-      setIcon(response.data.data[0].merry_packages.package_icon)
+      if (response.data.data.length > 0) {
+        setName(response.data.data[0].merry_packages.package_name);
+        setPrice(response.data.data[0].merry_packages.price);
+        setLimit(response.data.data[0].merry_packages.package_limit);
+        setIcon(response.data.data[0].merry_packages.package_icon);
+      } else {
+        // Redirect to the package page when there's no data
+        navigate("/package"); // Replace "/package" with the actual route to your package page
+      }
   }
+
+  const handleDeletePackage = async () => {
+    setShowConfirmation(true);
+  }
+
+
+const confirmCancel = async () => {
+  try {
+    await axios.delete(`http://localhost:4000/post/membership`);
+    navigate("/package")
+    setPackageStatus("Inactive");
+  } catch (error) {
+    console.log(error)
+  }
+
+  setShowConfirmation(false);
+}
+
+const cancelDelete = () => {
+  setShowConfirmation(false);
+};
 
   useEffect(() => {
     getMembershipData();
@@ -67,14 +97,25 @@ function MembershipDetail() {
 
           {/* membership status */}
           <div>
-            <BadgeDemo className={status}>Active</BadgeDemo>
+            <BadgeDemo className={status}>{packageStatus}</BadgeDemo>
           </div>
         </div>
         <hr className=" mt-10" />
         {/* กล่องโชว์ cancel package */}
         <div className=" mt-5 flex flex-row justify-end">
-          <button className="text-white">Cancel Package</button>
+          {packageStatus === "Active" && (
+            <button className="text-white" onClick={handleDeletePackage}>Cancel Package</button>
+          )}
         </div>
+        {showConfirmation && (
+        <ConfirmationModal
+          message="Do you sure to cancel Membership to get more Merry?"
+          confirmLabel="Yes, I want to cancel"
+          cancelLabel="No, I still want to be member"
+          onConfirm={confirmCancel}
+          onCancel={cancelDelete}
+        />
+      )}
       </div>
 
       {/* Payment Method */}

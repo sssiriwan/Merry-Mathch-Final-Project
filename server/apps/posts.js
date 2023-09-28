@@ -227,4 +227,20 @@ postRouter.get("/membership", async (req, res) => {
   }
 });
 
+postRouter.delete("/membership", async (req, res) => {
+  console.log(req.user.id)
+  try {
+    const result = await supabase
+      .from('purchase')
+      .delete()
+      .eq('user_id', req.user.id);
+
+    return res.json({
+      data: result.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default postRouter;
