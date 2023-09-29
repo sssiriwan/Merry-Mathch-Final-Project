@@ -292,7 +292,7 @@ export const Matching = () => {
         </Button>
         
       </div>
-      <footer className="h-5 absolute bottom-0 flex">
+      <footer className="h-5 absolute bottom-2 flex">
         <p className="text-pgray-700">Merry limit today</p>
         <p className="text-pred-400 ml-3">2/20</p>
       </footer>
