@@ -93,9 +93,9 @@ export const Matching = () => {
   }, [count, userId]);
 
   return (
-    <section className="w-[72%] bg-putility-400 flex justify-center items-center">
+    <section className="w-[72%] flex justify-center items-center">
       {clicked && (
-        <div className="absolute left-[500px] top-40 z-20">
+        <div className="relative -top-[45%] z-20">
           <PreviewCard
             setClicked={setClicked}
             clicked={clicked}
@@ -103,7 +103,7 @@ export const Matching = () => {
           />
         </div>
       )}
-      <div className=" w-fit absolute left-[700px] bottom-[140px] z-10 flex justify-between items-center px-10">
+      <div className="absolute right-1/2 bottom-[20%] z-10 flex px-10">
         <div className="flex font-bold text-3xl text-white items-center">
           <h1>{profile.fullname}</h1>
           <h2 className="ml-2 text-pgray-400">
@@ -169,7 +169,7 @@ export const Matching = () => {
           </>
         )}
       </Swiper>
-      <div className="w-40 absolute left-1/2 bottom-7 z-10 flex justify-around">
+      <div className="w-40 absolute bottom-[5%] z-10 flex justify-around">
         <Button
           onClick={unmatchSomeone}
           className="w-16 h-16 rounded-2xl bg-white"
@@ -292,7 +292,7 @@ export const Matching = () => {
         </Button>
         
       </div>
-      <footer className="h-5 absolute bottom-0 flex">
+      <footer className="h-5 absolute bottom-2 flex">
         <p className="text-pgray-700">Merry limit today</p>
         <p className="text-pred-400 ml-3">2/20</p>
       </footer>

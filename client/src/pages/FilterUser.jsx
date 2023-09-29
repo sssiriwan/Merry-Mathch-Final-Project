@@ -41,7 +41,7 @@ function FilterUser() {
 
   return (
     <>
-      <section className="h-[900px] flex">
+      <section className="flex bg-white">
         <div className="w-[10%] pl-3 pt-3">
           <div className="flex flex-col">
             <label
