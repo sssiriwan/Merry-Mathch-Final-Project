@@ -22,15 +22,18 @@ const ChatList = () => {
   };
 
   const getMatchList = async () => {
-    setIsLoading(true);
-    const { data, error } = await supabase
-      .from("match_list")
-      .select("*")
-      .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
-      .eq("status", "match");
-    //console.log("match จะมาไหม", data);
-    setIsLoading(false);
-    setMatchList(data);
+    if (userId) {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from("match_list")
+        .select("*")
+        .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
+        .eq("status", "match");
+      //console.log("match จะมาไหม", data);
+
+      setMatchList(data);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const ChatList = () => {
     <>
       <TypographyH3>Chat with Merry Match</TypographyH3>
       {!isLoading && (
-        <div className="flex flex-col items-center overflow-auto">
+        <div className=" h-[350px] flex flex-col items-center overflow-auto">
           {matchList?.map((item, index) => {
             //mapคนที่เขาปัดเราเขาเป็็น chooser
             if (item.chooser !== userId) {

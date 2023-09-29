@@ -1,11 +1,18 @@
 import React from "react";
 import ProfileToChat from "./ProfileToChat";
 import ChatList from "./ChatList";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
+  const navigate = useNavigate();
   return (
     <aside className="bg-white w-[18%] py-7 border-r-2 border-pgray-100">
-      <div className=" border-ppurple-500 bg-pgray-100 border flex flex-col justify-center items-center py-4 mx-5 rounded-2xl mb-7">
+      <div 
+      className=" cursor-pointer border-ppurple-500 bg-pgray-100 hover:bg-pgray-300 hover:ring-pred-300 ring-2 hover:ring-inset border flex flex-col justify-center items-center py-4 mx-5 rounded-2xl mb-7"
+      onClick={() => {
+        navigate(`/matching`);
+      }}
+      >
         <svg
           width="62"
           height="59"
@@ -34,11 +41,11 @@ const SideBar = () => {
       </div>
       <hr className="border border-pgray-300" />
       <div className=" mt-5 ml-3">
-        <div>
+        <div className=" mt-2">
           <ProfileToChat/>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-5">
           <ChatList/>          
         </div>
       </div>

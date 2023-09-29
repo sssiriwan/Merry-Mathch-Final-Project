@@ -18,14 +18,12 @@ const ProfileChooser = (props) => {
     setIsLoading(true);
     const { data, error } = await supabase
       .from("profiles")
-      .select(
-        "*, users(email, username, user_id),hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
-      )
+      .select("*, profile_image(img_1)")
       .eq("user_id", item);
 
     //console.log("ไอดีถูกไหม", data[0].user_id);
-    setIsLoading(false);
     setImage(data[0].profile_image.img_1);
+    setIsLoading(false);
   };
   //console.log("รูป", image);
 
@@ -86,7 +84,7 @@ const ProfileChooser = (props) => {
                 </clipPath>
               </defs>
             </svg>
-            <img className="w-20 h-20 rounded-xl object-cover" src={image} />
+            <img className=" w-20 h-20 rounded-xl object-cover" src={image} />
           </div>
         </button>
       )}

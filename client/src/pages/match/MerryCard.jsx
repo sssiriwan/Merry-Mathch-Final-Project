@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PreviewCard from "../PreviewCard";
@@ -10,9 +10,7 @@ function MerryCard(props) {
   const matchList = props.user;
   const userId = props.id;
   const matchStatus = matchList.status;
-
-
-  
+  const callbackValue = props.callbackValue;
 
   const [proUserId, setProUserId] = useState();
   const [fullname, setFullname] = useState();
@@ -27,7 +25,6 @@ function MerryCard(props) {
 
   const [clicked, setClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
 
   const getProfile = async (item, userId) => {
     console.log(item);
@@ -49,197 +46,196 @@ function MerryCard(props) {
     setSexPreference(data[0].sexual_preference);
     setRacialPreference(data[0].racial_preference);
     setMeetingInterest(data[0].meeting_interest);
-    setImage(data[0].profile_image.img_1)
+    setImage(data[0].profile_image.img_1);
 
     setIsLoading(false);
   };
 
+  const age = (birthday) => {
+    const today = new Date();
+    const userAge =
+      today.getFullYear() -
+      birthday.getFullYear() -
+      (today.getMonth() < birthday.getMonth() ||
+        (today.getMonth() === birthday.getMonth() &&
+          today.getDate() < birthday.getDate()));
+    return userAge;
+  };
 
-  
+  const handleMatchClick = async (matchList) => {
+    if (matchList.status.toLowerCase() === "merry") {
+      //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+      const updateStatus = {
+        status: "match",
+        updated_at: new Date(),
+      };
+      const { data, error } = await supabase
+        .from("match_list")
+        .update(updateStatus)
+        .eq("matchlist_id", matchList.matchlist_id);
+      callbackValue("สวัสดี");
+    } else if (matchList.status.toLowerCase() === "match") {
+      //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+      const updateStatus = {
+        status: "unmatch",
+        updated_at: new Date(),
+      };
+      const { data, error } = await supabase
+        .from("match_list")
+        .update(updateStatus)
+        .eq("matchlist_id", matchList.matchlist_id);
+      callbackValue("สวัสดี");
+    } else {
+      //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+      const updateStatus = {
+        status: "match",
+        updated_at: new Date(),
+      };
+      const { data, error } = await supabase
+        .from("match_list")
+        .update(updateStatus)
+        .eq("matchlist_id", matchList.matchlist_id);
+      callbackValue("สวัสดี");
+    }
+  };
 
-    const age = (birthday) => {
-      const today = new Date();
-      const userAge =
-        today.getFullYear() -
-        birthday.getFullYear() -
-        (today.getMonth() < birthday.getMonth() ||
-          (today.getMonth() === birthday.getMonth() &&
-            today.getDate() < birthday.getDate()));
-      return userAge;
-    };
-
-    const handleMatchClick = async (matchList) => {
-      if (matchList.status.toLowerCase() === "merry") {
-        //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
-        const updateStatus = {
-          status: "match",
-          updated_at: new Date(),
-        };
-        const { data, error } = await supabase
-          .from("match_list")
-          .update(updateStatus)
-          .eq("matchlist_id", matchList.matchlist_id);
-      } else if (matchList.status.toLowerCase() === "match") {
-        //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
-        const updateStatus = {
-          status: "unmatch",
-          updated_at: new Date(),
-        };
-        const { data, error } = await supabase
-          .from("match_list")
-          .update(updateStatus)
-          .eq("matchlist_id", matchList.matchlist_id);
-      } else {
-        //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
-        const updateStatus = {
-          status: "match",
-          updated_at: new Date(),
-        };
-        const { data, error } = await supabase
-          .from("match_list")
-          .update(updateStatus)
-          .eq("matchlist_id", matchList.matchlist_id);
-      }
-    };
-  
-    const merryMatchButton = (status) => {
-      if (
-        status.toLowerCase() === "match" ||
-        status.toLowerCase() === "unmatch"
-      ) {
-        return (
-          <div className="border-2 border-pred-500 rounded-full flex items-center justify-center py-1 px-4 w-fit">
-            <svg
-              width="21"
-              height="12"
-              viewBox="0 0 21 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clip-path="url(#clip0_5071_276)">
-                <path
-                  d="M6.61163 10.155C6.84858 10.3046 7.09033 10.4464 7.33649 10.5804L7.33646 10.5804L7.34158 10.5831L7.34904 10.5876L7.36365 10.5949C7.4981 10.6645 7.64737 10.7008 7.79885 10.7006C7.90344 10.7004 8.00692 10.6829 8.10516 10.649H8.14476L8.25354 10.5837L8.26054 10.5799C9.09099 10.1257 9.87224 9.58696 10.5918 8.97212L10.5918 8.97212L10.5935 8.97069C11.7169 8.00225 13.098 6.44469 13.098 4.49998V4.49993C13.098 3.83821 12.8928 3.19279 12.5107 2.65253C12.1286 2.11226 11.5885 1.70374 10.9646 1.48319C10.3407 1.26265 9.66378 1.24094 9.02704 1.42105C8.57122 1.54999 8.15204 1.77782 7.79805 2.08569C7.44406 1.77782 7.02487 1.54999 6.56905 1.42105C5.93232 1.24094 5.25541 1.26265 4.63152 1.48319C4.00764 1.70374 3.46747 2.11226 3.08539 2.65253C2.70331 3.19279 2.49811 3.83821 2.49805 4.49993V4.49998C2.49805 6.44474 3.87983 8.00231 5.00248 8.9706L5.00421 8.97208C5.5106 9.40485 6.04783 9.80019 6.61163 10.155ZM6.61163 10.155C6.61152 10.1549 6.61141 10.1548 6.6113 10.1547L6.8782 9.73204L6.61197 10.1552C6.61186 10.1551 6.61174 10.155 6.61163 10.155Z"
-                  fill="#FF1659"
-                  stroke="white"
+  const merryMatchButton = (status) => {
+    if (
+      status.toLowerCase() === "match" ||
+      status.toLowerCase() === "unmatch"
+    ) {
+      return (
+        <div className="border-2 border-pred-500 rounded-full flex items-center justify-center py-1 px-4 w-fit">
+          <svg
+            width="21"
+            height="12"
+            viewBox="0 0 21 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_5071_276)">
+              <path
+                d="M6.61163 10.155C6.84858 10.3046 7.09033 10.4464 7.33649 10.5804L7.33646 10.5804L7.34158 10.5831L7.34904 10.5876L7.36365 10.5949C7.4981 10.6645 7.64737 10.7008 7.79885 10.7006C7.90344 10.7004 8.00692 10.6829 8.10516 10.649H8.14476L8.25354 10.5837L8.26054 10.5799C9.09099 10.1257 9.87224 9.58696 10.5918 8.97212L10.5918 8.97212L10.5935 8.97069C11.7169 8.00225 13.098 6.44469 13.098 4.49998V4.49993C13.098 3.83821 12.8928 3.19279 12.5107 2.65253C12.1286 2.11226 11.5885 1.70374 10.9646 1.48319C10.3407 1.26265 9.66378 1.24094 9.02704 1.42105C8.57122 1.54999 8.15204 1.77782 7.79805 2.08569C7.44406 1.77782 7.02487 1.54999 6.56905 1.42105C5.93232 1.24094 5.25541 1.26265 4.63152 1.48319C4.00764 1.70374 3.46747 2.11226 3.08539 2.65253C2.70331 3.19279 2.49811 3.83821 2.49805 4.49993V4.49998C2.49805 6.44474 3.87983 8.00231 5.00248 8.9706L5.00421 8.97208C5.5106 9.40485 6.04783 9.80019 6.61163 10.155ZM6.61163 10.155C6.61152 10.1549 6.61141 10.1548 6.6113 10.1547L6.8782 9.73204L6.61197 10.1552C6.61186 10.1551 6.61174 10.155 6.61163 10.155Z"
+                fill="#FF1659"
+                stroke="white"
+              />
+            </g>
+            <g clip-path="url(#clip1_5071_276)">
+              <path
+                d="M13.8128 10.155C14.0498 10.3046 14.2915 10.4464 14.5377 10.5804L14.5376 10.5804L14.5427 10.5831L14.5502 10.5876L14.5648 10.5949C14.6993 10.6645 14.8485 10.7008 15 10.7006C15.1046 10.7004 15.2081 10.6829 15.3063 10.649H15.3459L15.4547 10.5837L15.4617 10.5799C16.2922 10.1257 17.0734 9.58696 17.793 8.97212L17.793 8.97212L17.7947 8.97069C18.9181 8.00225 20.2992 6.44469 20.2992 4.49998V4.49993C20.2992 3.83821 20.094 3.19279 19.7119 2.65253C19.3298 2.11226 18.7896 1.70374 18.1657 1.48319C17.5419 1.26265 16.8649 1.24094 16.2282 1.42105C15.7724 1.54999 15.3532 1.77782 14.9992 2.08569C14.6452 1.77782 14.226 1.54999 13.7702 1.42105C13.1335 1.24094 12.4566 1.26265 11.8327 1.48319C11.2088 1.70374 10.6686 2.11226 10.2866 2.65253C9.90448 3.19279 9.69928 3.83821 9.69922 4.49993V4.49998C9.69922 6.44474 11.081 8.00231 12.2037 8.9706L12.2054 8.97208C12.7118 9.40485 13.249 9.80019 13.8128 10.155ZM13.8128 10.155C13.8127 10.1549 13.8126 10.1548 13.8125 10.1547L14.0794 9.73204L13.8131 10.1552C13.813 10.1551 13.8129 10.155 13.8128 10.155Z"
+                fill="#FF1659"
+                stroke="white"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_5071_276">
+                <rect
+                  width="12"
+                  height="12"
+                  fill="white"
+                  transform="translate(1.79883)"
                 />
-              </g>
-              <g clip-path="url(#clip1_5071_276)">
-                <path
-                  d="M13.8128 10.155C14.0498 10.3046 14.2915 10.4464 14.5377 10.5804L14.5376 10.5804L14.5427 10.5831L14.5502 10.5876L14.5648 10.5949C14.6993 10.6645 14.8485 10.7008 15 10.7006C15.1046 10.7004 15.2081 10.6829 15.3063 10.649H15.3459L15.4547 10.5837L15.4617 10.5799C16.2922 10.1257 17.0734 9.58696 17.793 8.97212L17.793 8.97212L17.7947 8.97069C18.9181 8.00225 20.2992 6.44469 20.2992 4.49998V4.49993C20.2992 3.83821 20.094 3.19279 19.7119 2.65253C19.3298 2.11226 18.7896 1.70374 18.1657 1.48319C17.5419 1.26265 16.8649 1.24094 16.2282 1.42105C15.7724 1.54999 15.3532 1.77782 14.9992 2.08569C14.6452 1.77782 14.226 1.54999 13.7702 1.42105C13.1335 1.24094 12.4566 1.26265 11.8327 1.48319C11.2088 1.70374 10.6686 2.11226 10.2866 2.65253C9.90448 3.19279 9.69928 3.83821 9.69922 4.49993V4.49998C9.69922 6.44474 11.081 8.00231 12.2037 8.9706L12.2054 8.97208C12.7118 9.40485 13.249 9.80019 13.8128 10.155ZM13.8128 10.155C13.8127 10.1549 13.8126 10.1548 13.8125 10.1547L14.0794 9.73204L13.8131 10.1552C13.813 10.1551 13.8129 10.155 13.8128 10.155Z"
-                  fill="#FF1659"
-                  stroke="white"
+              </clipPath>
+              <clipPath id="clip1_5071_276">
+                <rect
+                  width="12"
+                  height="12"
+                  fill="white"
+                  transform="translate(9)"
                 />
-              </g>
-              <defs>
-                <clipPath id="clip0_5071_276">
-                  <rect
-                    width="12"
-                    height="12"
-                    fill="white"
-                    transform="translate(1.79883)"
-                  />
-                </clipPath>
-                <clipPath id="clip1_5071_276">
-                  <rect
-                    width="12"
-                    height="12"
-                    fill="white"
-                    transform="translate(9)"
-                  />
-                </clipPath>
-              </defs>
-            </svg>
-            <p className="text-pred-500 font-extrabold ml-2">Merry Match!</p>
-          </div>
-        );
-      } else {
-        return (
-          <div className="border-2 border-pgray-500 rounded-full flex items-center justify-center py-1 px-4 w-fit">
-            <p className="text-pgray-700">Not Match yet</p>
-          </div>
-        );
-      }
-    };
-  
-    const merryButtonStyle = (status) => {
-      if (status.toLowerCase() === "merry" || status.toLowerCase() === "match") {
-        const style = "w-10 h-10 rounded-2xl shadow-3xl bg-pred-500";
-        return style;
-      } else {
-        const style = "w-10 h-10 rounded-2xl shadow-3xl bg-white";
-        return style;
-      }
-    };
-  
-    const heartStyle = (status) => {
-      if (status.toLowerCase() === "merry" || status.toLowerCase() === "match") {
-        const style = "white";
-        return style;
-      } else {
-        const style = "red";
-        return style;
-      }
-    };
+              </clipPath>
+            </defs>
+          </svg>
+          <p className="text-pred-500 font-extrabold ml-2">Merry Match!</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="border-2 border-pgray-500 rounded-full flex items-center justify-center py-1 px-4 w-fit">
+          <p className="text-pgray-700">Not Match yet</p>
+        </div>
+      );
+    }
+  };
+
+  const merryButtonStyle = (status) => {
+    if (status.toLowerCase() === "merry" || status.toLowerCase() === "match") {
+      const style = "w-10 h-10 rounded-2xl shadow-3xl bg-pred-500";
+      return style;
+    } else {
+      const style = "w-10 h-10 rounded-2xl shadow-3xl bg-white";
+      return style;
+    }
+  };
+
+  const heartStyle = (status) => {
+    if (status.toLowerCase() === "merry" || status.toLowerCase() === "match") {
+      const style = "white";
+      return style;
+    } else {
+      const style = "red";
+      return style;
+    }
+  };
 
   useEffect(() => {
     getProfile(matchList, userId);
   }, [matchList, userId]);
 
   //มันไม่ทำงานเพราะ status ตัวใหม่ยังไม่ได้ส่งมาจากหน้าบ้าน
-  useEffect(()=>{
+  useEffect(() => {
     merryMatchButton(matchStatus);
     merryButtonStyle(matchStatus);
-    heartStyle(matchStatus)
-  },[matchStatus])
+    heartStyle(matchStatus);
+  }, [matchStatus]);
 
- 
   return (
     <div>
-       <>
-          {clicked && (
-            <PreviewCard
-              setClicked={setClicked}
-              clicked={clicked}
-              userId={proUserId}
-            />
-          )}
-          <div className="flex border-b h-[180px] items-center py-28 my-3">
-        <div>
-          <img
-            src={image}
-            className="aspect-square object-cover rounded-2xl w-44 ml-5"
+      <>
+        {clicked && (
+          <PreviewCard
+            setClicked={setClicked}
+            clicked={clicked}
+            userId={proUserId}
           />
-        </div>
-        <div className="ml-10 w-[600px]">
-          <div className="flex font-bold text-2xl text-pgray-700 items-center">
-            <h1 className="text-pgray-900 mr-3">{fullname}</h1>
-            <h1>{age(new Date(birthDate))}</h1>
-            <div className="text-base font-normal ml-3">
-              <h2>
-                {city}, {location}
-              </h2>
-            </div>
-          </div>
+        )}
+        <div className="flex border-b h-[180px] items-center py-28 my-3">
           <div>
-            <div className="flex items-center">
-              <h1 className="w-48 mt-2">Sexual Identities</h1>
-              <h1 className="text-pgray-700">{sexIdentity}</h1>
+            <img
+              src={image}
+              className="aspect-square object-cover rounded-2xl w-44 ml-5"
+            />
+          </div>
+          <div className="ml-10 w-[600px]">
+            <div className="flex font-bold text-2xl text-pgray-700 items-center">
+              <h1 className="text-pgray-900 mr-3">{fullname}</h1>
+              <h1>{age(new Date(birthDate))}</h1>
+              <div className="text-base font-normal ml-3">
+                <h2>
+                  {city}, {location}
+                </h2>
+              </div>
             </div>
-            <div className="flex items-center">
-              <h1 className="w-48 mt-2">Sexual Preferences</h1>
-              <h1 className="text-pgray-700">{sexPreference}</h1>
-            </div>
-            <div className="flex items-center">
-              <h1 className="w-48 mt-2">Racial Preferences</h1>
-              <h1 className="text-pgray-700">{racialPreference}</h1>
-            </div>
-            <div className="flex items-center">
-              <h1 className="w-48 mt-2">Meeting Interests</h1>
-              <h1 className="text-pgray-700">{meetingInterest}</h1>
+            <div>
+              <div className="flex items-center">
+                <h1 className="w-48 mt-2">Sexual Identities</h1>
+                <h1 className="text-pgray-700">{sexIdentity}</h1>
+              </div>
+              <div className="flex items-center">
+                <h1 className="w-48 mt-2">Sexual Preferences</h1>
+                <h1 className="text-pgray-700">{sexPreference}</h1>
+              </div>
+              <div className="flex items-center">
+                <h1 className="w-48 mt-2">Racial Preferences</h1>
+                <h1 className="text-pgray-700">{racialPreference}</h1>
+              </div>
+              <div className="flex items-center">
+                <h1 className="w-48 mt-2">Meeting Interests</h1>
+                <h1 className="text-pgray-700">{meetingInterest}</h1>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="w-[200px] h-[180px] flex flex-col items-end">
+          <div className="w-[200px] h-[180px] flex flex-col items-end">
             {merryMatchButton(matchStatus)}
             <div className="w-10/12 mt-5 flex flex-row-reverse items-start justify-center ">
               {/* เช็ค status แล้วเลือกแสดงปุ่ม เมื่อคลิกแล้วให้เปลี่ยน state status */}
@@ -352,8 +348,8 @@ function MerryCard(props) {
               )}
             </div>
           </div>
-      </div>
-    </>
+        </div>
+      </>
     </div>
   );
 }

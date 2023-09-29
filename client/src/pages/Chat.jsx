@@ -177,7 +177,7 @@ const ChatPage = () => {
         {/* ห้องแชท */}
         <div className="  bg-black w-[75%] h-screen text-white ">
           <div className="p-10 ">
-            <div className="mt-10 h-[700px] overflow-auto ">
+            <div className="mt-10 h-[750px] overflow-auto ">
               {conversation?.map((item, index) => {
                 //mapคนที่เขาปัดเราเขาเป็็น chooser
                 console.log(item);
@@ -218,12 +218,9 @@ const ChatPage = () => {
               })}
             </div>
             <div>
-              <div>
-                <div></div>
-                <button
-                  onClick={() => sendMessageUser1()}
-                  className=" w-max  border-none outline-none bg-pgray-100  cursor-pointer rounded-full p-3  "
-                >
+              <hr className="border border-pgray-900 " />
+              <div className=" pt-2">
+                <button className=" w-max  border-none outline-none bg-pgray-100  cursor-pointer rounded-full p-3  ">
                   <svg
                     width="18"
                     height="14"
@@ -240,8 +237,8 @@ const ChatPage = () => {
                   </svg>
                 </button>
                 <input
-                  className=" w-[80%] flex-1 border-none outline-none bg-transparent p-[10px] font-medium "
-                  placeholder="Messege here..."
+                  className=" w-[80%] flex-1 border-none outline-none bg-transparent p-[10px] font-medium  mr-2"
+                  placeholder= "   Messege here..."
                   onChange={(e) => setMessageUser1(e.target.value)}
                   value={messageUser}
                 />
@@ -271,5 +268,3 @@ const ChatPage = () => {
   );
 };
 export default ChatPage;
-
-
