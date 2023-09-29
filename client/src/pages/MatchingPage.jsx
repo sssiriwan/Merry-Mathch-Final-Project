@@ -6,8 +6,9 @@ import Matching from "./match/Matching";
 function MatchingPage() {
   return (
     <>
-      <NavbarRegistered />
-      <section className="h-[900px] flex">
+    <div className="relative">
+      <NavbarRegistered /></div>
+      <section className="h-[92vh] bg-putility-400 flex">
         <SideBar />
         <Matching />
         <FilterUser />

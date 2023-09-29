@@ -4,7 +4,7 @@ import ChatList from "./ChatList";
 
 const SideBar = () => {
   return (
-    <aside className="h-full w-[18%] py-7 border-r-2 border-pgray-100">
+    <aside className="bg-white w-[18%] py-7 border-r-2 border-pgray-100">
       <div className=" border-ppurple-500 bg-pgray-100 border flex flex-col justify-center items-center py-4 mx-5 rounded-2xl mb-7">
         <svg
           width="62"
@@ -24,7 +24,7 @@ const SideBar = () => {
             fill="#95002B"
           />
         </svg>
-        <h1 className="font-bold text-2xl tracking-tight transition-colors first:mt-0 text-pred-600">
+        <h1 className="font-bold text-center text-2xl tracking-tight transition-colors first:mt-0 text-pred-600">
           Discover New Match
         </h1>
         <small className="text-pgray-700">

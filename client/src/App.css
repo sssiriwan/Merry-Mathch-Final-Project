@@ -9,11 +9,11 @@
 }
 .swiper-button-prev {
   top: 600px !important;
-  left: 860px !important;
+  left: 65% !important;
 }
 .swiper-button-next {
   top: 600px !important;
-  left: 900px !important;
+  left: 67% !important;
 }
 .shadowcss {
   position: absolute;
