@@ -29,7 +29,7 @@ function MerryCardChosen(props) {
   
 
   const getProfile = async (item, userId) => {
-    console.log(item);
+    //console.log(item);
     setIsLoading(true);
     const { data, error } = await supabase
       .from("profiles")
@@ -67,7 +67,7 @@ function MerryCardChosen(props) {
   //แก้ไขตรงนี้ if merry=>match match=>unmatch unmatch=>merry
   const handleMatchClick = async (matchList) => {
     if (matchList.status.toLowerCase() === "match") {
-      console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+      //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
       const updateStatus = {
         status: "unmatch",
         updated_at: new Date(),
@@ -77,7 +77,7 @@ function MerryCardChosen(props) {
         .update(updateStatus)
         .eq("matchlist_id", matchList.matchlist_id);
     } else {
-      console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+      //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
       const updateStatus = {
         status: "match",
         updated_at: new Date(),

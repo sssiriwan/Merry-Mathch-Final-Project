@@ -19,13 +19,13 @@ export const Matching = () => {
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
   const [userId, setUserId] = useState(null);
-  console.log(userId);
+ // console.log(userId);
 
   const getData = async () => {
     //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
     setIsLoading(true);
     const result = await axios.get("http://localhost:4000/post");
-    console.log(result.data.data[count]);
+    //console.log(result.data.data[count]);
     //เขียนlogicให้เช็คตาราง meery list ก่อนถ้า status เป็น unmatch ไม่ให้เก็บเข้า state
     setProfile(result.data.data[count]);
     setProfileImg(result.data.data[count].profile_image);
@@ -38,16 +38,16 @@ export const Matching = () => {
   };
 
   const matchSomeone = async () => {
-    console.log(profile.user_id)
+    //console.log(profile.user_id)
     const checkMatch = await supabase
       .from("match_list")
       .select("*")
       .eq("chooser", profile.user_id)
       .eq("chosen_one", userId)
       .select();
-    console.log(checkMatch.data);
+    //console.log(checkMatch.data);
     if (checkMatch.data.length==0) {
-      console.log("จะแมชคนนี้", profile.user_id);
+      //console.log("จะแมชคนนี้", profile.user_id);
       const { data, error } = await supabase.from("match_list").insert({
         chooser: userId,
         chosen_one: profile.user_id,
@@ -71,7 +71,7 @@ export const Matching = () => {
   };
 
   const unmatchSomeone = async () => {
-    console.log("จะไม่แมชคนนี้", profile.profile_id);
+    //console.log("จะไม่แมชคนนี้", profile.profile_id);
    
     setCount(count + 1);
   };

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import packageImg from "../../../public/icons/MerryPackage.png";
 import complaintImg from "../../../public/icons/ComplaintIcon.png";
 import ButtonGhostAdminPanel from "@/components/base/button/ButtonGhostAdminPanel";

@@ -5,18 +5,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import boy from "../../public/imgs/boy-complaint-form-page.png";
-import { ButtonPrimary } from "@/components/base/button/Button";
+
 import {
-  Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/authentication";
 import { Button } from "@/components/ui/button";
 
@@ -37,12 +34,12 @@ export function LoginPage() {
   return (
     <div className="h-screen overflow-hidden">
       <div className="relative">
-      {!auth.isAuthenticated ? (
-        <Navbar />
-      ) : 
-      ( <NavbarRegistered />
-      // ( window.location.replace('/') ,<checkAuthenticateUser /> 
-      )}
+        {!auth.isAuthenticated ? (
+          <Navbar />
+        ) : (
+          <NavbarRegistered />
+          // ( window.location.replace('/') ,<checkAuthenticateUser />
+        )}
       </div>
       <section className="flex h-full justify-evenly items-center bg-[#FCFCFE]">
         {/* กล่องด้านขวา */}
@@ -92,13 +89,13 @@ export function LoginPage() {
               <Button className="rounded-full bg-pred-500 w-full">Login</Button>
             </div>
             <div className="h-[32px] flex items-center mt-5">
-            <CardTitle className="text-black mr-2 text-base">
-              <TypographySmall>Don’t have an account?</TypographySmall>
-            </CardTitle>
-            <span className="text-pred-500 font-bold cursor-pointer hover:text-pred-400 active:text-pred-200">
-              <a href="/register">Register</a>
-            </span>
-          </div>
+              <CardTitle className="text-black mr-2 text-base">
+                <TypographySmall>Don’t have an account?</TypographySmall>
+              </CardTitle>
+              <span className="text-pred-500 font-bold cursor-pointer hover:text-pred-400 active:text-pred-200">
+                <a href="/register">Register</a>
+              </span>
+            </div>
           </CardContent>
         </form>
       </section>

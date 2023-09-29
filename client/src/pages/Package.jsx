@@ -17,7 +17,9 @@ const Package = () => {
             <p className="mt-[8px] text-5xl font-extrabold text-ppurple-500">
               Be part of Merry Membership
             </p>
-            <p className="text-5xl font-extrabold text-ppurple-500">to make more Merry!</p>
+            <p className="text-5xl font-extrabold text-ppurple-500">
+              to make more Merry!
+            </p>
           </div>
           <div className="flex justify-center items-center">
             <CardsPackage />

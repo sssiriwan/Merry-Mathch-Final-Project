@@ -1,4 +1,3 @@
-import { ButtonSecondary } from "@/components/base/button/Button";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,12 +18,12 @@ function PackageAddDetail() {
   const [limit, setLimit] = useState(0);
   const [icon, setIcon] = useState({});
   const [detail, setDetail] = useState("");
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState(0);
 
   // set error message
-  const [errorName, setErrorName] = useState("")
-  const [errorPrice, setErrorPrice] = useState("")
-  const [errorLimit, setErrorLimit] = useState("")
+  const [errorName, setErrorName] = useState("");
+  const [errorPrice, setErrorPrice] = useState("");
+  const [errorLimit, setErrorLimit] = useState("");
 
   const navigate = useNavigate();
 
@@ -33,44 +32,44 @@ function PackageAddDetail() {
     setIcon({
       ...icon,
       [uniqueId]: event.target.files[0],
-    })
-  }
+    });
+  };
 
   const handleRemoveImage = (event, iconKey) => {
     event.preventDefault();
     delete icon[iconKey];
-    setIcon({...icon});
-  }
+    setIcon({ ...icon });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let isValid = true;
 
-    if(name.length == 0) {
-      setErrorName("Please enter a package name")
+    if (name.length == 0) {
+      setErrorName("Please enter a package name");
       isValid = false;
     } else {
-      setErrorName("")
+      setErrorName("");
     }
 
-    if(price == 0) {
-      setErrorPrice("Please enter a price")
+    if (price == 0) {
+      setErrorPrice("Please enter a price");
       isValid = false;
     } else {
-      setErrorPrice("")
+      setErrorPrice("");
     }
 
-    if(limit == 0) {
-      setErrorLimit("Please select a package limit")
+    if (limit == 0) {
+      setErrorLimit("Please select a package limit");
       isValid = false;
     } else {
-      setErrorLimit("")
+      setErrorLimit("");
     }
-    console.log(isValid)
-    if(isValid){
+    console.log(isValid);
+    if (isValid) {
       addPackage();
     }
-  }
+  };
 
   const addPackage = async () => {
     const formData = new FormData();
@@ -79,26 +78,41 @@ function PackageAddDetail() {
     formData.append("package_limit", limit);
     formData.append("price", price);
     for (let iconKey in icon) {
-      formData.append("icon", icon[iconKey])
+      formData.append("icon", icon[iconKey]);
     }
-    const result = await axios.post('http://localhost:4000/admin/package', formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    console.log(result)
-    navigate("/admin")
-  }
+    const result = await axios.post(
+      "http://localhost:4000/admin/package",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    console.log(result);
+    navigate("/admin");
+  };
 
   return (
     <CardContent className="grid gap-6 p-5">
       <div className="grid grid-cols-2 gap-4">
         <div className="grid gap-2">
           <Label htmlFor="subject">Package name *</Label>
-          <Input id="Package" onChange={(event) => { setName(event.target.value)}} />
-          {errorName && <p className="text-red-500 text-sm font-bold mt-1">{errorName}</p>}
+          <Input
+            id="Package"
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+          />
+          {errorName && (
+            <p className="text-red-500 text-sm font-bold mt-1">{errorName}</p>
+          )}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="area">Merry limit *</Label>
-          <Select onValueChange={(event) => { setLimit(event) }}>
+          <Select
+            onValueChange={(event) => {
+              setLimit(event);
+            }}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select" />
             </SelectTrigger>
@@ -109,20 +123,33 @@ function PackageAddDetail() {
               <SelectItem value={100}>100</SelectItem>
             </SelectContent>
           </Select>
-          {errorLimit && <p className="text-red-500 text-sm font-bold mt-1">{errorLimit}</p>}
+          {errorLimit && (
+            <p className="text-red-500 text-sm font-bold mt-1">{errorLimit}</p>
+          )}
         </div>
       </div>
       <div>
         <Label htmlFor="price">Price</Label>
         <div className="flex items-center mt-1">
-          <Input id="price" type="number" onChange={(event) => { setPrice(event.target.value) }} className="w-40" />
+          <Input
+            id="price"
+            type="number"
+            onChange={(event) => {
+              setPrice(event.target.value);
+            }}
+            className="w-40"
+          />
           <span className="ml-3">Baht</span>
         </div>
-        {errorPrice && <p className="text-red-500 text-sm font-bold mt-1">{errorPrice}</p>}
+        {errorPrice && (
+          <p className="text-red-500 text-sm font-bold mt-1">{errorPrice}</p>
+        )}
       </div>
       <Label htmlFor="subject">Icon *</Label>
       <label
-        className={`bg-pgray-100 h-24 w-24 rounded-xl flex flex-col justify-center items-center ${Object.keys(icon).length == 1 ? "hidden" : ""}`}
+        className={`bg-pgray-100 h-24 w-24 rounded-xl flex flex-col justify-center items-center ${
+          Object.keys(icon).length == 1 ? "hidden" : ""
+        }`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -140,20 +167,45 @@ function PackageAddDetail() {
           />
         </svg>
         <div className="text-ppurple-600 text-sm">Upload icon</div>
-        <input id="upload" name="icon" type="file" onChange={handleFileChange} hidden />
+        <input
+          id="upload"
+          name="icon"
+          type="file"
+          onChange={handleFileChange}
+          hidden
+        />
       </label>
       {Object.keys(icon).map((iconKey) => {
         const file = icon[iconKey];
         return (
-          <div key={iconKey} className="w-24 h-24 bg-pgray-100 rounded-2xl relative flex justify-center items-center">
-            <img src={URL.createObjectURL(file)} alt={file.name} className="object-cover rounded-2xl" />
-            <button onClick={(event) => { handleRemoveImage(event, iconKey) }} className="rounded-full absolute -top-1 -right-1 w-6 h-6 bg-putility-300 text-white text-sm">✕</button>
+          <div
+            key={iconKey}
+            className="w-24 h-24 bg-pgray-100 rounded-2xl relative flex justify-center items-center"
+          >
+            <img
+              src={URL.createObjectURL(file)}
+              alt={file.name}
+              className="object-cover rounded-2xl"
+            />
+            <button
+              onClick={(event) => {
+                handleRemoveImage(event, iconKey);
+              }}
+              className="rounded-full absolute -top-1 -right-1 w-6 h-6 bg-putility-300 text-white text-sm"
+            >
+              ✕
+            </button>
           </div>
-        )
+        );
       })}
       <div className="border-t"></div>
       <div className="grid gap-4">
-        <Label htmlFor="description" className="font-semibold text-pgray-700 text-lg">Package Detail</Label>
+        <Label
+          htmlFor="description"
+          className="font-semibold text-pgray-700 text-lg"
+        >
+          Package Detail
+        </Label>
         <div className="flex h-20 space-x-2 justify-between items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -171,12 +223,26 @@ function PackageAddDetail() {
               fill="#C8CCDB"
             />
           </svg>
-          <Input id="Package" placeholder="" value={detail} onChange={(event) => { setDetail(event.target.value)}} />
-          <Button variant="link" className="font-bold text-pred-500">Delete</Button>
+          <Input
+            id="Package"
+            placeholder=""
+            value={detail}
+            onChange={(event) => {
+              setDetail(event.target.value);
+            }}
+          />
+          <Button variant="link" className="font-bold text-pred-500">
+            Delete
+          </Button>
         </div>
       </div>
       <div className="flex h-20 justify-start items-start">
-        <button onClick={handleSubmit} className="border bg-pred-500 px-7 py-3 text-white rounded-full">+ Add detail</button>
+        <button
+          onClick={handleSubmit}
+          className="border bg-pred-500 px-7 py-3 text-white rounded-full"
+        >
+          + Add detail
+        </button>
       </div>
     </CardContent>
   );

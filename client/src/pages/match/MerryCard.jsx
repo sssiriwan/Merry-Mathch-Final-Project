@@ -70,7 +70,7 @@ function MerryCard(props) {
 
     const handleMatchClick = async (matchList) => {
       if (matchList.status.toLowerCase() === "merry") {
-        console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+        //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
         const updateStatus = {
           status: "match",
           updated_at: new Date(),
@@ -80,7 +80,7 @@ function MerryCard(props) {
           .update(updateStatus)
           .eq("matchlist_id", matchList.matchlist_id);
       } else if (matchList.status.toLowerCase() === "match") {
-        console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+        //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
         const updateStatus = {
           status: "unmatch",
           updated_at: new Date(),
@@ -90,7 +90,7 @@ function MerryCard(props) {
           .update(updateStatus)
           .eq("matchlist_id", matchList.matchlist_id);
       } else {
-        console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
+        //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
         const updateStatus = {
           status: "match",
           updated_at: new Date(),

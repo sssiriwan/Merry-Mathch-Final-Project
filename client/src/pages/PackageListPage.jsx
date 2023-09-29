@@ -11,39 +11,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
-import merryicon from "../../public/icons/merry.png"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-const packagedetail = [
-  {
-    no: "1",
-    icon: "lorem ipsum",
-    Packagename: "asdasdasdasdas",
-    MerryLimit: "23",
-    Createddate: "23/02/2022",
-    Updatedate: "25/02/2022",
-  },
-  {
-    no: "2",
-    icon: "lorem ipsum",
-    Packagename: "asdasdasdasdas",
-    MerryLimit: "25",
-    Createddate: "23/02/2022",
-    Updatedate: "25/02/2022",
-  },
-];
-
 function PackageListPage() {
-  const navigate = useNavigate()
-  const params = useParams()
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
 
   const fetchPackage = async () => {
-    const result = await axios.get('http://localhost:4000/admin/package');
-    console.log(result.data.data)
-    setItems(result.data.data)
-  }
+    const result = await axios.get("http://localhost:4000/admin/package");
+    console.log(result.data.data);
+    setItems(result.data.data);
+  };
 
   const handleDelete = async (packageId) => {
     try {
@@ -56,9 +35,9 @@ function PackageListPage() {
     }
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchPackage();
-  }, [])
+  }, []);
 
   return (
     <div className="flex">
@@ -136,16 +115,22 @@ function PackageListPage() {
                           />
                         </svg>
                       </TableCell>
-                      <TableCell>{index+1}</TableCell>
+                      <TableCell>{index + 1}</TableCell>
                       <TableCell>
-                      <img src={packagedetail.package_icon} className="w-10 h-10 object-scale-down" />
+                        <img
+                          src={packagedetail.package_icon}
+                          className="w-10 h-10 object-scale-down"
+                        />
                       </TableCell>
                       <TableCell>{packagedetail.package_name}</TableCell>
                       <TableCell>{packagedetail.package_limit}</TableCell>
                       <TableCell>{packagedetail.created_at}</TableCell>
                       <TableCell>{packagedetail.update_at}</TableCell>
                       <TableCell>
-                        <Button class="bg-white" onClick={() => handleDelete(packagedetail.package_id)}>
+                        <Button
+                          class="bg-white"
+                          onClick={() => handleDelete(packagedetail.package_id)}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -163,10 +148,11 @@ function PackageListPage() {
                         </Button>
                       </TableCell>
                       <TableCell>
-                        <Button class="bg-white" onClick={() => {
-                          navigate(`/admin/edit/${packagedetail.package_id}`)
-                        }}
-                        
+                        <Button
+                          class="bg-white"
+                          onClick={() => {
+                            navigate(`/admin/edit/${packagedetail.package_id}`);
+                          }}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +170,6 @@ function PackageListPage() {
                               fill="#FF6390"
                             />
                           </svg>
-                          
                         </Button>
                       </TableCell>
                     </TableRow>

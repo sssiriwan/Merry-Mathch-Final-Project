@@ -30,14 +30,13 @@ const ProfileChooser = (props) => {
   //console.log("รูป", image);
 
   useEffect(() => {
-    console.log("ทำงานไหม");
+    //console.log("ทำงานไหม");
     getProfile(userId);
   }, [userId]);
 
   return (
     <>
       <button
-      
         onClick={() => {
           navigate(`/chat/${roomId}`);
         }}

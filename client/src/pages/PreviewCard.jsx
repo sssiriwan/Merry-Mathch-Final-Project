@@ -20,7 +20,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
   const [avatars, setAvatars] = useState({});
   const [count, setCount] = useState(0);
   const handleNextImage = () => {
-    if (count < imageArr.length-1) {
+    if (count < imageArr.length - 1) {
       setCount(count + 1);
     } else {
       setCount(0);
@@ -29,7 +29,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
 
   const handlePrevImage = () => {
     if (count === 0) {
-      setCount(imageArr.length-1);
+      setCount(imageArr.length - 1);
     } else {
       setCount(count - 1);
     }
@@ -55,8 +55,8 @@ function PreviewCard({ clicked, setClicked, userId }) {
       imageArr.push(avatars[img]);
     }
   }
-  console.log("อาร์เรย์",imageArr)
-  console.log("preview",imageArr.length);
+  //console.log("อาร์เรย์", imageArr);
+  //console.log("preview", imageArr.length);
 
   const age = (birthday) => {
     const today = new Date();
@@ -74,12 +74,12 @@ function PreviewCard({ clicked, setClicked, userId }) {
     const result = await axios.get(
       `http://localhost:4000/post/profile/${userId}`
     );
-    console.log(result.data.data);
+    //console.log(result.data.data);
     setIsLoading(false);
     setProfile(result.data.data);
     setHobbies(result.data.data.hobbies);
     setAvatars(result.data.data.profile_image);
-    console.log("รูปจ้ารูป", result.data.data);
+    //console.log("รูปจ้ารูป", result.data.data);
   };
   useEffect(() => {
     getData();
@@ -94,13 +94,15 @@ function PreviewCard({ clicked, setClicked, userId }) {
         <div className="shadow-md rounded-4xl w-[478px] h-[526px]">
           {!isLoading && (
             <>
-            {/* imageArr */}
+              {/* imageArr */}
               <img
                 src={Object.values(avatars)[count]}
                 className="w-[478px] h-[478px] object-cover rounded-4xl"
               />
               <div className="flex items-center justify-between px-10">
-                <div>{count+1}/{imageArr.length}</div>
+                <div>
+                  {count + 1}/{imageArr.length}
+                </div>
                 <div>
                   {/* ปุ่มใน รูป <- -> */}
                   <button
@@ -231,17 +233,6 @@ function PreviewCard({ clicked, setClicked, userId }) {
           </div>
         </div>
       </div>
-      {/* <div className=" bg-orange-50 flex">
-                <img src={profile.avatar_url} className="w-[500px] h-[500px] object-cover rounded-2xl" />
-            </div>
-            <div className="ml-10 mt-10">
-                <div>
-                    <div className="flex">
-                        <h1 className="font-extrabold text-5xl mr-5">{profile.fullname}</h1>
-                        <h1 className="font-extrabold text-5xl text-pgray-700">{profile.age}</h1>
-                    </div>
-                </div>
-            </div> */}
     </div>
   );
 }
