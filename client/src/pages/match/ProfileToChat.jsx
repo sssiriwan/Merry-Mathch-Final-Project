@@ -29,7 +29,7 @@ const ProfileToChat = () => {
       .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
       .eq("status", "match");
     //console.log("match จะมาไหม", data);
-    setIsLoading(true);
+    setIsLoading(false);
     setMatchList(data);
   };
 
