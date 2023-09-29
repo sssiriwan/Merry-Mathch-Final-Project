@@ -3,7 +3,6 @@ import { supabase } from "@/utils/supabaseClient";
 import { TypographySmall } from "@/components/base/button/Typography";
 import { useNavigate } from "react-router-dom";
 
-
 const ChatCardChosen = (props) => {
   const matchList = props.matchList;
   const userId = matchList.chosen_one;
@@ -28,9 +27,9 @@ const ChatCardChosen = (props) => {
       .eq("user_id", item);
 
     //console.log("ไอดีถูกไหม", data[0].user_id);
+    setIsLoading(false);
     setFullname(data[0].fullname);
     setImage(data[0].profile_image.img_1);
-    setIsLoading(false);
   };
 
   const getLastMessage = async () => {
@@ -54,18 +53,30 @@ const ChatCardChosen = (props) => {
 
   return (
     <>
-      <button
-      className=" w-full  hover:ring-[2px] hover:ring-ppurple-500 hover:ring-inset hover:bg-pgray-200 hover:rounded-2xl"
-        onClick={() => {navigate(`/chat/${roomId}`);}}
-      >
-        <div className="flex mt-2 p-3 items-start w-full">
-          <img className=" w-16 h-16 rounded-full object-cover" src={image} />
-          <div className="flex flex-col justify-start   ml-3 text-pgray-700">
-            <p className="text-black mb-2 mt-3 ">{fullname}</p>
-            <TypographySmall>{conversation}</TypographySmall>
+      {!isLoading && (
+        <button
+          className=" w-full  hover:ring-[2px] hover:ring-ppurple-500 hover:ring-inset hover:bg-pgray-200 hover:rounded-2xl"
+          onClick={() => {
+            navigate(`/chat/${roomId}`);
+          }}
+        >
+          <div className="flex mt-2 p-3 items-start w-full">
+            <img className=" w-16 h-16 rounded-full object-cover" src={image} />
+            <div className="flex flex-col justify-start   ml-3 text-pgray-700">
+              <p className="text-black mb-2 mt-3 ">{fullname}</p>
+              <TypographySmall>{conversation}</TypographySmall>
+            </div>
           </div>
-        </div>
-      </button>
+        </button>
+      )}
+
+      {isLoading && (
+        <>
+          <div class="h-[500px] flex items-center">
+            <div class="custom-loader"></div>
+          </div>
+        </>
+      )}
     </>
   );
 };
