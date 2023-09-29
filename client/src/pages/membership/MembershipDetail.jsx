@@ -9,12 +9,64 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "../admin/ConfirmationModal";
+
 
 function MembershipDetail() {
   const status = " text-base text-pbeige-600  bg-pbeige-200 flex ";
+  const navigate = useNavigate()
+
+  const [name, setName] = useState("")
+  const [price, setPrice] = useState(0)
+  const [limit, setLimit] = useState(0);
+  const [icon, setIcon] = useState({});
+  const [packageStatus, setPackageStatus] = useState("Active");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const getMembershipData = async () => {
+      const response = await axios.get(`http://localhost:4000/post/membership`);
+      if (response.data.data.length > 0) {
+        setName(response.data.data[0].merry_packages.package_name);
+        setPrice(response.data.data[0].merry_packages.price);
+        setLimit(response.data.data[0].merry_packages.package_limit);
+        setIcon(response.data.data[0].merry_packages.package_icon);
+      } else {
+        // Redirect to the package page when there's no data
+        navigate("/package"); // Replace "/package" with the actual route to your package page
+      }
+  }
+
+  const handleDeletePackage = async () => {
+    setShowConfirmation(true);
+  }
+
+
+const confirmCancel = async () => {
+  try {
+    await axios.delete(`http://localhost:4000/post/membership`);
+    navigate("/package")
+    setPackageStatus("Inactive");
+  } catch (error) {
+    console.log(error)
+  }
+
+  setShowConfirmation(false);
+}
+
+const cancelDelete = () => {
+  setShowConfirmation(false);
+};
+
+  useEffect(() => {
+    getMembershipData();
+  }, []);
+
   return (
     <div>
-      {/* Membership Package */}
+      {/*Merry  Membership Package */}
       <p className=" text-2xl font-bold text-ppurple-500">Merry Membership Package</p>
       {/* กล่องใหญ่โชว์สถานะ membership */}
       <div className="flex flex-col mt-6  h-[222px]  p-8  rounded-[32px]  bg-gradient-to-br from-ppurple-800 to-ppurple-400 shadow-xl">
@@ -24,12 +76,12 @@ function MembershipDetail() {
           <div className="flex flex-row justify-between">
             <img
               className="w-[78px] h-[78px] rounded-2xl"
-              src="https://files.vogue.co.th/uploads/makeup_steps_to_natural_look3.jpg"
+              src={icon}
               alt="icon_vector"
             />
             <div className="flex ml-4 flex-col justify-between">
-              <h1 className=" text-3xl  text-white">Premium</h1>
-              <h2 className="  text-xl text-white">THB 149.00/Month</h2>
+              <h1 className=" text-3xl  text-white">{name}</h1>
+              <h2 className="  text-xl text-white">THB {price} /Month</h2>
             </div>
 
             {/* รายละเอียดแต่ละ package */}
@@ -39,20 +91,31 @@ function MembershipDetail() {
               ‘Merry’ more than a daily limited
             </h3>
             <h3 className="ml-[12px] text-base text-purple-100">
-              ‘Merry’ more than a daily limited
+              Up to {limit} Merry per day
             </h3>
           </div>
 
           {/* membership status */}
           <div>
-            <BadgeDemo className={status}>Active</BadgeDemo>
+            <BadgeDemo className={status}>{packageStatus}</BadgeDemo>
           </div>
         </div>
         <hr className=" mt-10" />
         {/* กล่องโชว์ cancel package */}
         <div className=" mt-5 flex flex-row justify-end">
-          <button className="text-white">Cancel Package</button>
+          {packageStatus === "Active" && (
+            <button className="text-white" onClick={handleDeletePackage}>Cancel Package</button>
+          )}
         </div>
+        {showConfirmation && (
+        <ConfirmationModal
+          message="Do you sure to cancel Membership to get more Merry?"
+          confirmLabel="Yes, I want to cancel"
+          cancelLabel="No, I still want to be member"
+          onConfirm={confirmCancel}
+          onCancel={cancelDelete}
+        />
+      )}
       </div>
 
       {/* Payment Method */}
