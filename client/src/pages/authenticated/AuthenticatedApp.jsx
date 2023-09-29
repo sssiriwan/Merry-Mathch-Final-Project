@@ -10,6 +10,8 @@ import Package from "../Package";
 import ChatPage from "../Chat";
 import Payment_1 from "../Payment_1";
 import Membership from "../Membership";
+import Payment from "../payment/Payment";
+import PaymentForm from "../payment/PaymentForm";
 
 function AuthenticatedApp() {
   return (
@@ -25,6 +27,8 @@ function AuthenticatedApp() {
           <Route path="/package" element={<Package />} />
           <Route path="/chat/:matchListId" element={<ChatPage/>}/>
           <Route path="/payment" element={<Payment_1 />} />
+          <Route path="/testpayment" element={<Payment />} />
+          <Route path="/test" element={<PaymentForm />} />
           <Route path="/membership" element={<Membership />} />
           <Route path="*" element={<Home />} />
         </Routes>

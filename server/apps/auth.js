@@ -14,11 +14,8 @@ const avatarUpload = upload.fields([{name: "avatar", maxCount:5 }]);
 authRouter.post("/register", avatarUpload , async (req, res) => {
   try {
     const hobbies = req.body.tags.split(',')
-    console.log(hobbies)
 
     const files = req.files.avatar
-    console.log(files)
-    console.log(req.body)
     let fileUrl = []
     for(let i=0; i<files.length; i++) {
       const fileName = `${Date.now()}`
@@ -183,7 +180,6 @@ authRouter.get("/package", async (req, res) => {
       .select("*")
       .order("created_at", { ascending: false })
       // .limit()
-    console.log(result);
     return res.json({
       data: result.data,
     });
@@ -191,6 +187,21 @@ authRouter.get("/package", async (req, res) => {
     console.error("Error in /package route:", error);
   }
 });
+
+authRouter.get("/package/:packageId", async (req, res) => {
+  try {
+    const { data } = await supabase
+      .from("merry_packages")
+      .select("*")
+      .eq('package_id', req.params.packageId);
+    return res.json({
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error in /package route:", error);
+  }
+});
+
 
 export default authRouter;
 
