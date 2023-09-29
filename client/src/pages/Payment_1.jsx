@@ -33,7 +33,7 @@ const Payment_1 = () => {
       body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
     })
       .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
+      .then((data) => {setClientSecret(data.clientSecret); console.log(data)});
   }, []);
 
   useEffect(() => {
@@ -42,6 +42,11 @@ const Payment_1 = () => {
 
   const appearance = {
     theme: "stripe",
+    variables: {
+      colorPrimary: '#C70039',
+      spacingGridRow: '20px',
+      borderRadius: '15px',
+    }
   };
 
   const options = {

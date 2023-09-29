@@ -29,7 +29,7 @@ async function init() {
   }
   app.post('/create-payment-intent', async (req,res) => {
     const { items } = req.body;
-    
+    console.log(req.body)
     const paymentIntent = await stripe.paymentIntents.create({
       amount: calculateOrderAmount(items),
       currency: 'thb',
