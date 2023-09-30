@@ -26,7 +26,7 @@ export const Matching = () => {
     //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
     setIsLoading(true);
     const result = await axios.get(`http://localhost:4000/post/filter?min=${minAge}&max=${maxAge}`);
-    // console.log(result.data.data)
+    console.log(result.data.data)
     //console.log(result.data.data[count]);
     //เขียนlogicให้เช็คตาราง meery list ก่อนถ้า status เป็น unmatch ไม่ให้เก็บเข้า state
     setProfile(result.data.data[count]);
