@@ -48,7 +48,7 @@ const ProfileToChat = () => {
     <>
       <TypographyH3>Merry Match!</TypographyH3>
       {!isLoading && (
-        <div className="overflow-x-scroll whitespace-nowrap items-center snap-always snap-x snap-mandatory scroll-pl-6 ">
+        <div className="overflow-x-scroll whitespace-nowrap items-center snap-always snap-x snap-mandatory scroll-pl-6 py-2 ">
           {matchList?.map((item, index) => {
             //mapคนที่เขาปัดเราเขาเป็็น chooser
             if (item.chooser !== userId) {

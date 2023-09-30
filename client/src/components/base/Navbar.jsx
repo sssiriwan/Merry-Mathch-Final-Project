@@ -26,7 +26,7 @@ const Navbar = () => {
         <a href="/#sec2">
           <span className="mr-8">Why Merry Match?</span>
         </a>
-        <a href="/#sec4">
+        <a href="/#sec3">
           <span className="mr-8">How to Merry</span>
         </a>
         <a href="/login">

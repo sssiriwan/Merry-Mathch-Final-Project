@@ -28,9 +28,9 @@ function Identities({ formValues, onChange, updateTags }) {
               value={formValues.SexualIdentities}
             >
               <option value="">Select...</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-Binary">Non-Binary</option>
             </select>
             {errorSexIden && <p className=" text-red-600">{errorSexIden}</p>}
           </div>
@@ -44,9 +44,9 @@ function Identities({ formValues, onChange, updateTags }) {
               value={formValues.SexualPreferences}
             >
               <option value="">Select...</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Non-Binary">Non-Binary</option>
             </select>
             {errorSexPrefer && (
               <p className=" text-red-600">{errorSexPrefer}</p>
@@ -68,11 +68,11 @@ function Identities({ formValues, onChange, updateTags }) {
               value={formValues.RacialPreferences}
             >
               <option value="">Select...</option>
-              <option value="male">Asian</option>
-              <option value="female">Europe</option>
-              <option value="other">Africa</option>
-              <option value="other">America</option>
-              <option value="other">Other</option>
+              <option value="Asian">Asian</option>
+              <option value="Europe">Europe</option>
+              <option value="Africa">Africa</option>
+              <option value="America">America</option>
+              <option value="Other">Other</option>
             </select>
             {errorRacialPrefer && (
               <p className=" text-red-600">{errorRacialPrefer}</p>
@@ -88,10 +88,10 @@ function Identities({ formValues, onChange, updateTags }) {
               value={formValues.MeetingInterests}
             >
               <option value="">Select...</option>
-              <option value="male">Friend</option>
-              <option value="female">Boyfriend/Grilfriend</option>
-              <option value="other">Casual</option>
-              <option value="other">Other</option>
+              <option value="Male">Friend</option>
+              <option value="Female">Boyfriend/Grilfriend</option>
+              <option value="Casual">Casual</option>
+              <option value="Other">Other</option>
             </select>
             {errorMeetingInter && (
               <p className=" text-red-600">{errorMeetingInter}</p>

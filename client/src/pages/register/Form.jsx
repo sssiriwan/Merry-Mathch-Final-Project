@@ -299,7 +299,7 @@ function Form() {
         <Navbar />
       </div>
 
-      <div className="bg-putility-500 pt-14">
+      <div className="bg-putility-500 pt-14 flex flex-col justify-center items-center">
         <div className="ml-[255px] mr-[255px]">
           <div className="text-pbeige-700 text-[14px]">REGISTER</div>
           <div className="text-[46px] font-[800] text-ppurple-500">
@@ -397,7 +397,7 @@ function Form() {
           </div>
         </div>
 
-        <div className="ml-[255px] mr-[255px]">
+        <div>
           <div className="flex-1">{handleForms()}</div>
         </div>
       </div>

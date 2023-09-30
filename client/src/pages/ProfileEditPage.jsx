@@ -320,7 +320,7 @@ function ProfileEditPage() {
                       <option disabled>Please choose an option</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Non-binary">Non-binary</option>
+                      <option value="Non-Binary">Non-Binary</option>
                     </select>
                   </div>
 
@@ -341,7 +341,7 @@ function ProfileEditPage() {
                       <option disabled>Please choose an option</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Non-binary">Non-binary</option>
+                      <option value="Non-Binary">Non-Binary</option>
                     </select>
                   </div>
                 </div>
@@ -362,8 +362,9 @@ function ProfileEditPage() {
                     >
                       <option disabled>Please choose an option</option>
                       <option value="Asian">Asian</option>
-                      <option value="Caucasoid">Caucasoid</option>
-                      <option value="Negriod">Negroid</option>
+                      <option value="Europe">Europe</option>
+                      <option value="Africa">Africa</option>
+                      <option value="America">America</option>
                       <option value="Others">Others</option>
                     </select>
                   </div>
@@ -476,7 +477,7 @@ function ProfileEditPage() {
                           }
                         />
                         <button
-                          className="image-remove-button bg-[#AF2758] text-white rounded-full p-2 absolute top-0 right-0"
+                          className="image-remove-button bg-[#AF2758] text-white rounded-full px-3 py-1 absolute -top-2 -right-2"
                           onClick={(event) =>
                             handleRemoveImage(event, avatarKey)
                           }
