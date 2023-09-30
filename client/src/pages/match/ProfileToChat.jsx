@@ -64,7 +64,7 @@ const ProfileToChat = () => {
               console.log("เราปัดเขา");
               return (
                // <div className="snap-always snap-start py-2">
-                  <ProfileChooser matchList={item} key={index} />
+                  <ProfileChosen matchList={item} key={index} />
                // </div>
               );
             }
