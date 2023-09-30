@@ -8,10 +8,14 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import "../../App.css";
+import { usePackage } from "@/contexts/packageProvider";
+import axios from "axios";
 
 function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
+  const { packageId } = usePackage();
+  console.log(packageId, "ไอดี")
 
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
@@ -47,7 +51,8 @@ function CheckoutForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const response = await axios.post('http://localhost:4000/post/purchase', {packageId: packageId})
+    console.log(response)
     if (!stripe || !elements) {
       return;
     }

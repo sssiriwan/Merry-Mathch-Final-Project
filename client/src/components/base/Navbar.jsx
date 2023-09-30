@@ -17,6 +17,8 @@ import {
 import { useAuth } from "@/contexts/authentication";
 import axios from "axios";
 import Notification from "./Notification";
+import { supabase } from "@/utils/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -40,11 +42,26 @@ const Navbar = () => {
 function NavbarRegistered() {
   const [isLoading, setIsLoading] = useState(false);
   const [userImg, setUserImg] = useState("");
+  const [userId, setUserId] = useState(null)
+  const navigate = useNavigate();
+  const handleClick = async () => {
+    const checkPurchase = await supabase
+      .from("purchase")
+      .select("*")
+      .eq("user_id", userId)
+      .select();
+    if (checkPurchase.data.length == 0 ) {
+      navigate('/package')
+    } else {
+      navigate('/membership')
+    }
+  }
 
   const getMyProfile = async () => {
     setIsLoading(true);
     const result = await axios.get("http://localhost:4000/post/profile");
     setIsLoading(false);
+    setUserId(result.data.data.user_id)
     setUserImg(Object.values(result.data.data.profile_image)[0]);
   };
   useEffect(() => {
@@ -129,8 +146,8 @@ function NavbarRegistered() {
                     fill="#FFE1EA"
                   />
                 </svg>
-                <span className="ml-2 text-pgray-700">
-                  <a href="/membership">Merry Membership</a>
+                <span className="ml-2 text-pgray-700" onClick={handleClick}>
+                  Merry Membership
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem>
