@@ -306,7 +306,6 @@ postRouter.post("/purchase", async (req, res) => {
       user_id: req.user.id
     };
     const { data } = await supabase.from('purchase').insert([userPayment])
-    console.log(data)
     return res.json({
       message: "ซื้อแล้วจ้าเย้"
     })
