@@ -57,7 +57,7 @@ function CheckoutForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:5173/profile",
+        return_url: "http://localhost:5173/membership",
       },
     });
     if (error.type === "card_error" || error.type === "validation_error") {
