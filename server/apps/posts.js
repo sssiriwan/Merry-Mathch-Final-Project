@@ -15,20 +15,58 @@ postRouter.get("/", async (req, res) => {
   });
 });
 
-postRouter.get('/filter', async (req,res) => {
-  const today = new Date()
-  const todayYear = today.getFullYear()
-  const todayMonth = today.getMonth() + 1
-  const todayDay = today.getDate()
-  
-  const userDateMax = `${todayYear - req.query.max}-${todayMonth}-${todayDay}`
-  const userDateMin = `${todayYear - req.query.min}-${todayMonth}-${todayDay}`
-  console.log(`${userDateMin}, ${userDateMax}`)
-  const {data, error} = await supabase.from('profiles').select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ").gte('date_of_birth', userDateMax).lte('date_of_birth', userDateMin).neq('user_id', req.user.id)
+postRouter.get("/filter", async (req, res) => {
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth() + 1;
+  const todayDay = today.getDate();
+  // หาวันเดือนปีเกิดของผู้ใช้
+  const userDateMax = `${todayYear - req.query.max}-${todayMonth}-${todayDay}`;
+  const userDateMin = `${todayYear - req.query.min}-${todayMonth}-${todayDay}`;
+
+  // check เพศ
+  if (req.query.male == 'true') {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
+      .eq("sexual_identity", "Male")
+      .neq("user_id", req.user.id);
+    return res.json({
+      data: data,
+    });
+  }
+  if (req.query.female == 'true') {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
+      .eq("sexual_identity", "Female")
+      .neq("user_id", req.user.id);
+    return res.json({
+      data: data,
+    });
+  }
+  if (req.query.bi == 'true') {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
+      .eq("sexual_identity", "Non-Binary")
+      .neq("user_id", req.user.id);
+      console.log("ค้นหา bi",data)
+    return res.json({
+      data: data,
+    });
+  }
+  console.log(req.query)
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
+    .gte("date_of_birth", userDateMax)
+    .lte("date_of_birth", userDateMin)
+    .neq("user_id", req.user.id);
   return res.json({
     data: data,
-  })
-})
+  });
+});
 
 postRouter.get("/check", async (req, res) => {
   return res.json({
@@ -226,29 +264,31 @@ postRouter.get("/keyword", async (req, res) => {
 });
 
 postRouter.get("/membership", async (req, res) => {
-  console.log(req.user.id)
+  console.log(req.user.id);
   try {
     const result = await supabase
-      .from('purchase')
-      .select('*, merry_packages(package_name, price, package_limit, package_icon)')
-      .eq('user_id', req.user.id);
+      .from("purchase")
+      .select(
+        "*, merry_packages(package_name, price, package_limit, package_icon)"
+      )
+      .eq("user_id", req.user.id);
 
     return res.json({
       data: result.data,
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 postRouter.delete("/membership", async (req, res) => {
-  console.log(req.user.id)
+  console.log(req.user.id);
   try {
     const result = await supabase
-      .from('purchase')
+      .from("purchase")
       .delete()
-      .eq('user_id', req.user.id);
+      .eq("user_id", req.user.id);
 
     return res.json({
       data: result.data,
