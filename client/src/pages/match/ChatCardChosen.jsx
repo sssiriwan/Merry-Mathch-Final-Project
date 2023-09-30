@@ -25,11 +25,11 @@ const ChatCardChosen = (props) => {
         "*, users(email, username, user_id),hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
       )
       .eq("user_id", item);
-
     //console.log("ไอดีถูกไหม", data[0].user_id);
-    setIsLoading(false);
+
     setFullname(data[0].fullname);
     setImage(data[0].profile_image.img_1);
+    setIsLoading(false);
   };
 
   const getLastMessage = async () => {

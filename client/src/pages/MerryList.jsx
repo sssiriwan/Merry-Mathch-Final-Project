@@ -36,9 +36,14 @@ function MerryList() {
     setIsLading(false);
   };
 
+  const callbackValue = async (item) => {
+    console.log("AAA", item);
+    handleGetdata();
+  };
+
   useEffect(() => {
     handleGetdata();
-  }, [user.status]);
+  }, []);
 
   if (isLoading)
     return (
@@ -66,6 +71,7 @@ function MerryList() {
         </article>
         {user.length > 0 && (
           <div className="flex flex-col items-center">
+            {/* .filter((v)=>v.status.toLowerCase() !== "unmatch") */}
             {user?.map((item, index) => {
               //เหมือนต้องเขียนเช็ค status ที่ match ด้วย ให้แค่ merry กับ match มา render เท่านั้น
               //item.chooser !== userId && item.status.toLowerCase() !== "unmatch"
@@ -75,6 +81,7 @@ function MerryList() {
                   <MerryCard
                     user={item}
                     id={userId}
+                    callbackValue={callbackValue}
                     status={item.status}
                     key={index}
                   />
@@ -89,6 +96,7 @@ function MerryList() {
                     user={item}
                     id={userId}
                     status={item.status}
+                    callbackValue={callbackValue}
                     key={index}
                   />
                 );

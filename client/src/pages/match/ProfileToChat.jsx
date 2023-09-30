@@ -17,42 +17,56 @@ const ProfileToChat = () => {
     setIsLoading(true);
     const result = await axios.get("http://localhost:4000/post/profile");
     //console.log(result.data.data.profile_id);
+
     setUserId(result.data.data.user_id);
     setIsLoading(false);
   };
 
   const getMatchList = async () => {
-    setIsLoading(true);
-    const { data, error } = await supabase
-      .from("match_list")
-      .select("*")
-      .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
-      .eq("status", "match");
-    //console.log("match จะมาไหม", data);
-    setIsLoading(false);
-    setMatchList(data);
+    if (userId) {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from("match_list")
+        .select("*")
+        .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
+        .eq("status", "match");
+      //console.log("match จะมาไหม", data);
+      setMatchList(data);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    getMatchList();
     getUserProfile();
+  }, []);
+
+  useEffect(() => {
+    getMatchList();
   }, [userId]);
 
   return (
     <>
       <TypographyH3>Merry Match!</TypographyH3>
       {!isLoading && (
-        <div className="flex  items-center overflow-auto">
+        <div className=" w-full flex  items-center snap-always snap-x snap-mandatory scroll-pl-6 ">
           {matchList?.map((item, index) => {
             //mapคนที่เขาปัดเราเขาเป็็น chooser
             if (item.chooser !== userId) {
               console.log("เขาปัดเรา");
-              return <ProfileChooser matchList={item} key={index} />;
+              return (
+               // <div className="snap-always snap-start py-2">
+                  <ProfileChooser matchList={item} key={index} />
+                //</div>
+              );
             }
             //mapคนที่เราปัดเขาเขาเป็น chosen ส่ง userid เขาเพื่อไป get profile เอารูปกับชื่อ ส่งเลขห้องเพื่อไปดึงแชทล่าสุดของห้องนี้
             if (item.chooser == userId) {
               console.log("เราปัดเขา");
-              return <ProfileChosen matchList={item} key={index} />;
+              return (
+               // <div className="snap-always snap-start py-2">
+                  <ProfileChosen matchList={item} key={index} />
+               // </div>
+              );
             }
           })}
         </div>

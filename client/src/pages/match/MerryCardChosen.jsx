@@ -10,6 +10,7 @@ function MerryCardChosen(props) {
   const matchList = props.user;
   const userId = props.id;
   const matchStatus = props.status;
+  const callbackValue = props.callbackValue;
 
   // console.log(userId, matchList);
 
@@ -26,7 +27,6 @@ function MerryCardChosen(props) {
 
   const [clicked, setClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
 
   const getProfile = async (item, userId) => {
     //console.log(item);
@@ -76,6 +76,8 @@ function MerryCardChosen(props) {
         .from("match_list")
         .update(updateStatus)
         .eq("matchlist_id", matchList.matchlist_id);
+      //matchList.status = "waiting"
+      callbackValue("สวัสดี");
     } else {
       //console.log("อัปเดตสถานะอันนี้", matchList.matchlist_id);
       const updateStatus = {
@@ -86,6 +88,7 @@ function MerryCardChosen(props) {
         .from("match_list")
         .update(updateStatus)
         .eq("matchlist_id", matchList.matchlist_id);
+      callbackValue("สวัสดี");
     }
   };
 
@@ -171,14 +174,13 @@ function MerryCardChosen(props) {
   useEffect(() => {
     getProfile(matchList, userId);
     //เอาพวก status ที่เกี่ยวกับการ style มาใส่หมดเลย
-    
   }, [matchList, userId]);
 
-  useEffect(()=>{
+  useEffect(() => {
     merryMatchButton(matchStatus);
     merryButtonStyle(matchStatus);
-    heartStyle(matchStatus)
-  },[matchStatus])
+    heartStyle(matchStatus);
+  }, [matchStatus]);
 
   return (
     <div>
@@ -233,7 +235,10 @@ function MerryCardChosen(props) {
               {/* ปุ่มทำmerry */}
               <button
                 className={merryButtonStyle(matchStatus)}
-                onClick={() => {matchStatus.toLowerCase() !== "merry" &&handleMatchClick(matchList)}}
+                onClick={() => {
+                  matchStatus.toLowerCase() !== "merry" &&
+                    handleMatchClick(matchList);
+                }}
               >
                 <svg
                   width="44"
