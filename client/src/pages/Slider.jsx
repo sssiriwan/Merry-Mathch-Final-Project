@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 
-const MultiRangeSlider = ({ min, max }) => {
+const MultiRangeSlider = ({
+  min,
+  max,
+  onChange,
+  setMinFilter,
+  setMaxFilter,
+}) => {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
   const minValRef = useRef(min);
@@ -27,13 +33,18 @@ const MultiRangeSlider = ({ min, max }) => {
 
   // Set width of the range to decrease from the right side
   useEffect(() => {
-    const minPercent = getPercent(minValRef.current);
+    const minPercent = getPercent(minValRef.current.value);
     const maxPercent = getPercent(maxVal);
 
     if (range.current) {
       range.current.style.width = `${maxPercent - minPercent}%`;
     }
   }, [maxVal, getPercent]);
+
+  // Get min and max values when their state changes
+  useEffect(() => {
+    onChange({ min: minVal, max: maxVal });
+  }, [minVal, maxVal, onChange]);
 
   return (
     <div>
@@ -42,10 +53,14 @@ const MultiRangeSlider = ({ min, max }) => {
         min={min}
         max={max}
         value={minVal}
+        ref={minValRef}
+        // step="18"
         onChange={(event) => {
           const value = Math.min(Number(event.target.value), maxVal - 1);
           setMinVal(value);
-          minValRef.current = value;
+          // minValRef.current = value;
+          event.target.value = value.toString();
+          setMinFilter(Number(event.target.value));
         }}
         className="thumb thumb--left"
         style={{ zIndex: minVal > max - 100 && "5" }}
@@ -55,10 +70,14 @@ const MultiRangeSlider = ({ min, max }) => {
         min={min}
         max={max}
         value={maxVal}
+        ref={maxValRef}
+        // step="100"
         onChange={(event) => {
           const value = Math.max(Number(event.target.value), minVal + 1);
           setMaxVal(value);
-          maxValRef.current = value;
+          // maxValRef.current = value;
+          event.target.value = value.toString();
+          setMaxFilter(Number(event.target.value));
         }}
         className="thumb thumb--right"
       />
@@ -76,6 +95,7 @@ const MultiRangeSlider = ({ min, max }) => {
 MultiRangeSlider.propTypes = {
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default MultiRangeSlider;

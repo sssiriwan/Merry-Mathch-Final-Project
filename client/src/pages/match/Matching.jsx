@@ -19,7 +19,53 @@ export const Matching = () => {
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
   const [userId, setUserId] = useState(null);
- // console.log(userId);
+  // console.log(userId);
+
+  const [data, setData] = useState([]);
+  const [checkboxValue, setCheckboxValue] = useState([]);
+  const [minPriceFilter, setMinPriceFilter] = useState(18);
+  const [maxPriceFilter, setMaxPriceFilter] = useState(80);
+
+  // const onFilterChange = (filterData) => {
+  //   // Set the filter data
+  //   setCheckboxValue(filterData.checkboxValue);
+  //   setMinPriceFilter(filterData.minPriceFilter);
+  //   setMaxPriceFilter(filterData.maxPriceFilter);
+
+  //   // Filter the data based on the filter values
+  //   const filteredData = data.filter((item) => {
+  //     // Filter based on checkbox values
+  //     const checkboxValues = checkboxValue;
+  //     const isCheckboxValueMatched = checkboxValues.some((value) =>
+  //       item.checkboxValue.includes(value)
+  //     );
+  //     if (!isCheckboxValueMatched) {
+  //       return false;
+  //     }
+
+  //     // Filter based on multi range slider values
+  //     const minPrice = minPriceFilter;
+  //     const maxPrice = maxPriceFilter;
+  //     const isPriceRangeMatched =
+  //       item.price >= minPrice && item.price <= maxPrice;
+  //     if (!isPriceRangeMatched) {
+  //       return false;
+  //     }
+
+  //     return true;
+  //   });
+
+  //   // Display the filtered data
+  //   setData(filteredData);
+  // };
+
+  useEffect(() => {
+    // Fetch the user data from api
+    // ...
+
+    // Set the data
+    setData(data);
+  }, []);
 
   const getData = async () => {
     //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
@@ -38,16 +84,16 @@ export const Matching = () => {
   };
 
   const matchSomeone = async () => {
-    //console.log(profile.user_id)
+    console.log(profile.user_id);
     const checkMatch = await supabase
       .from("match_list")
       .select("*")
       .eq("chooser", profile.user_id)
       .eq("chosen_one", userId)
       .select();
-    //console.log(checkMatch.data);
-    if (checkMatch.data.length==0) {
-      //console.log("จะแมชคนนี้", profile.user_id);
+    console.log(checkMatch.data);
+    if (checkMatch.data.length == 0) {
+      console.log("จะแมชคนนี้", profile.user_id);
       const { data, error } = await supabase.from("match_list").insert({
         chooser: userId,
         chosen_one: profile.user_id,
@@ -56,7 +102,7 @@ export const Matching = () => {
       });
       setCount(count + 1);
     } else {
-      console.log("อัปเดตสถานะอันนี้", checkMatch.data[0].matchlist_id)
+      console.log("อัปเดตสถานะอันนี้", checkMatch.data[0].matchlist_id);
       const updateStatus = {
         status: "match",
         updated_at: new Date(),
@@ -65,14 +111,14 @@ export const Matching = () => {
         .from("match_list")
         .update(updateStatus)
         .eq("matchlist_id", checkMatch.data[0].matchlist_id);
-       //เด้งป้อปอัพไปห้องแชท set state true true fale ให้ ป้อปปัพเด้ง
+      //เด้งป้อปอัพไปห้องแชท set state true true fale ให้ ป้อปปัพเด้ง
       //  setCount(count + 1);
     }
   };
 
   const unmatchSomeone = async () => {
-    //console.log("จะไม่แมชคนนี้", profile.profile_id);
-   
+    console.log("จะไม่แมชคนนี้", profile.profile_id);
+
     setCount(count + 1);
   };
 
@@ -290,7 +336,6 @@ export const Matching = () => {
             </svg>
           </div>
         </Button>
-        
       </div>
       <footer className="h-5 absolute bottom-2 flex">
         <p className="text-pgray-700">Merry limit today</p>

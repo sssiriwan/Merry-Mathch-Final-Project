@@ -11,7 +11,7 @@ function MatchingPage() {
       </div>
       <section className="h-[92vh] bg-putility-400 flex">
         <SideBar />
-        <Matching />
+        <Matching filteredData={filteredData} />
         <FilterUser />
       </section>
     </div>
