@@ -20,12 +20,12 @@ export const Matching = () => {
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
   const [userId, setUserId] = useState(null);
-  const { minAge, setMinAge, maxAge, setMaxAge } = useAge();
+  const { minAge, setMinAge, maxAge, setMaxAge, female, setFemale, male, setMale, nonBi, setNonBi } = useAge();
 
   const getData = async () => {
     //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
     setIsLoading(true);
-    const result = await axios.get(`http://localhost:4000/post/filter?min=${minAge}&max=${maxAge}`);
+    const result = await axios.get(`http://localhost:4000/post/filter?min=${minAge}&max=${maxAge}&male=${male}&female=${female}&bi=${nonBi}`);
     console.log(result.data.data)
     //console.log(result.data.data[count]);
     //เขียนlogicให้เช็คตาราง meery list ก่อนถ้า status เป็น unmatch ไม่ให้เก็บเข้า state
@@ -92,7 +92,7 @@ export const Matching = () => {
   useEffect(() => {
     getData();
     getUserProfile();
-  }, [count, userId, maxAge, minAge]);
+  }, [count, userId, maxAge, minAge, female, male, nonBi]);
 
   return (
     <section className="w-[72%] flex justify-center items-center">
