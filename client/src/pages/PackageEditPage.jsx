@@ -30,7 +30,7 @@ function PackageEditPage() {
 
   const [detailList, setDetailList] = useState([]);
   const [newDetail, setNewDetail] = useState("");
-
+  
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   // function จัดการรูป
@@ -47,6 +47,13 @@ function PackageEditPage() {
     setIcon({ ...icon });
   };
 
+  const handleRemoveDetail = (event, index) => {
+    event.preventDefault();
+    const newArr = [...detailList]
+    newArr.splice(index, 1)
+    setDetailList(newArr)
+  };
+
   const handleAddDetail = () => {
     if (newDetail.trim() !== "") {
       setDetailList([...detailList, newDetail]);
@@ -58,6 +65,7 @@ function PackageEditPage() {
     const response = await axios.get(
       `http://localhost:4000/admin/package/${params.packageId}`
     );
+    setDetailList(Object.values(response.data.data.package_detail))
     const uniqueId = Date.now();
     const testObject = { [uniqueId]: response.data.data.package_icon };
     setName(response.data.data.package_name);
@@ -74,6 +82,9 @@ function PackageEditPage() {
     formData.append("price", price);
     for (let iconKey in icon) {
       formData.append("icon", icon[iconKey]);
+    }
+    for (let detailKey of detailList) {
+      formData.append('detail', detailKey)
     }
     const result = await axios.put(
       `http://localhost:4000/admin/package/${params.packageId}`,
@@ -117,7 +128,6 @@ function PackageEditPage() {
   return (
     <div className="flex">
       <AdminControlPanel />
-
       <div className="w-full flex flex-col bg-pgray-200 items-center">
         <div className="w-full flex bg-white h-20 justify-between items-center px-20 border-b">
           Edit '{name}'
@@ -270,7 +280,7 @@ function PackageEditPage() {
                           setDetailList(updatedDetailsList);
                         }}
                       />
-                      <Button className="bg-white text-pgray-500">
+                      <Button onClick={(event) => { handleRemoveDetail(event,index) }} className="bg-white text-pgray-500">
                         Delete
                       </Button>
                     </div>
@@ -301,7 +311,7 @@ function PackageEditPage() {
                   onChange={(event) => {
                     setNewDetail(event.target.value);
                   }}
-                />
+                /> 
                 <Button className="bg-white text-pgray-500">Delete</Button>
               </div>
             </div>

@@ -35,7 +35,7 @@ adminRouter.get("/package/:packageId", async (req, res) => {
   try {
     const result = await supabase
       .from("merry_packages")
-      .select("*")
+      .select("* , package_detail(detail_1, detail_2)")
       .eq("package_id", req.params.packageId);
     return res.json({
       data: result.data[0],
@@ -239,13 +239,13 @@ adminRouter.put("/package/:packageId", iconUpload , async (req, res) => {
         }
       }
     }
-    console.log(req.files.icon)
+    const detailArr = req.body.detail
     const packageId = req.params.packageId;
     const updatePackage = {
       package_name: req.body.package_name,
       package_limit: req.body.package_limit,
       price: req.body.price,
-      // package_detail : req.body.package_detail,
+      admin_id: req.user.id,
       update_at: new Date(),
     };
     if (req.body.icon) {
@@ -256,7 +256,8 @@ adminRouter.put("/package/:packageId", iconUpload , async (req, res) => {
     const result = await supabase
       .from("merry_packages")
       .update(updatePackage)
-      .eq("package_id", packageId);
+      .eq("package_id", packageId).select();
+    const response = await supabase.from('package_detail').update({detail_1: detailArr[0], detail_2: detailArr[1], detail_3: detailArr[2], detail_4: detailArr[3], detail_5: detailArr[4]}).eq('detail_id', result.data[0].detail_id).select()
     return res.json({
       message: "successfully",
     });
