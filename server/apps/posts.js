@@ -25,7 +25,7 @@ postRouter.get("/filter", async (req, res) => {
   const userDateMin = `${todayYear - req.query.min}-${todayMonth}-${todayDay}`;
 
   // check เพศ
-  if (req.query.male == 'true') {
+  if (req.query.male == "true") {
     const { data, error } = await supabase
       .from("profiles")
       .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
@@ -35,7 +35,7 @@ postRouter.get("/filter", async (req, res) => {
       data: data,
     });
   }
-  if (req.query.female == 'true') {
+  if (req.query.female == "true") {
     const { data, error } = await supabase
       .from("profiles")
       .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
@@ -45,18 +45,18 @@ postRouter.get("/filter", async (req, res) => {
       data: data,
     });
   }
-  if (req.query.bi == 'true') {
+  if (req.query.bi == "true") {
     const { data, error } = await supabase
       .from("profiles")
       .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
       .eq("sexual_identity", "Non-Binary")
       .neq("user_id", req.user.id);
-      console.log("ค้นหา bi",data)
+    console.log("ค้นหา bi", data);
     return res.json({
       data: data,
     });
   }
-  console.log(req.query)
+  console.log(req.query);
   const { data, error } = await supabase
     .from("profiles")
     .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
@@ -298,4 +298,19 @@ postRouter.delete("/membership", async (req, res) => {
   }
 });
 
+postRouter.post("/purchase", async (req, res) => {
+  try {
+    console.log(req.body)
+    const userPayment = {
+      package_id: req.body.packageId,
+      user_id: req.user.id
+    };
+    const { data } = await supabase.from('purchase').insert([userPayment])
+    return res.json({
+      message: "ซื้อแล้วจ้าเย้"
+    })
+  } catch(error) {
+    console.log(error)
+  }
+});
 export default postRouter;
