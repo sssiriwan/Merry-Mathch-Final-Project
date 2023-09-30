@@ -130,7 +130,7 @@ function NavbarRegistered() {
                   />
                 </svg>
                 <span className="ml-2 text-pgray-700">
-                  <a href="/payment">Merry Membership</a>
+                  <a href="/membership">Merry Membership</a>
                 </span>
               </DropdownMenuItem>
               <DropdownMenuItem>

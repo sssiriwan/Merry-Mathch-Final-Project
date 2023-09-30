@@ -37,12 +37,13 @@ console.log(nonBi)
   return (
     <>
       <section className="flex bg-white">
-        <div className="pl-3 pt-3">
+        <div className="px-5 pt-3">
           <h1 className="text-[#191C77] font-bold my-3">Sex you interest</h1>
           <div className="flex flex-col">
             <div className="mb-3">
               <Checkbox
                 id="default"
+                defaultChecked
                 className="rounded border-pgray-400 data-[state=checked]:bg-ppurple-500"
               />
               <label htmlFor="default" className="ml-2 text-pgray-700">
@@ -84,10 +85,10 @@ console.log(nonBi)
           <div className="flex flex-col">
             <MultiRangeSlider min={18} max={80} />
           </div>
-          <div className="flex flex-row m-3 p-7">
+          {/* <div className="flex flex-row m-3 p-7">
             <ButtonSecondary>Clear</ButtonSecondary>
             <ButtonDemo>Search</ButtonDemo>
-          </div>
+          </div> */}
         </div>
       </section>
     </>
