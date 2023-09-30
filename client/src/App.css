@@ -8,11 +8,11 @@
   box-sizing: border-box;
 }
 .swiper-button-prev {
-  top: 600px !important;
+  top: 82% !important;
   left: 65% !important;
 }
 .swiper-button-next {
-  top: 600px !important;
+  top: 82% !important;
   left: 67% !important;
 }
 .shadowcss {
