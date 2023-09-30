@@ -62,7 +62,8 @@ adminRouter.post("/package", iconUpload , async (req, res) => {
         console.log(error)
       }
     }
-    console.log(req.user)
+    const detailArr = req.body.detail
+    const response = await supabase.from('package_detail').insert([{detail_1: detailArr[0], detail_2: detailArr[1], detail_3: detailArr[2], detail_4: detailArr[3], detail_5: detailArr[4]}]).select()
     const packageItem = {
       package_name: req.body.package_name,
       package_icon: fileUrl,
@@ -70,7 +71,9 @@ adminRouter.post("/package", iconUpload , async (req, res) => {
       created_at: new Date(),
       admin_id: req.user.id,
       price: req.body.price,
+      detail_id: response.data[0].detail_id
     };
+    console.log(response)
     const result = await supabase.from("merry_packages").insert([packageItem]);
     return res.json({
       message: "add package successfully",

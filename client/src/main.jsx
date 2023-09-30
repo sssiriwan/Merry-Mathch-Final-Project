@@ -9,6 +9,7 @@ import { ValindateProvider } from "./pages/register/valindatecontext/Valindateco
 import { createClient } from '@supabase/supabase-js'
 import { PackageProvider } from "./contexts/packageProvider.jsx";
 import { AgeProvider } from "./contexts/ageContext.jsx";
+import { AdminProvider } from "./contexts/adminPackageContext.jsx";
 
 jwtInterceptor();
 
@@ -19,7 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <ValindateProvider>
           <PackageProvider>
             <AgeProvider>
-              <App />
+              <AdminProvider>
+                <App />
+              </AdminProvider>
             </AgeProvider>
           </PackageProvider>
         </ValindateProvider>
