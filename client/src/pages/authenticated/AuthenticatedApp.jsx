@@ -12,6 +12,7 @@ import Payment_1 from "../Payment_1";
 import Membership from "../Membership";
 import Payment from "../payment/Payment";
 import PaymentForm from "../payment/PaymentForm";
+import MembershipWelcome from "../MembershipWelcome";
 
 function AuthenticatedApp() {
   return (
@@ -30,6 +31,7 @@ function AuthenticatedApp() {
           <Route path="/testpayment" element={<Payment />} />
           <Route path="/test" element={<PaymentForm />} />
           <Route path="/membership" element={<Membership />} />
+          <Route path="/membership-success" element={<MembershipWelcome />} />
           <Route path="*" element={<Home />} />
         </Routes>
     </>
