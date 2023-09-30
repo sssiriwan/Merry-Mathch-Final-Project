@@ -15,6 +15,14 @@ postRouter.get("/", async (req, res) => {
   });
 });
 
+postRouter.get('/filter', async (req,res) => {
+  console.log(req.query)
+  const {data, error} = await supabase.from('profiles').select("*, profile_image(img_1,img_2,img_3,img_4,img_5)")
+  return res.json({
+    data: data,
+  })
+})
+
 postRouter.get("/check", async (req, res) => {
   return res.json({
     data: req.user,

@@ -8,6 +8,7 @@ import jwtInterceptor from "./utils/jwtInterceptor.js";
 import { ValindateProvider } from "./pages/register/valindatecontext/Valindatecontext.jsx";
 import { createClient } from '@supabase/supabase-js'
 import { PackageProvider } from "./contexts/packageProvider.jsx";
+import { AgeProvider } from "./contexts/ageContext.jsx";
 
 jwtInterceptor();
 
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <ValindateProvider>
           <PackageProvider>
-            <App />
+            <AgeProvider>
+              <App />
+            </AgeProvider>
           </PackageProvider>
         </ValindateProvider>
       </AuthProvider>
