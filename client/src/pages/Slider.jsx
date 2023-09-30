@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
+import { useAge } from "@/contexts/ageContext";
 
 const MultiRangeSlider = ({ min, max }) => {
   const [minVal, setMinVal] = useState(min);
@@ -7,6 +8,7 @@ const MultiRangeSlider = ({ min, max }) => {
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef(null);
+  const { minAge, setMinAge, maxAge, setMaxAge } = useAge();
 
   // Convert to percentage
   const getPercent = useCallback(
@@ -46,6 +48,7 @@ const MultiRangeSlider = ({ min, max }) => {
           const value = Math.min(Number(event.target.value), maxVal - 1);
           setMinVal(value);
           minValRef.current = value;
+          setMinAge(value);
         }}
         className="thumb thumb--left"
         style={{ zIndex: minVal > max - 100 && "5" }}
@@ -59,6 +62,7 @@ const MultiRangeSlider = ({ min, max }) => {
           const value = Math.max(Number(event.target.value), minVal + 1);
           setMaxVal(value);
           maxValRef.current = value;
+          setMaxAge(value)
         }}
         className="thumb thumb--right"
       />

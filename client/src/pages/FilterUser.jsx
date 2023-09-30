@@ -12,16 +12,9 @@ function FilterUser() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setError(null);
         const response = await axios.get(
-          `http://localhost:4000/:keyword=${keyword}`
+          `http://localhost:4000/` //:keyword=${keyword}
         );
-
-        if (response.data.error) {
-          setError("เกิดข้อผิดพลาด");
-        } else {
-          setData("เกิดข้อผิดพลาดเซิร์ฟเวอร์");
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }

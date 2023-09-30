@@ -15,6 +15,21 @@ postRouter.get("/", async (req, res) => {
   });
 });
 
+postRouter.get('/filter', async (req,res) => {
+  const today = new Date()
+  const todayYear = today.getFullYear()
+  const todayMonth = today.getMonth() + 1
+  const todayDay = today.getDate()
+  
+  const userDateMax = `${todayYear - req.query.max}-${todayMonth}-${todayDay}`
+  const userDateMin = `${todayYear - req.query.min}-${todayMonth}-${todayDay}`
+  console.log(`${userDateMin}, ${userDateMax}`)
+  const {data, error} = await supabase.from('profiles').select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ").gte('date_of_birth', userDateMax).lte('date_of_birth', userDateMin).neq('user_id', req.user.id)
+  return res.json({
+    data: data,
+  })
+})
+
 postRouter.get("/check", async (req, res) => {
   return res.json({
     data: req.user,

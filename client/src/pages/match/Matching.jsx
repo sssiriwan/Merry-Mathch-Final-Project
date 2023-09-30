@@ -11,6 +11,7 @@ import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
 import PreviewCard from "../PreviewCard";
 import { supabase } from "@/utils/supabaseClient";
+import { useAge } from "@/contexts/ageContext";
 
 export const Matching = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,12 +20,13 @@ export const Matching = () => {
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
   const [userId, setUserId] = useState(null);
- // console.log(userId);
+  const { minAge, setMinAge, maxAge, setMaxAge } = useAge();
 
   const getData = async () => {
     //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
     setIsLoading(true);
-    const result = await axios.get("http://localhost:4000/post");
+    const result = await axios.get(`http://localhost:4000/post/filter?min=${minAge}&max=${maxAge}`);
+    console.log(result.data.data)
     //console.log(result.data.data[count]);
     //เขียนlogicให้เช็คตาราง meery list ก่อนถ้า status เป็น unmatch ไม่ให้เก็บเข้า state
     setProfile(result.data.data[count]);
@@ -90,7 +92,7 @@ export const Matching = () => {
   useEffect(() => {
     getData();
     getUserProfile();
-  }, [count, userId]);
+  }, [count, userId, maxAge, minAge]);
 
   return (
     <section className="w-[72%] flex justify-center items-center">
