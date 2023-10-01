@@ -22,7 +22,7 @@ const merryDetailIcon = <svg className="mr-2" width="16" height="16" viewBox="0 
 </svg>;
 
 function MembershipDetail() {
-  const status = " text-base text-pbeige-600  bg-pbeige-200 flex ";
+  const status = "font-extrabold px-4 text-base text-pbeige-600  bg-pbeige-200 flex ";
   const navigate = useNavigate()
 
   const [name, setName] = useState("")
@@ -31,11 +31,21 @@ function MembershipDetail() {
   const [icon, setIcon] = useState({});
   const [packageStatus, setPackageStatus] = useState("Active");
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [dateBill, setDateBill] = useState(null)
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'THB',
   });
+
+  function formNextDate(inputDate) {
+    const date = new Date(inputDate);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString();
+
+    return `${day}/${Number(month)+1}/${year}`;
+  }
 
   const getMembershipData = async () => {
       const response = await axios.get(`http://localhost:4000/post/membership`);
@@ -44,6 +54,7 @@ function MembershipDetail() {
         setPrice(response.data.data[0].merry_packages.price);
         setLimit(response.data.data[0].merry_packages.package_limit);
         setIcon(response.data.data[0].merry_packages.package_icon);
+        setDateBill(response.data.data[0].purchase_date)
       } else {
         // Redirect to the package page when there's no data
         navigate("/package"); // Replace "/package" with the actual route to your package page
@@ -119,7 +130,7 @@ const cancelDelete = () => {
         {/* กล่องโชว์ cancel package */}
         <div className=" mt-5 flex flex-row justify-end">
           {packageStatus === "Active" && (
-            <button className="text-white" onClick={handleDeletePackage}>Cancel Package</button>
+            <button className="text-white font-bold" onClick={handleDeletePackage}>Cancel Package</button>
           )}
         </div>
         {showConfirmation && (
@@ -157,7 +168,7 @@ const cancelDelete = () => {
       {/* Billing History */}
       <p className=" mt-16 text-2xl font-bold text-ppurple-500">Billing History</p>
       <div className="flex flex-col  mt-6  h-[470px]  p-8  rounded-[32px]   border border-pgray-400 bg-white">
-        <div className=" text-pgray-700 py-2">Next Billing : 01/09/2022</div>
+        <div className=" text-pgray-700 py-2">Next Billing : {formNextDate(dateBill)}</div>
 
         <hr />
         <div>
