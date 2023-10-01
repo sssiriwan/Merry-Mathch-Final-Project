@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-function ComplaintDetail() {
+function ComplaintDetail({setIssueBar}) {
   const navigate = useNavigate();
   const param = useParams();
   const [name, setName] = useState("");
@@ -27,6 +27,7 @@ function ComplaintDetail() {
     setStatus(result.data.data.complaint_status);
     setName(result.data.data.users.fullname);
     setUpdateAt(result.data.data.updated_at);
+    setIssueBar(result.data.data.issue)
   };
   function formatDate(inputDate) {
   const date = new Date(inputDate);

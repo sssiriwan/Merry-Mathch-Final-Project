@@ -170,12 +170,12 @@ const ChatPage = () => {
   return (
     <div>
       <NavbarRegistered />
-      <section className="h-[900px] flex justify-center">
+      <section className="flex justify-center">
         {/* แถบด้านซ้ายหลังจากทำแชทเสร็จจะกลับมาทำ */}
         <SideBar />
 
         {/* ห้องแชท */}
-        <div className="  bg-black w-[75%] h-screen text-white ">
+        <div className="bg-putility-400 w-[75%] text-white ">
           <div className="p-10 ">
             <div className="mt-10 h-[750px] overflow-auto ">
               {conversation?.map((item, index) => {

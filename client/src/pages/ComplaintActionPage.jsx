@@ -75,7 +75,7 @@ function ComplaintActionPage() {
               </svg>
             </Button>
             <div className="text-lg font-semibold ml-5 pr-2">
-              I was insulted by Ygritte
+              {issue}
             </div>
             <BadgeDemo className={pendingStatus}>{status}</BadgeDemo>
           </div>

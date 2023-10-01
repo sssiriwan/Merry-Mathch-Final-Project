@@ -10,6 +10,7 @@ function ComplaintDetailPage() {
   const navigate = useNavigate();
   const param = useParams();
 
+  const [issue, setIssueBar] = useState("")
   const [status, setStatus] = useState("");
 
   const getComplaint = async () => {
@@ -51,7 +52,7 @@ function ComplaintDetailPage() {
               </svg>
             </Button>
             <div className="text-lg font-semibold ml-5 pr-2">
-              I was insulted by Ygritte
+              {issue}
             </div>
             <BadgeDemo
               className={
@@ -69,7 +70,7 @@ function ComplaintDetailPage() {
           {/* <ComplaintAction /> */}
         </div>
         <div className="bg-white rounded-2xl border-pgray-200 border-2 m-7 w-11/12">
-          <ComplaintDetail />
+          <ComplaintDetail setIssueBar={setIssueBar} />
         </div>
       </div>
     </div>
