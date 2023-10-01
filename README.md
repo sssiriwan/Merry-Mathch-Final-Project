@@ -28,4 +28,4 @@ Data & Asset Management: PosgreSQL, Supabase
 
 Building Tool: Vite
 
-DevOps: Agile, Scrum, Git, Github, Figma
+Others: Agile, Scrum, Git, Github, Figma
