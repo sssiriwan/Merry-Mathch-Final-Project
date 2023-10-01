@@ -18,7 +18,12 @@ adminRouter.get("/package", async (req, res) => {
         message: "Only Admin can access",
       });
     }
-    // console.log(req.user.role)
+    if(req.query.name) {
+      const result = await supabase.from('merry_packages').select('*').or(`package_name.ilike.%${req.query.name}%`)
+      return res.json({
+        data: result.data
+      })
+    }
     const result = await supabase
       .from("merry_packages")
       .select("*")

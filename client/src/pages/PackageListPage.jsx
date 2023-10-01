@@ -17,9 +17,10 @@ import { useParams } from "react-router-dom";
 function PackageListPage() {
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
+  const [searchItems, setSearchItems] = useState("")
 
   const fetchPackage = async () => {
-    const result = await axios.get("http://localhost:4000/admin/package");
+    const result = await axios.get(`http://localhost:4000/admin/package?name=${searchItems}`);
     console.log(result.data.data);
     setItems(result.data.data);
   };
@@ -37,7 +38,7 @@ function PackageListPage() {
 
   useEffect(() => {
     fetchPackage();
-  }, []);
+  }, [searchItems]);
 
   return (
     <div className="flex">
@@ -45,7 +46,7 @@ function PackageListPage() {
       <div className="w-full flex flex-col bg-white items-center">
         <div className="w-full flex bg-white h-20 justify-between items-center px-20 border-b">
           Merry Package
-          <PackageSearch />
+          <PackageSearch setSearchItems={setSearchItems} />
         </div>
         <div className="w-full flex-col  bg-pgray-200 items-center">
           <div class="w-full w-5/9 bg-white flex flex-col justify-start items-center">
