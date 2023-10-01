@@ -124,7 +124,7 @@ function Form() {
     } else {
       const birthDate = new Date(values.Date);
       const today = new Date();
-      const age = today.getFullYear() - birthDate.getFullYear();
+      let age = today.getFullYear() - birthDate.getFullYear();
 
       if (
         today.getMonth() < birthDate.getMonth() ||
