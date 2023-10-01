@@ -218,12 +218,12 @@ function PreviewCard({ clicked, setClicked, userId }) {
             <h1 className="font-bold text-2xl leading-8 tracking-tight">
               Hobbies and Interests
             </h1>
-            <div className="flex">
+            <div className="flex flex-wrap">
               {hobbyArr.map((tag, index) => {
                 return (
                   <div
                     key={index}
-                    className="border-2 border-ppurple-300 text-ppurple-600 rounded-xl flex py-2 px-4 mr-3"
+                    className="border-2 mb-2 border-ppurple-300 text-ppurple-600 rounded-xl flex py-2 px-4 mr-3"
                   >
                     {tag}
                   </div>
