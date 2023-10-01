@@ -58,7 +58,7 @@ export const Matching = () => {
       });
       setCount(count + 1);
     } else {
-      console.log("อัปเดตสถานะอันนี้", checkMatch.data[0].matchlist_id)
+      //console.log("อัปเดตสถานะอันนี้", checkMatch.data[0].matchlist_id)
       const updateStatus = {
         status: "match",
         updated_at: new Date(),
