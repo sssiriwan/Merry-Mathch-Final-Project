@@ -41,7 +41,7 @@ const ChatPage = () => {
       .from("match_list")
       .select("*")
       .eq("matchlist_id", param.matchListId);
-    setIsLoading(false); //มาเข้า state
+      setIsLoading(false); //มาเข้า state
     if (data.length > 0) {
       const roomId = data[0].matchlist_id;
       setRoomId(roomId);
@@ -91,7 +91,7 @@ const ChatPage = () => {
     setIsLoading(true);
     const { data, error } = await supabase
       .from("chat_message")
-      .select("*")
+      .select("*, profiles(profile_image(img_1))")
       .order("timestampt", { ascending: false })
       .limit(1);
     setConversation((prev) => [...prev, data[0]]);
