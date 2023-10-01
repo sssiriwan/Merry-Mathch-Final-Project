@@ -18,7 +18,7 @@ Merry Match is a new generation of online dating website for everyone, whether y
 
 ❣https://github.com/Thiraphan24
 
-❣https://github.com/Thiraphan24
+❣https://github.com/Bankydog
 # Tech Stack
 Client: HTML, CSS, Javascript, React, TailwindCSS, Shadcn/ui
 
