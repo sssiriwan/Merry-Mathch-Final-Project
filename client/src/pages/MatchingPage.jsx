@@ -9,7 +9,7 @@ function MatchingPage() {
       <div className="relative">
         <NavbarRegistered />
       </div>
-      <section className="h-[92vh] bg-putility-400 flex">
+      <section className="h-[92vh] flex justify-center">
         <SideBar />
         <Matching />
         <FilterUser />

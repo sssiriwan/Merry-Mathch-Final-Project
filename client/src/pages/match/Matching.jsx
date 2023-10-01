@@ -114,7 +114,7 @@ export const Matching = () => {
   }, [count, userId, maxAge, minAge, female, male, nonBi]);
 
   return (
-    <section className="w-[72%] flex justify-center items-center">
+    <section className="w-[72%] bg-putility-400 flex justify-center items-center">
       {clicked && (
         <div className="relative -top-[45%] z-20">
           <PreviewCard
@@ -222,7 +222,7 @@ export const Matching = () => {
           )}
           {isLoading && (
             <>
-              <div class="h-[500px] flex items-center">
+              <div class="h-[500px] flex items-center justify-center bg-orange-600">
                 <div class="custom-loader"></div>
               </div>
             </>

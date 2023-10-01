@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const SideBar = () => {
   const navigate = useNavigate();
   return (
-    <aside className="bg-white w-[18%] py-7 border-r-2 border-pgray-100">
+    <aside className="w-[290px] py-7 border-r-2 border-pgray-100">
       <div 
       className=" cursor-pointer border-ppurple-500 bg-pgray-100 hover:bg-pgray-300 hover:ring-pred-300 ring-2 hover:ring-inset border flex flex-col justify-center items-center py-4 mx-5 rounded-2xl mb-7"
       onClick={() => {
