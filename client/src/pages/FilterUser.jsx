@@ -42,16 +42,6 @@ console.log(nonBi)
           <div className="flex flex-col">
             <div className="mb-3">
               <Checkbox
-                id="default"
-                defaultChecked
-                className="rounded border-pgray-400 data-[state=checked]:bg-ppurple-500"
-              />
-              <label htmlFor="default" className="ml-2 text-pgray-700">
-                Default
-              </label>
-            </div>
-            <div className="mb-3">
-              <Checkbox
                 id="female"
                 onClick={() => {setFemale(!female)}}
                 className="rounded border-pgray-400 data-[state=checked]:bg-ppurple-500"
