@@ -178,7 +178,7 @@ authRouter.get("/package", async (req, res) => {
     const result = await supabase
       .from("merry_packages")
       .select("*")
-      .order("created_at", { ascending: false })
+      .order("price", { ascending: true })
       // .limit()
     return res.json({
       data: result.data,
