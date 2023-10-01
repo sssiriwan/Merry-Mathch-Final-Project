@@ -222,7 +222,7 @@ export const Matching = () => {
           )}
           {isLoading && (
             <>
-              <div class="h-[500px] flex items-center justify-center bg-orange-600">
+              <div class="h-[500px] flex items-center justify-center">
                 <div class="custom-loader"></div>
               </div>
             </>
