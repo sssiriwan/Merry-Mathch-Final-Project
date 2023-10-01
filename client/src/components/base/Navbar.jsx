@@ -42,7 +42,7 @@ const Navbar = () => {
 function NavbarRegistered() {
   const [isLoading, setIsLoading] = useState(false);
   const [userImg, setUserImg] = useState("");
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
   const handleClick = async () => {
     const checkPurchase = await supabase
@@ -50,18 +50,18 @@ function NavbarRegistered() {
       .select("*")
       .eq("user_id", userId)
       .select();
-    if (checkPurchase.data.length == 0 ) {
-      navigate('/package')
+    if (checkPurchase.data.length == 0) {
+      navigate("/package");
     } else {
-      navigate('/membership')
+      navigate("/membership");
     }
-  }
+  };
 
   const getMyProfile = async () => {
     setIsLoading(true);
     const result = await axios.get("http://localhost:4000/post/profile");
     setIsLoading(false);
-    setUserId(result.data.data.user_id)
+    setUserId(result.data.data.user_id);
     setUserImg(Object.values(result.data.data.profile_image)[0]);
   };
   useEffect(() => {
@@ -75,8 +75,13 @@ function NavbarRegistered() {
         <Button variant="link" className="font-bold text-[#191C77]">
           <a href="/matching">Start Matching!</a>
         </Button>
-        <Button variant="link" className="font-bold text-[#191C77]">
-          <a href="/package">Merry Membership</a>
+        <Button
+          variant="link"
+          className="font-bold text-[#191C77]"
+          onClick={handleClick}
+        >
+          {/* ต้องใช้ onclick เหมือน merry  membership หรือป่าว  */}
+          <div>Merry Membership</div>
         </Button>
         {/* Notification's Menu */}
         <Notification />
@@ -90,7 +95,9 @@ function NavbarRegistered() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 rounded-2xl">
             <DropdownMenuLabel>
-              <ButtonMerryPackageProfile />
+              <a href="/package">
+                <ButtonMerryPackageProfile />
+              </a>
             </DropdownMenuLabel>
             <DropdownMenuGroup>
               <a href="/profile">
