@@ -172,11 +172,11 @@ adminRouter.get("/complaintz", async (req, res) => {
     const status = req.query.status;
     console.log(issue, "กับ", status);
 
-    if (issue && status != 'All') {
+    if (status && status != 'All') {
       const result = await supabase
         .from("complaints")
         .select("*")
-        .or(`complaint_status.ilike.%${status}%`).or(`issue.ilike.%${issue}%`)
+        .or(`complaint_status.ilike.%${status}%`)
         .order("created_at", { ascending: false });
       return res.json({
         data: result.data,
