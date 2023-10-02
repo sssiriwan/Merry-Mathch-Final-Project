@@ -25,11 +25,14 @@ postRouter.get("/filter", async (req, res) => {
   const userDateMin = `${todayYear - req.query.min}-${todayMonth}-${todayDay}`;
 
   // check เพศ
+  
   if (req.query.male == "true") {
     const { data, error } = await supabase
       .from("profiles")
       .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
       .eq("sexual_identity", "Male")
+      .gte("date_of_birth", userDateMax)
+      .lte("date_of_birth", userDateMin)
       .neq("user_id", req.user.id);
     return res.json({
       data: data,
@@ -40,6 +43,8 @@ postRouter.get("/filter", async (req, res) => {
       .from("profiles")
       .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
       .eq("sexual_identity", "Female")
+      .gte("date_of_birth", userDateMax)
+      .lte("date_of_birth", userDateMin)
       .neq("user_id", req.user.id);
     return res.json({
       data: data,
@@ -50,12 +55,15 @@ postRouter.get("/filter", async (req, res) => {
       .from("profiles")
       .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
       .eq("sexual_identity", "Non-Binary")
+      .gte("date_of_birth", userDateMax)
+      .lte("date_of_birth", userDateMin)
       .neq("user_id", req.user.id);
     console.log("ค้นหา bi", data);
     return res.json({
       data: data,
     });
   }
+
   console.log(req.query);
   const { data, error } = await supabase
     .from("profiles")
