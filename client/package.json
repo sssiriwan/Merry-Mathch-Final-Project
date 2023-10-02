@@ -51,6 +51,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.4",
     "jwt-decode": "^3.1.2",
     "lucide-react": "^0.274.0",
     "multi-range-slider-react": "^2.0.3",
