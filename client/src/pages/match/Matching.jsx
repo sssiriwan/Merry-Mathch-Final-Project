@@ -116,7 +116,7 @@ export const Matching = () => {
   return (
     <section className="w-[72%] bg-putility-400 flex justify-center items-center">
       {clicked && (
-        <div className="relative -top-[45%] z-20">
+        <div className="relative -top-[45%] z-20 left-[10%]">
           <PreviewCard
             setClicked={setClicked}
             clicked={clicked}
