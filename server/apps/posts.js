@@ -24,6 +24,18 @@ postRouter.get("/filter", async (req, res) => {
   const userDateMax = `${todayYear - req.query.max}-${todayMonth}-${todayDay}`;
   const userDateMin = `${todayYear - req.query.min}-${todayMonth}-${todayDay}`;
 
+  if (req.query.keyword) { //const {data} = await supabase.from('hobbies').select('*').or(`hob_1.ilike.%modeling%`)
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("* , profile_image(img_1,img_2,img_3,img_4,img_5), hobbies!inner(*)")
+      .or(`hob_1.ilike.%${req.query.keyword}%, hob_2.ilike.%${req.query.keyword}%,hob_3.ilike.%${req.query.keyword}%,hob_4.ilike.%${req.query.keyword}%,hob_5.ilike.%${req.query.keyword}%`, {foreignTable: 'hobbies'})
+      .gte("date_of_birth", userDateMax)
+      .lte("date_of_birth", userDateMin)
+      .neq("user_id", req.user.id);
+    return res.json({
+      data: data,
+    });
+  }
   // check เพศ
   
   if (req.query.male == "true") {
@@ -64,7 +76,7 @@ postRouter.get("/filter", async (req, res) => {
     });
   }
 
-  console.log(req.query);
+  // console.log(req.query);
   const { data, error } = await supabase
     .from("profiles")
     .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")

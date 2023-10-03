@@ -8,10 +8,11 @@ function AgeProvider(props) {
     const [maxAge, setMaxAge] = useState(80);
     const [female, setFemale] = useState(null);
     const [male, setMale] = useState(null);
-    const [nonBi, setNonBi] = useState(null)
+    const [nonBi, setNonBi] = useState(null);
+    const [keyword, setKeyword] = useState("");
 
     return (
-        <AgeContext.Provider value={{minAge, setMinAge, maxAge, setMaxAge, female, setFemale, male, setMale, nonBi, setNonBi}}>
+        <AgeContext.Provider value={{minAge, setMinAge, maxAge, setMaxAge, female, setFemale, male, setMale, nonBi, setNonBi, keyword, setKeyword}}>
             {props.children}
         </AgeContext.Provider>
     )

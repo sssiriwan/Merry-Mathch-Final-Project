@@ -8,8 +8,8 @@ import MultiRangeSlider from "@/pages/Slider";
 import { useAge } from "@/contexts/ageContext";
 
 function FilterUser() {
-  const [keyword, setKeyword] = useState("");
-  const {female, setFemale, male, setMale, nonBi, setNonBi} = useAge();
+  // const [keyword, setKeyword] = useState("");
+  const {female, setFemale, male, setMale, nonBi, setNonBi, keyword, setKeyword} = useAge();
 console.log(nonBi)
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +38,25 @@ console.log(nonBi)
     <>
       <section className="flex bg-white">
         <div className="px-5 pt-3">
+          <label
+              className="text-[#191C77] font-bold my-3"
+              htmlFor="search-box"
+            >
+              Search by Keywords
+            </label>
+            {/* <div className="relative" onSubmit={handleSubmit}> */}
+            <div className="relative">
+              <input
+                className="rounded-[8px] text-[14px] pl-[28px] border-solid border-[1px] border-Pink bg-White"
+                type="text"
+                // id="search-input"
+                placeholder="Search..."
+                value={keyword}
+                onChange={(e) => {
+                  setKeyword(e.target.value);
+                }}
+              />
+            </div>
           <h1 className="text-[#191C77] font-bold my-3">Sex you interest</h1>
           <div className="flex flex-col">
             <div className="mb-3">

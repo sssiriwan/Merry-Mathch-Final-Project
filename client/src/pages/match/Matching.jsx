@@ -32,13 +32,14 @@ export const Matching = () => {
     setMale,
     nonBi,
     setNonBi,
+    keyword
   } = useAge();
   const navigate = useNavigate();
   const getData = async () => {
     //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
     setIsLoading(true);
     const result = await axios.get(
-      `http://localhost:4000/post/filter?min=${minAge}&max=${maxAge}&male=${male}&female=${female}&bi=${nonBi}`
+      `http://localhost:4000/post/filter?min=${minAge}&max=${maxAge}&male=${male}&female=${female}&bi=${nonBi}&keyword=${keyword}`
     );
     console.log(result.data.data);
     //console.log(result.data.data[count]);
@@ -111,7 +112,7 @@ export const Matching = () => {
   useEffect(() => {
     getData();
     getUserProfile();
-  }, [count, userId, maxAge, minAge, female, male, nonBi]);
+  }, [count, userId, maxAge, minAge, female, male, nonBi, keyword]);
 
   return (
     <section className="w-[72%] bg-putility-400 flex justify-center items-center">
