@@ -116,7 +116,6 @@ function ProfileEditPage() {
       );
 
       console.log(result);
-      navigate("/matching");
     } catch (error) {
       // Handle any errors here
       console.error("Error updating profile:", error);
@@ -154,6 +153,26 @@ function ProfileEditPage() {
   useEffect(() => {
     getMyProfile();
   }, []);
+
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedAvatarKey = e.dataTransfer.getData("text/plain");
+    const targetAvatarKey = e.currentTarget.getAttribute("data-key");
+
+    const newAvatars = { ...avatars };
+    console.log("ลาก", newAvatars)
+    const droppedFile = newAvatars[droppedAvatarKey];
+
+    newAvatars[droppedAvatarKey] = avatars[targetAvatarKey];
+    newAvatars[targetAvatarKey] = droppedFile;
+
+    setAvatars(newAvatars);
+  };
+
+  const handleDragStartImage = (e, avatarKey) => {
+    e.dataTransfer.setData("text/plain", avatarKey);
+  };
   return (
     <div className="grid place-items-center">
       <NavbarRegistered />
@@ -467,6 +486,12 @@ function ProfileEditPage() {
                         key={index}
                         className="mr-[24px] relative"
                         data-key={avatarKey}
+                        draggable='true'
+                        onDragStart={(e) => handleDragStartImage(e, avatarKey)}
+                        onDrop={handleDrop}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                        }}
                       >
                         <img
                           className="w-40 h-40 object-cover rounded-2xl"
