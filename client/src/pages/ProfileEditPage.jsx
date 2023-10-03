@@ -116,7 +116,6 @@ function ProfileEditPage() {
       );
 
       console.log(result);
-      navigate("/matching");
     } catch (error) {
       // Handle any errors here
       console.error("Error updating profile:", error);
