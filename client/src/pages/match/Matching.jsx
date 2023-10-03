@@ -16,11 +16,13 @@ import { useNavigate } from "react-router-dom";
 
 export const Matching = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [profile, setProfile] = useState({});
-  const [profileImg, setProfileImg] = useState({});
+  const [profile, setProfile] = useState(null);
+  const [profileImg, setProfileImg] = useState(null);
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [allProfile, setAllProfile] = useState(null);
+  //console.log(profileImg);
   const {
     minAge,
     setMinAge,
@@ -34,22 +36,66 @@ export const Matching = () => {
     setNonBi,
   } = useAge();
   const navigate = useNavigate();
-  const getData = async () => {
-    //ใช้contexในการมา query หาข้อมูลส่วนนี้เปลี่ยนเป็นยิง supabase จากหน้าบ้าน
+
+  const getAndFilter = async () => {
     setIsLoading(true);
-    const result = await axios.get(
-      `http://localhost:4000/post/filter?min=${minAge}&max=${maxAge}&male=${male}&female=${female}&bi=${nonBi}`
-    );
-    console.log(result.data.data);
-    //console.log(result.data.data[count]);
-    //เขียนlogicให้เช็คตาราง meery list ก่อนถ้า status เป็น unmatch ไม่ให้เก็บเข้า state
-    if (!result.data.data[count]) {
-      setProfile(null);
-      setProfileImg(null);
+    const checkMatch = await supabase
+      .from("match_list")
+      .select("*")
+      .eq("chooser", userId)
+      .select();
+
+    const ids2 = checkMatch.data.map((item) => item.chosen_one);
+    const str = `(${ids2.join(", ")})`;
+    console.log(checkMatch.data);
+
+    const today = new Date();
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth() + 1;
+    const todayDay = today.getDate();
+    // หาวันเดือนปีเกิดของผู้ใช้
+    const userDateMax = `${todayYear - maxAge}-${todayMonth}-${todayDay}`;
+    const userDateMin = `${todayYear - minAge}-${todayMonth}-${todayDay}`;
+
+    if (!male && !female && !nonBi) {
+      const result = await supabase
+        .from("profiles")
+        .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
+        .not("user_id", "in", str)
+        .gte("date_of_birth", userDateMax)
+        .lte("date_of_birth", userDateMin)
+        .neq("user_id", userId);
+      setAllProfile(result.data);
+      console.log("result : ", result.data);
+      if (!result.data[count]) {
+        setProfile(null);
+        setProfileImg(null);
+      } else {
+        setProfile(result.data[count]);
+        setProfileImg(result.data[count].profile_image);
+        setIsLoading(false);
+      }
     } else {
-      setProfile(result.data.data[count]);
-      setProfileImg(result.data.data[count].profile_image);
-      setIsLoading(false);
+      const result = await supabase
+        .from("profiles")
+        .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
+        .not("user_id", "in", str)
+        .eq("sexual_identity", male ? "Male" : female ? "Female" : "Non-Binary")
+        .gte("date_of_birth", userDateMax)
+        .lte("date_of_birth", userDateMin)
+        .neq("user_id", userId);
+
+      setAllProfile(result.data);
+
+      console.log("result : ", result.data);
+      if (!result.data[count]) {
+        setProfile(null);
+        setProfileImg(null);
+      } else {
+        setProfile(result.data[count]);
+        setProfileImg(result.data[count].profile_image);
+        setIsLoading(false);
+      }
     }
   };
 
@@ -87,7 +133,7 @@ export const Matching = () => {
         .update(updateStatus)
         .eq("matchlist_id", checkMatch.data[0].matchlist_id);
       //เด้งป้อปอัพไปห้องแชท set state true true fale ให้ ป้อปปัพเด้ง
-       setCount(count + 1);
+      setCount(count + 1);
     }
   };
 
@@ -109,8 +155,9 @@ export const Matching = () => {
   };
 
   useEffect(() => {
-    getData();
+    //getData();
     getUserProfile();
+    getAndFilter();
   }, [count, userId, maxAge, minAge, female, male, nonBi]);
 
   return (
