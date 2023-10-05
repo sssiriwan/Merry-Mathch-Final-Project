@@ -39,15 +39,27 @@ export const Matching = () => {
 
   const getAndFilter = async () => {
     setIsLoading(true);
+    //เช็คคนที่เราปัดไปแล้ว  
     const checkMatch = await supabase
       .from("match_list")
       .select("*")
       .eq("chooser", userId)
       .select();
 
+    //เช็คคนที่ match กันแล้ว
+    const checkMatch2 = await supabase
+      .from("match_list")
+      .select("*")
+      .eq("chosen_one", userId )
+      .eq("status", "match")
+      .select();
+
+      console.log(checkMatch2.data)
+
     const ids2 = checkMatch.data.map((item) => item.chosen_one);
-    const str = `(${ids2.join(", ")})`;
-    console.log(checkMatch.data);
+    const ids3 = checkMatch2.data.map((item) => item.chooser);
+    const str = `(${ids2.join(", ")}, ${ids3.join(", ")})`;
+    console.log(str);
 
     const today = new Date();
     const todayYear = today.getFullYear();
