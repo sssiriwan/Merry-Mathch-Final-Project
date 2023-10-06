@@ -1,19 +1,63 @@
-import React from "react";
-import Navbar from "@/components/base/Navbar";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ButtonPrimary } from "@/components/base/button/Button.jsx";
-import { useForm } from "react-hook-form";
+import { NavbarRegistered } from "@/components/base/Navbar";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { useEffect, useState } from "react";
+import CheckoutForm from "./payment/CheckoutForm";
+import { usePackage } from "@/contexts/packageProvider";
+import axios from "axios";
+
+const stripePromise = loadStripe(
+  "pk_test_51NuREbDE5qIJST4wBU3c9FaSJkBtGcgcjUJRKRx4Cqe42PRShSqKQQ7XAzzUGLbJZqZuc5mQvqm4EVgEnGPR9cHJ00dQLkX6zc"
+);
 
 const Payment_1 = () => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const [clientSecret, setClientSecret] = useState("");
+  const [ packageData, setPackageData ] = useState({})
+  const { packageId } = usePackage();
+  console.log("หน้าจ่ายเงิน",packageData)
+
+  const getPackageData = async () => {
+    const result = await axios.get(`http://localhost:4000/auth/package/${packageId}`);
+    setPackageData(result.data.data[0])
+  }
+
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'THB',
+  });
+
+  useEffect(() => {
+    fetch("http://localhost:4000/create-payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
+    })
+      .then((res) => res.json())
+      .then((data) => {setClientSecret(data.clientSecret); console.log(data)});
+  }, []);
+
+  useEffect(() => {
+    getPackageData();
+  }, [])
+
+  const appearance = {
+    theme: "stripe",
+    variables: {
+      colorPrimary: '#C70039',
+      spacingGridRow: '20px',
+      borderRadius: '15px',
+    }
+  };
+
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   return (
     <div>
-      <Navbar />
-
-      <div className="w-screen h-[936px] flex justify-center">
+      <NavbarRegistered />
+      <div className="w-screen flex justify-center">
         <div className="w-[928px] h-[554px] flex justify-between mt-[80px]">
           {/* left card */}
           <div className="w-[358px] h-[244px] bg-pgray-100 flex flex-col justify-center items-center border rounded-3xl border-pgray-400">
@@ -26,27 +70,24 @@ const Payment_1 = () => {
               </div>
               <div className="w-[310px] h-[126px]">
                 <div className="w-[310px] h-[48px] flex justify-between items-center">
-                  <span className="text-base text-pgray-700">Package</span>
+                  <span className="text-base text-pgray-700">Package </span>
                   <span className="text-base text-pgray-700">
-                    Price (Monthly)
+                    Price ({packageData.package_limit} limit)
                   </span>
                 </div>
-                <div className="w-[310px] h-[78px] flex justify-between items-center border-t-2 border-pgray-300">
-                  <span className="text-xl text-pgray-900">Premium</span>
-                  <span className="text-xl text-pgray-900">THB 59.00</span>
+                <div className="w-[310px] h-[78px] flex justify-between items-center border-t-2 border-pgray-300 text-pgray-900 text-xl font-bold">
+                  <span className="">{packageData.package_name}</span>
+                  <span className="">{formatter.format(packageData.price)}</span>
                 </div>
               </div>
             </div>
           </div>
-
+          
           {/* form of register credit card */}
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="w-[548px] h-[554px]"
-          >
-            <div>
+          <section className="w-[548px] h-[554px]">
+            <div className="border-2 rounded-3xl">
               {/* head */}
-              <div className="w-full h-[78px] flex justify-center items-center bg-pgray-100 border-t border-x border-pgray-400 rounded-t-3xl ">
+              <div className="w-full h-[78px] flex justify-center items-center bg-pgray-100 rounded-t-3xl ">
                 <div className="w-[500px] h-[30px] flex justify-between items-center">
                   <div className=" text-pgray-700 text-xl font-bold">
                     <h2>Credit Card</h2>
@@ -57,83 +98,13 @@ const Payment_1 = () => {
                   </div>
                 </div>
               </div>
-
-              {/* body */}
-              <div className="w-[548px] h-[372px] flex justify-center items-center border-x border-pgray-400">
-                <div className="w-[500px] h-[324px] flex flex-col justify-between items-center">
-                  {/* card number */}
-                  <div className="w-[500px] h-[76px]">
-                    <div className="h-[24px] flex">
-                      <Label htmlFor="number" class="text-base">
-                        Card number <span class="text-putility-300">*</span>
-                      </Label>
-                    </div>
-                    <Input
-                      class="w-full h-[48px] border rounded-xl pl-[10px]"
-                      type="number"
-                      id="number"
-                      placeholder="Number of number"
-                    />
-                  </div>
-
-                  {/* card owner */}
-                  <div className="w-[500px] h-[76px]">
-                    <div className="h-[24px] flex">
-                      <Label htmlFor="name" class="text-base">
-                        Card owner <span class="text-putility-300">*</span>
-                      </Label>
-                    </div>
-                    <Input
-                      class="w-full h-[48px] border rounded-xl pl-[10px]"
-                      type="name"
-                      id="name"
-                      placeholder="Holder of card"
-                    />
-                  </div>
-
-                  {/* expire && CCV */}
-                  <div className="w-[500px] h-[76px] flex justify-between">
-                    <div className="w-[239px]">
-                      <div className="h-[24px] flex">
-                        <Label htmlFor="Payment Method" class="text-base">
-                          Expiry date <span class="text-putility-300">*</span>
-                        </Label>
-                      </div>
-                      <Input
-                        class="w-[239px] h-[48px] border rounded-xl pl-[10px]"
-                        type="Payment Method"
-                        id="Payment Method"
-                        placeholder="MM/YY"
-                      />
-                    </div>
-                    <div className="w-[239px]">
-                      <div className="h-[24px] flex">
-                        <Label htmlFor="number" class="text-base">
-                          CVC/CVV <span class="text-putility-300">*</span>
-                        </Label>
-                      </div>
-                      <Input
-                        class="w-[239px] h-[48px] border rounded-xl pl-[10px]"
-                        type="number"
-                        id="number"
-                        placeholder="x x x"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* foot */}
-              <div className="w-[548px] h-[104px] flex justify-center items-center border-x border-y border-pgray-400 rounded-b-3xl">
-                <div className="w-[500px] h-[56px] flex justify-between items-center">
-                  <div className="text-base text-pred-500 font-bold">
-                    Cancel
-                  </div>
-                  <ButtonPrimary> Payment1 Confirm</ButtonPrimary>
-                </div>
-              </div>
+              {clientSecret && (
+                <Elements options={options} stripe={stripePromise}>
+                    <CheckoutForm />
+                </Elements>
+            )}
             </div>
-          </form>
+          </section>
         </div>
       </div>
     </div>

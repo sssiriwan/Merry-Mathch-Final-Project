@@ -1,16 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 export function ButtonDemo(props) {
   return (
-    <Button className="bg-pred-500 rounded-full font-semibold">
+    <Button className="bg-pred-500 rounded-full font-semibold" onClick={props.onClick}>
       {props.children}
     </Button>
   );
 }
 export function ButtonPrimary(props) {
   return (
-    <Button className=" text-white font-semibold rounded-full bg-pred-500 hover:bg-pred-400 active:bg-pred-600  focus:bg-pgray-300 ">
+    <Button onSubmit={props.onSubmit} className=" text-white font-semibold rounded-full bg-pred-500 hover:bg-pred-400 active:bg-pred-600  focus:bg-pgray-300 ">
       {props.children}
     </Button>
   );
@@ -18,7 +17,7 @@ export function ButtonPrimary(props) {
 
 export function ButtonSecondary(props) {
   return (
-    <Button className=" text-pred-600 font-semibold rounded-full bg-pred-100 hover:bg-pred-200 active:bg-pred-300  focus:bg-pgray-300 ">
+    <Button onClick={props.onClick} className=" text-pred-600 font-semibold rounded-full bg-pred-100 hover:bg-pred-200 active:bg-pred-300  focus:bg-pgray-300 ">
       {props.children}
     </Button>
   );

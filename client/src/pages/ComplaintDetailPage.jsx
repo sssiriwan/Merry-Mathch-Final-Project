@@ -1,15 +1,30 @@
-import { useState } from "react";
-import ComplaintAction from "./admin/ComplaintAction";
+import { useState, useEffect } from "react";
 import ComplaintDetail from "./admin/ComplaintDetail";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
 import BadgeDemo from "@/components/base/button/Badge";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ComplaintDetailPage() {
-  const [issueTitle, setIssueTitle] = useState("I was insulted by Ygritte");
-  const pendingStatus = "h-7 ml-2 rounded-lg bg-pyellow-100 text-black";
-  const resolveStatus = "h-7 ml-2 rounded-lg bg-pgreen-100 text-pgreen-500";
-  const cancelStatus = "h-7 ml-2 rounded-lg bg-pgray-200 text-pgray-700";
+  const navigate = useNavigate();
+  const param = useParams();
+
+  const [issue, setIssueBar] = useState("")
+  const [status, setStatus] = useState("");
+
+  const getComplaint = async () => {
+    const result = await axios.get(
+      `http://localhost:4000/admin/complaint/${param.complainId}`
+    );
+    console.log(result.data.data);
+
+    setStatus(result.data.data.complaint_status);
+  };
+
+  useEffect(() => {
+    getComplaint();
+  }, []);
 
   return (
     <div className="flex">
@@ -17,7 +32,12 @@ function ComplaintDetailPage() {
       <div className="w-full flex flex-col bg-pgray-200 items-center">
         <div className="w-full flex bg-white h-20 justify-between items-center px-20 border-b">
           <div className="flex items-center">
-            <Button variant="ghost">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                navigate(`/admin/complain`);
+              }}
+            >
               <svg
                 width="16"
                 height="16"
@@ -31,13 +51,26 @@ function ComplaintDetailPage() {
                 />
               </svg>
             </Button>
-            <div className="text-lg font-semibold ml-5">{issueTitle}</div>
-            <BadgeDemo className={resolveStatus}>resolved</BadgeDemo>
+            <div className="text-lg font-semibold ml-5 pr-2">
+              {issue}
+            </div>
+            <BadgeDemo
+              className={
+                "rounded-lg " +
+                (status.toLowerCase() === "resolved"
+                  ? "bg-pgreen-100 text-pgreen-500"
+                  : status.toLowerCase() === "cancel"
+                  ? "bg-pgray-200 text-pgray-700"
+                  : "")
+              }
+            >
+              {status}
+            </BadgeDemo>
           </div>
-          <ComplaintAction />
+          {/* <ComplaintAction /> */}
         </div>
         <div className="bg-white rounded-2xl border-pgray-200 border-2 m-7 w-11/12">
-          <ComplaintDetail />
+          <ComplaintDetail setIssueBar={setIssueBar} />
         </div>
       </div>
     </div>

@@ -1,10 +1,16 @@
 import { ButtonSecondary } from "@/components/base/button/Button";
 import React from "react";
+import { motion } from "../../../node_modules/framer-motion";
+import { fedeIn } from "../variants";
 
 const Sec4 = () => {
   return (
-    <section
+    <motion.section
       id="sec4"
+      variants={fedeIn("down", 0.2)}
+      initial="hidden"
+      whileInView={"show"}
+      viewport={{ one: false, amount: 0.6 }}
       className="w-[1440px] h-[570px] flex justify-center items-center"
     >
       <div className="w-[1120px] h-[370px] flex flex-col justify-center items-center bg-bg-2 rounded-4xl">
@@ -13,10 +19,12 @@ const Sec4 = () => {
           and matching someone new
         </p>
         <div className="mt-[40px]">
-          <ButtonSecondary>Start Matching!</ButtonSecondary>
+          <ButtonSecondary>
+            <a href="/matching">Start Matching!</a>
+          </ButtonSecondary>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

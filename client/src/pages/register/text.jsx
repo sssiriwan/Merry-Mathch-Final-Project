@@ -31,7 +31,7 @@ const ListText = ({ onChange, tags }) => {
   };
 
   return (
-    <div className="mr-[150px] mb-[223px] mt-[40px]">
+    <div className="mb-[223px] mt-[40px]">
       <div className="content">
         <p className="text-base font-semibold">
           Hobbies / Interests (Maximum 10)
