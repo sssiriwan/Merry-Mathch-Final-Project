@@ -29,8 +29,8 @@ const ProfileToChat = () => {
         .from("match_list")
         .select("*")
         .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
-        .eq("status", "match");
-      //console.log("match จะมาไหม", data);
+        .eq("status", "merry");
+      // console.log("match จะมาไหม", data);
       setMatchList(data);
       setIsLoading(false);
     }
