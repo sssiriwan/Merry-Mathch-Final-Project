@@ -39,27 +39,24 @@ export const Matching = () => {
 
   const getAndFilter = async () => {
     setIsLoading(true);
-    //เช็คคนที่เราปัดไปแล้ว  
-    const checkMatch = await supabase
-      .from("match_list")
-      .select("*")
-      .eq("chooser", userId)
-      .select();
+    //เช็คคนที่เราปัดไปแล้ว 
+    // const checkMatch = await supabase
+    //   .from("match_list")
+    //   .select("*")
+    //   .eq("chooser", userId)
+    //   .select();
+    // //เช็คคนที่ match กันแล้ว
+    // const checkMatch2 = await supabase
+    //   .from("match_list")
+    //   .select("*")
+    //   .eq("chosen_one", userId )
+    //   .eq("status", "match")
+    //   .select();
 
-    //เช็คคนที่ match กันแล้ว
-    const checkMatch2 = await supabase
-      .from("match_list")
-      .select("*")
-      .eq("chosen_one", userId )
-      .eq("status", "match")
-      .select();
-
-      console.log(checkMatch2.data)
-
-    const ids2 = checkMatch.data.map((item) => item.chosen_one);
-    const ids3 = checkMatch2.data.map((item) => item.chooser);
-    const str = `(${ids2.join(", ")}, ${ids3.join(", ")})`;
-    console.log(str);
+    // const ids2 = checkMatch.data.map((item) => item.chosen_one);
+    // const ids3 = checkMatch2.data.map((item) => item.chooser);
+    // const str = `(${ids2.join(", ")}, ${ids3.join(", ")})`;
+    // console.log(str);
 
     const today = new Date();
     const todayYear = today.getFullYear();
@@ -73,7 +70,7 @@ export const Matching = () => {
       const result = await supabase
         .from("profiles")
         .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
-        .not("user_id", "in", str)
+        // .not("user_id", "in", str)
         .gte("date_of_birth", userDateMax)
         .lte("date_of_birth", userDateMin)
         .neq("user_id", userId);
@@ -118,15 +115,15 @@ export const Matching = () => {
 
   const matchSomeone = async () => {
     //console.log(profile.user_id)
+    console.log("asdasdasdasd")
     const checkMatch = await supabase
       .from("match_list")
       .select("*")
       .eq("chooser", profile.user_id)
       .eq("chosen_one", userId)
       .select();
-    //console.log(checkMatch.data);
     if (checkMatch.data.length == 0) {
-      //console.log("จะแมชคนนี้", profile.user_id);
+      console.log("จะแมชคนนี้", profile.user_id);
       const { data, error } = await supabase.from("match_list").insert({
         chooser: userId,
         chosen_one: profile.user_id,
@@ -254,7 +251,8 @@ export const Matching = () => {
           </small>
         </div>
       ) : (
-        <Swiper
+        <div className="w-full">
+          <Swiper
           slidesPerView={"auto"}
           centeredSlides={true}
           navigation={true}
@@ -287,6 +285,7 @@ export const Matching = () => {
             </>
           )}
         </Swiper>
+        </div>
       )}
 
       {profile && (

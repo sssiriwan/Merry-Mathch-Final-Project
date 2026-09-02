@@ -24,12 +24,11 @@ export function LoginPage() {
   const auth = useAuth();
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(username, password);
+    // console.log(username, password);
     login({
       username,
       password,
     });
-    console.log(state);
   };
   return (
     <div className="h-screen overflow-hidden">

@@ -42,6 +42,7 @@ adminRouter.get("/package/:packageId", async (req, res) => {
       .from("merry_packages")
       .select("* , package_detail(detail_1, detail_2)")
       .eq("package_id", req.params.packageId);
+    console.log(result)
     return res.json({
       data: result.data[0],
     });
@@ -54,6 +55,7 @@ adminRouter.post("/package", iconUpload , async (req, res) => {
   try {
     const files = req.files.icon;
     let fileUrl;
+    console.log(req.user)
     for(let i=0; i<files.length; i++) {
       const fileName = `${Date.now()}`
       const { data, error } = await supabase.storage.from('packageIcon').upload( fileName, files[i].buffer , {
@@ -68,18 +70,21 @@ adminRouter.post("/package", iconUpload , async (req, res) => {
       }
     }
     const detailArr = req.body.detail
+    const { data, error } = await supabase.from('admin').select('admin_id').eq('user_id', req.user.id)
+    console.log(data, error)
     const response = await supabase.from('package_detail').insert([{detail_1: detailArr[0], detail_2: detailArr[1], detail_3: detailArr[2], detail_4: detailArr[3], detail_5: detailArr[4]}]).select()
     const packageItem = {
       package_name: req.body.package_name,
       package_icon: fileUrl,
       package_limit: req.body.package_limit,
       created_at: new Date(),
-      admin_id: req.user.id,
+      admin_id: data[0].admin_id,
       price: req.body.price,
       detail_id: response.data[0].detail_id
     };
     console.log(response)
     const result = await supabase.from("merry_packages").insert([packageItem]);
+    console.log(result)
     return res.json({
       message: "add package successfully",
       data: result,
