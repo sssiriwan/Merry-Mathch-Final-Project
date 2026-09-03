@@ -7,7 +7,7 @@ import { usePackage } from "@/contexts/packageProvider";
 import axios from "axios";
 
 const stripePromise = loadStripe(
-  "pk_test_51NuREbDE5qIJST4wBU3c9FaSJkBtGcgcjUJRKRx4Cqe42PRShSqKQQ7XAzzUGLbJZqZuc5mQvqm4EVgEnGPR9cHJ00dQLkX6zc"
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
 );
 
 const Payment_1 = () => {
@@ -17,7 +17,7 @@ const Payment_1 = () => {
   console.log("หน้าจ่ายเงิน",packageData)
 
   const getPackageData = async () => {
-    const result = await axios.get(`http://localhost:4000/auth/package/${packageId}`);
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/auth/package/${packageId}`);
     setPackageData(result.data.data[0])
   }
 
@@ -27,7 +27,7 @@ const Payment_1 = () => {
   });
 
   useEffect(() => {
-    fetch("http://localhost:4000/create-payment-intent", {
+    fetch(`${import.meta.env.VITE_API_URL}/create-payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),

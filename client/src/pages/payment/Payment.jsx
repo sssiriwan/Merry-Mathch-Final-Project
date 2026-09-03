@@ -3,13 +3,13 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { useEffect, useState } from "react";
 
-const stripePromise = loadStripe('pk_test_51NuREbDE5qIJST4wBU3c9FaSJkBtGcgcjUJRKRx4Cqe42PRShSqKQQ7XAzzUGLbJZqZuc5mQvqm4EVgEnGPR9cHJ00dQLkX6zc');
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 function Payment() {
     const [clientSecret, setClientSecret] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:4000/create-payment-intent', {
+        fetch(`${import.meta.env.VITE_API_URL}/create-payment-intent`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),

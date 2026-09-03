@@ -48,7 +48,7 @@ function MembershipDetail() {
   }
 
   const getMembershipData = async () => {
-      const response = await axios.get(`http://localhost:4000/post/membership`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/post/membership`);
       if (response.data.data.length > 0) {
         setName(response.data.data[0].merry_packages.package_name);
         setPrice(response.data.data[0].merry_packages.price);
@@ -68,7 +68,7 @@ function MembershipDetail() {
 
 const confirmCancel = async () => {
   try {
-    await axios.delete(`http://localhost:4000/post/membership`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/post/membership`);
     navigate("/package")
     setPackageStatus("Inactive");
   } catch (error) {

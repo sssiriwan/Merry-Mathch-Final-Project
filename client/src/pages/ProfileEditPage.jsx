@@ -44,7 +44,7 @@ function ProfileEditPage() {
   const imageKeys = Object.keys(avatars);
 
   const countTags = () => {
-    return maxTags - tags.length;
+    return maxTags - tagKeys.length;
   };
 
   // ในส่วนของการลบแท็ก
@@ -82,6 +82,8 @@ function ProfileEditPage() {
       // Append profile data to formData
       formData.append("user_id", profile.user_id);
       formData.append("fullname", profile.fullname);
+      formData.append("username", username);
+      formData.append("email", email);
       formData.append("date_of_birth", profile.date_of_birth);
       formData.append("location", profile.location);
       formData.append("city", profile.city);
@@ -106,7 +108,7 @@ function ProfileEditPage() {
       }
 
       const result = await axios.put(
-        "http://localhost:4000/post/profile",
+        `${import.meta.env.VITE_API_URL}/post/profile`,
         formData,
         {
           headers: {
@@ -142,7 +144,7 @@ function ProfileEditPage() {
 
   const getMyProfile = async () => {
     setIsLoading(true);
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
     setIsLoading(false);
     setAvatars(result.data.data.profile_image);
     setTags(result.data.data.hobbies);

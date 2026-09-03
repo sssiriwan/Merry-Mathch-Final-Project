@@ -20,7 +20,7 @@ function ComplaintActionPage() {
 
   const getComplaint = async () => {
     const result = await axios.get(
-      `http://localhost:4000/admin/complaint/${param.complainId}`
+      `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`
     );
     console.log(result.data.data);
 

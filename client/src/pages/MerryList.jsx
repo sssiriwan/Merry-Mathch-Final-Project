@@ -18,12 +18,12 @@ function MerryList() {
   // const [status, setStatus] = useState()
 
   const checkUser = async () => {
-    const result = await axios.get("http://localhost:4000/post/check");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/check`);
     setUserId(result.data.data.id);
   };
 
   const getUser = async () => {
-    const result = await axios.get("http://localhost:4000/post/match-list");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/match-list`);
     // console.log(result.data.data);
     setUser(result.data.data);
     // setStatus(result.data.data.status)

@@ -88,7 +88,6 @@ export const Matching = () => {
       const result = await supabase
         .from("profiles")
         .select("* , profile_image(img_1,img_2,img_3,img_4,img_5) ")
-        .not("user_id", "in", str)
         .eq("sexual_identity", male ? "Male" : female ? "Female" : "Non-Binary")
         .gte("date_of_birth", userDateMax)
         .lte("date_of_birth", userDateMin)
@@ -109,7 +108,7 @@ export const Matching = () => {
   };
 
   const getUserProfile = async () => {
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
     setUserId(result.data.data.user_id);
   };
 

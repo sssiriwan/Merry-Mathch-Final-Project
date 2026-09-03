@@ -37,7 +37,7 @@ function ComplaintListPage() {
       setIsLoading(true);
       console.log(selectedStatus);
       const result = await axios.get(
-        `http://localhost:4000/admin/complaintz?keywords=${searchInput}&status=${selectedStatus}`
+        `${import.meta.env.VITE_API_URL}/admin/complaintz?keywords=${searchInput}&status=${selectedStatus}`
       );
       console.log("จากเซิช", result.data);
       setFilteredComplaints(result.data.data);
@@ -55,7 +55,7 @@ function ComplaintListPage() {
           status: "Pending",
         };
         const result = await axios.put(
-          `http://localhost:4000/admin/complaint/${complaint.complaint_id}`,
+          `${import.meta.env.VITE_API_URL}/admin/complaint/${complaint.complaint_id}`,
           updateComplaint
         );
         //  Navigate to the complaint action page

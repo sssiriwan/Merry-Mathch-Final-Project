@@ -68,12 +68,12 @@ const ChatPage = () => {
 
   const getUserProfile = async () => {
     setIsLoading(true);
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
     console.log(result.data.data.profile_id);
     setIsLoading(false);
     setUser(result.data.data.profile_id);
     setUserId(result.data.data.user_id);
-    setFullname(data[0].fullname);
+    setFullname(result.data.data.fullname);
   };
 
   const sendMessageUser1 = async () => {

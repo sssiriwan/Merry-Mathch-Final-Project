@@ -63,7 +63,7 @@ function PackageEditPage() {
 
   const getCurrentPackage = async () => {
     const response = await axios.get(
-      `http://localhost:4000/admin/package/${params.packageId}`
+        `${import.meta.env.VITE_API_URL}/admin/package/${params.packageId}`
     );
     setDetailList(Object.values(response.data.data.package_detail))
     const uniqueId = Date.now();
@@ -87,7 +87,7 @@ function PackageEditPage() {
       formData.append('detail', detailKey)
     }
     const result = await axios.put(
-      `http://localhost:4000/admin/package/${params.packageId}`,
+      `${import.meta.env.VITE_API_URL}/admin/package/${params.packageId}`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -103,7 +103,7 @@ function PackageEditPage() {
   const confirmDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:4000/admin/package/${params.packageId}`
+      `${import.meta.env.VITE_API_URL}/admin/package/${params.packageId}`
       );
       navigate("/admin");
     } catch (error) {

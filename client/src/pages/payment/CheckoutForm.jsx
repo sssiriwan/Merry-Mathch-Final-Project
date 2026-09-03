@@ -24,7 +24,7 @@ function CheckoutForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const getUserProfile = async () => {
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
     setUserId(result.data.data.user_id);
   };
 
@@ -68,7 +68,7 @@ function CheckoutForm() {
       .select();
     console.log(checkPurchase.data);
     if (checkPurchase.data.length == 0) {
-      const response = await axios.post("http://localhost:4000/post/purchase", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/post/purchase`, {
         packageId: packageId,
       });
       console.log(response);
@@ -94,7 +94,7 @@ function CheckoutForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:5173/membership-success",
+        return_url: `${window.location.origin}/membership-success`,
       },
     });
     if (error.type === "card_error" || error.type === "validation_error") {

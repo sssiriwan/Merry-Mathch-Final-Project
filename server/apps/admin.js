@@ -33,6 +33,7 @@ adminRouter.get("/package", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -48,6 +49,7 @@ adminRouter.get("/package/:packageId", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -57,7 +59,7 @@ adminRouter.post("/package", iconUpload , async (req, res) => {
     let fileUrl;
     console.log(req.user)
     for(let i=0; i<files.length; i++) {
-      const fileName = `${Date.now()}`
+      const fileName = `${Date.now()}-${i}`
       const { data, error } = await supabase.storage.from('packageIcon').upload( fileName, files[i].buffer , {
         cacheControl: '3600',
         upsert: false,
@@ -91,6 +93,7 @@ adminRouter.post("/package", iconUpload , async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -112,20 +115,7 @@ adminRouter.get("/complaint", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-  }
-});
-
-adminRouter.get("/package/:packageId", async (req, res) => {
-  try {
-    const result = await supabase
-      .from("merry_packages")
-      .select("*")
-      .eq("package_id", req.params.packageId);
-    return res.json({
-      data: result.data[0],
-    });
-  } catch (error) {
-    console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -142,6 +132,7 @@ adminRouter.get("/complaint/:id", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -237,7 +228,7 @@ adminRouter.put("/package/:packageId", iconUpload , async (req, res) => {
     if(req.files.icon != undefined) {
       const files = req.files.icon
       for (let i=0; i<files.length; i++) {
-        const fileName = `${Date.now()}`;
+        const fileName = `${Date.now()}-${i}`;
         const { data, error } = await supabase.storage.from('packageIcon').upload( fileName, files[i].buffer, {
           cacheControl: 3600,
           upsert: false,
@@ -274,6 +265,7 @@ adminRouter.put("/package/:packageId", iconUpload , async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -304,6 +296,7 @@ adminRouter.delete("/package/:packageId", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 

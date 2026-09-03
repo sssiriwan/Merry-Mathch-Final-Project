@@ -33,13 +33,13 @@ function ComplaintFormPage() {
   const navigate = useNavigate();
 
   const getMyProfile = async () => {
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
     console.log(result.data.data);
     setUserID(result.data.data.user_id);
   };
 
   const createComplaint = async () => {
-    await axios.post("http://localhost:4000/auth/complaint", {
+    await axios.post(`${import.meta.env.VITE_API_URL}/auth/complaint`, {
       userId,
       issue,
       description,

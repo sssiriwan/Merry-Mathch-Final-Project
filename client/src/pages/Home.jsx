@@ -1,8 +1,8 @@
 import React from "react";
-import Sec1 from "./home-sec/Sec-1";
-import Sec2 from "./home-sec/Sec-2";
-import Sec3 from "./home-sec/Sec-3";
-import Sec4 from "./home-sec/Sec-4";
+import Sec1 from "./home-sec/sec-1";
+import Sec2 from "./home-sec/sec-2";
+import Sec3 from "./home-sec/sec-3";
+import Sec4 from "./home-sec/sec-4";
 import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
 import Footer from "@/components/base/Footer";
 import { useAuth } from "@/contexts/authentication";

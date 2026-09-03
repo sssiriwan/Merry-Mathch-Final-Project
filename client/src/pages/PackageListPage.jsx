@@ -20,14 +20,14 @@ function PackageListPage() {
   const [searchItems, setSearchItems] = useState("")
 
   const fetchPackage = async () => {
-    const result = await axios.get(`http://localhost:4000/admin/package?name=${searchItems}`);
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/admin/package?name=${searchItems}`);
     console.log(result.data.data);
     setItems(result.data.data);
   };
 
   const handleDelete = async (packageId) => {
     try {
-      await axios.delete(`http://localhost:4000/admin/package/${packageId}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/admin/package/${packageId}`);
       setItems((prevItems) =>
         prevItems.filter((item) => item.package_id !== packageId)
       );

@@ -84,29 +84,43 @@ postRouter.get("/check", async (req, res) => {
 
 // API get profile (เทียบ user_id)
 postRouter.get("/profile", async (req, res) => {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select(
-      "*, users(email, username), hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
-    )
-    .eq("user_id", req.user.id)
-    .single();
-  return res.json({
-    data: data,
-  });
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(
+        "*, users(email, username), hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
+      )
+      .eq("user_id", req.user.id)
+      .single();
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.json({
+      data: data,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 postRouter.get("/profile/:userId", async (req, res) => {
-  const userId = req.params.userId;
-  const { data, error } = await supabase
-    .from("profiles")
-    .select(
-      "*,hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1,img_2,img_3,img_4,img_5)"
-    )
-    .eq("user_id", userId);
-  return res.json({
-    data: data[0],
-  });
+  try {
+    const userId = req.params.userId;
+    const { data, error } = await supabase
+      .from("profiles")
+      .select(
+        "*,hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1,img_2,img_3,img_4,img_5)"
+      )
+      .eq("user_id", userId);
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.json({
+      data: data[0],
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 const storage = multer.memoryStorage();
@@ -117,11 +131,12 @@ const avatarUpload = upload.fields([
 ]);
 // API ใช้ update ข้อมูล profile
 postRouter.put("/profile", avatarUpload, async (req, res) => {
+  try {
   let fileUrl = [];
   const files = req.files.avatars;
   if (files) {
     for (let i = 0; i < files.length; i++) {
-      const fileName = `${Date.now()}`;
+      const fileName = `${Date.now()}-${i}`;
       const { data, error } = await supabase.storage
         .from("avatarImg")
         .upload(fileName, files[i].buffer, {
@@ -137,9 +152,7 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
     }
   }
   const updatedProfile = {
-    username: req.body.username,
     fullname: req.body.fullname,
-    email: req.body.email,
     date_of_birth: req.body.date_of_birth,
     location: req.body.location,
     city: req.body.city,
@@ -149,7 +162,21 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
     meeting_interest: req.body.meeting_interest,
     about_me: req.body.about_me,
   };
-  let hobbies = req.body.tags.filter((word) => word != "null");
+
+  const updatedUser = {};
+  if (req.body.username) updatedUser.username = req.body.username;
+  if (req.body.email) updatedUser.email = req.body.email;
+
+  if (Object.keys(updatedUser).length > 0) {
+    const userUpdate = await supabase
+      .from("users")
+      .update(updatedUser)
+      .eq("user_id", req.user.id);
+    if (userUpdate.error) {
+      console.log("อัพเดท user ไม่สำเร็จ:", userUpdate.error);
+    }
+  }
+  let hobbies = req.body.tags ? (Array.isArray(req.body.tags) ? req.body.tags : [req.body.tags]).filter((word) => word != "null") : [];
   const userHobbies = await supabase
     .from("hobbies")
     .update({
@@ -167,17 +194,19 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
     .eq("user_id", req.user.id)
     .select();
 
-  const userImg = await supabase
-    .from("profile_image")
-    .update({
-      img_1: fileUrl[4],
-      img_2: fileUrl[3],
-      img_3: fileUrl[2],
-      img_4: fileUrl[1],
-      img_5: fileUrl[0],
-    })
-    .eq("user_id", req.user.id)
-    .select();
+  if (fileUrl.length > 0) {
+    const userImg = await supabase
+      .from("profile_image")
+      .update({
+        img_1: fileUrl[4],
+        img_2: fileUrl[3],
+        img_3: fileUrl[2],
+        img_4: fileUrl[1],
+        img_5: fileUrl[0],
+      })
+      .eq("user_id", req.user.id)
+      .select();
+  }
   const { data, error } = await supabase
     .from("profiles")
     .update(updatedProfile)
@@ -185,11 +214,16 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
   console.log(data);
   if (error) {
     console.log("อัพเดทโปรไฟล์ไม่สำเร็จ:", error);
+    return res.status(500).json({ error: error.message });
   }
 
   return res.json({
     message: "Updated profile successfully",
   });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
 });
 //ดึงข้อมูล จากตาราง merry list แล้วนำมา แมพโดยหามา
 //logic เอา status มาเช็คว่าตรงกันไหมแล้วให้ปุ่มแชทขึ้นมา
@@ -303,6 +337,7 @@ postRouter.delete("/membership", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -319,6 +354,7 @@ postRouter.post("/purchase", async (req, res) => {
     })
   } catch(error) {
     console.log(error)
+    return res.status(500).json({ error: error.message });
   }
 });
 export default postRouter;

@@ -59,7 +59,7 @@ function NavbarRegistered() {
 
   const getMyProfile = async () => {
     setIsLoading(true);
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
     setIsLoading(false);
     setUserId(result.data.data.user_id);
     setUserImg(Object.values(result.data.data.profile_image)[0]);

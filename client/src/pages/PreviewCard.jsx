@@ -72,7 +72,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
   const getData = async () => {
     setIsLoading(true);
     const result = await axios.get(
-      `http://localhost:4000/post/profile/${userId}`
+      `${import.meta.env.VITE_API_URL}/post/profile/${userId}`
     );
     //console.log(result.data.data);
     setIsLoading(false);

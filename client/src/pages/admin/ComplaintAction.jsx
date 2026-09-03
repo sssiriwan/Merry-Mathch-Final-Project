@@ -14,7 +14,7 @@ function ComplaintAction() {
 
   const getComplaint = async () => {
     const result = await axios.get(
-      `http://localhost:4000/admin/complaint/${param.complainId}`
+      `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`
     );
     console.log(result.data.data);
 
@@ -32,7 +32,7 @@ function ComplaintAction() {
         status: "Cancel",
       };
       const result = await axios.put(
-        `http://localhost:4000/admin/complaint/${param.complainId}`,
+        `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`,
         updateComplaint
       );
 
@@ -63,7 +63,7 @@ function ComplaintAction() {
         status: "Resolved",
       };
       const result = await axios.put(
-        `http://localhost:4000/admin/complaint/${param.complainId}`,
+        `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`,
         updateComplaint
       );
 

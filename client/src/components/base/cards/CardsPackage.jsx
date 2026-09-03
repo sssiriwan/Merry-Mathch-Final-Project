@@ -13,7 +13,7 @@ const CardsPackage = () => {
 
   const fetchPackageData = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/auth/package");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/package`);
       setPackages(response.data.data)
     } catch (error) {
       console.error("Error fetching data:", error);

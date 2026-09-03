@@ -45,7 +45,7 @@ function PackageDetail() {
   
   const getMembershipData = async () => {
     setIsLoading(true)
-    const response = await axios.get(`http://localhost:4000/post/membership`)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/post/membership`)
     console.log(response)
     if (response.data.data.length > 0) {
       setName(response.data.data[0].merry_packages.package_name);

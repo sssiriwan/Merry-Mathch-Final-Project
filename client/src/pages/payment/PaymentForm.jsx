@@ -1,10 +1,8 @@
 import { loadStripe } from "@stripe/stripe-js"
 import axios from "axios"
 import { useState } from "react"
-import Stripe from "stripe"
-const stripePromise = await loadStripe('pk_test_51NuREbDE5qIJST4wBU3c9FaSJkBtGcgcjUJRKRx4Cqe42PRShSqKQQ7XAzzUGLbJZqZuc5mQvqm4EVgEnGPR9cHJ00dQLkX6zc')
 
-const stripe = new Stripe('pk_test_51NuREbDE5qIJST4wBU3c9FaSJkBtGcgcjUJRKRx4Cqe42PRShSqKQQ7XAzzUGLbJZqZuc5mQvqm4EVgEnGPR9cHJ00dQLkX6zc')
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
 function PaymentForm() {
     const [sessionId , setSessionId] = useState("")
@@ -20,10 +18,10 @@ function PaymentForm() {
     }
 
     const sentData = async () => {
-        const response = await axios.post('http://localhost:4000/api/checkout', data);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/checkout`, data);
         setSessionId(response.data.sessionId)
         console.log(sessionId)
-        stripePromise.redirectToCheckout({ sessionId })
+        stripePromise.then(stripe => stripe.redirectToCheckout({ sessionId }))
     }
 
     return (

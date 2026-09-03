@@ -16,7 +16,7 @@ function AuthProvider(props) {
   // make a login request
   const login = async (data) => {
     try {
-      const result = await axios.post("http://localhost:4000/auth/login", data);
+      const result = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, data);
       console.log(result)
       const token = result.data.token;
       localStorage.setItem("token", token);
@@ -35,10 +35,17 @@ function AuthProvider(props) {
 
   // register the user
   const register = async (data) => {
-    await axios.post("http://localhost:4000/auth/register", data, {
-      headers: {"Content-Type": "multipart/form-data"}
-    });
-    navigate("/login");
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, data, {
+        headers: {"Content-Type": "multipart/form-data"}
+      });
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setState({
+        ...state, error: error
+      });
+    }
   };
 
   // clear the token in localStorage and the user data
