@@ -28,7 +28,7 @@ const ChatList = () => {
         .from("match_list")
         .select("*")
         .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
-        .eq("status", "merry");
+        .eq("status", "match");
       //console.log("match จะมาไหม", data);
 
       setMatchList(data);
