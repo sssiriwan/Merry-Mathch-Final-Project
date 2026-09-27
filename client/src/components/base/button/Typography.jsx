@@ -44,8 +44,8 @@ export function TypographyH1(props) {
   export function TypographyBlockquote() {
     return (
       <blockquote className="mt-6 border-l-2 pl-6 italic">
-        "After all," he said, "everyone enjoys a good joke, so it's only fair that
-        they should pay for the privilege."
+        &ldquo;After all,&rdquo; he said, &ldquo;everyone enjoys a good joke, so it&rsquo;s only fair that
+        they should pay for the privilege.&rdquo;
       </blockquote>
     );
   }
@@ -57,10 +57,10 @@ export function TypographyH1(props) {
           <thead>
             <tr className="m-0 border-t p-0 even:bg-muted">
               <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                King's Treasury
+                King&rsquo;s Treasury
               </th>
               <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                People's happiness
+                People&rsquo;s happiness
               </th>
             </tr>
           </thead>

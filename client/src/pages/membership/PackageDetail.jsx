@@ -1,6 +1,5 @@
-import React from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "@/App.css"
 import { usePackage } from "@/contexts/packageProvider";
@@ -17,7 +16,7 @@ function PackageDetail() {
   const [limit, setLimit] = useState(0);
   const [icon, setIcon] = useState({});
   const [purchaseDate, setPurchaseDate] = useState(null)
-  const [isLoading, setIsLoading] = useState(null)
+  const [, setIsLoading] = useState(null)
   console.log("เช็ค", packageId)
 
   function formatDate(inputDate) {
@@ -43,9 +42,9 @@ function PackageDetail() {
     currency: 'THB',
   });
   
-  const getMembershipData = async () => {
+  const getMembershipData = useCallback(async () => {
     setIsLoading(true)
-    const response = await axios.get(`http://localhost:4000/post/membership`)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/post/membership`)
     console.log(response)
     if (response.data.data.length > 0) {
       setName(response.data.data[0].merry_packages.package_name);
@@ -58,12 +57,12 @@ function PackageDetail() {
       // Redirect to the package page when there's no data
       navigate("/package"); // Replace "/package" with the actual route to your package page
     }
-}
+}, [navigate])
 
 
 useEffect(() => {
   getMembershipData();
-}, []);
+}, [getMembershipData]);
 
 
   return (

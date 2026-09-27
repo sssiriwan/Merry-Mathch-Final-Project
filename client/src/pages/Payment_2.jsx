@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "@/components/base/Navbar";
 import {
   ButtonPrimary,
@@ -15,7 +14,7 @@ const Payment_2 = () => {
           {/* left card */}
           <div className="w-[641px] h-[393px]">
             <div>
-              <img src="./icons/success_paied.png" alt="succes" />
+              <img src="/icons/success_paied.png" alt="succes" />
             </div>
             <div className="w-full h-[145px] mt-[40px]">
               <p className="text-sm text-pbeige-700">AYMENT SUCCESS</p>

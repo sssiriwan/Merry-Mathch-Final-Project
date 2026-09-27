@@ -1,4 +1,3 @@
-import React from "react";
 
 function ProfileImage({ file, onDragStartImage, onDragEnd, onRemoveImage }) {
   return (

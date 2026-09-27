@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import Identities from "./IdentitiesandInterests";
 import BasicInformation from "./BasicInformation";
 import ProfilePictures from "./ProfilePictures";
@@ -33,20 +33,6 @@ function Form() {
 
   const [page, setPage] = useState(0);
   const [avatars, setAvatars] = useState({});
-
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    const newAvatars = { ...avatars };
-
-    for (let i = 0; i < files.length; i++) {
-      if (Object.keys(newAvatars).length < maxUploads) {
-        const uniqueId = Date.now() + i;
-        newAvatars[uniqueId] = files[i];
-      }
-    }
-
-    updateAvatars(newAvatars); // เรียกใช้ฟังก์ชันเพื่ออัปเดต avatars ใน Form
-  };
 
   const updateAvatars = (newAvatars) => {
     setAvatars(newAvatars);

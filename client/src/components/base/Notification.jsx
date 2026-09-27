@@ -1,11 +1,4 @@
-import React from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar } from "@/components/ui/avatar";
 import NotificationItem from "./NotificationItem";
 import NotificatioMatch from "./NotificatioMatch";
@@ -14,7 +7,7 @@ const Notification = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="bg-pgray-100 flex justify-center items-center ml-14">
+        <Avatar className="bg-pgray-100 flex justify-center items-center">
           <svg
             width="20"
             height="20"

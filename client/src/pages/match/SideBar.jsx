@@ -1,19 +1,25 @@
-import React from "react";
+import PropTypes from "prop-types";
 import ProfileToChat from "./ProfileToChat";
 import ChatList from "./ChatList";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = () => {
+const SideBar = ({ isDrawer = false, onNavigate }) => {
   const navigate = useNavigate();
   return (
-    <aside className="w-[290px] py-7 border-r-2 border-pgray-100">
-      <div 
-      className=" cursor-pointer border-ppurple-500 bg-pgray-100 hover:bg-pgray-300 hover:ring-pred-300 ring-2 hover:ring-inset border flex flex-col justify-center items-center py-4 mx-5 rounded-2xl mb-7"
-      onClick={() => {
-        navigate(`/matching`);
-      }}
+    <aside
+      className={`${
+        isDrawer ? "flex" : "hidden lg:flex"
+      } w-full shrink-0 flex-col overflow-hidden border-b-2 border-pgray-100 px-4 py-5 lg:w-[clamp(230px,18vw,330px)] lg:border-b-0 lg:border-r-2 lg:px-0 lg:py-7 [&_h3]:text-lg [&_h3]:leading-6`}
+    >
+      <div
+        className=" shrink-0 cursor-pointer border-ppurple-500 bg-pgray-100 hover:bg-pgray-300 hover:ring-pred-300 ring-2 hover:ring-inset border flex flex-col justify-center items-center py-4 mx-2 lg:mx-4 rounded-2xl mb-7 short:mb-4 compact:mb-3 compact:py-2 text-center"
+        onClick={() => {
+          navigate(`/matching`);
+          onNavigate?.();
+        }}
       >
         <svg
+          className="compact:h-8 compact:w-auto"
           width="62"
           height="59"
           viewBox="0 0 62 59"
@@ -25,32 +31,34 @@ const SideBar = () => {
             fill="#FF1659"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M39.8885 21.6787C37.0009 21.6787 34.2315 22.8258 32.1896 24.8677C30.1478 26.9095 29.0007 29.6789 29.0007 32.5665C29.0007 35.4542 30.1478 38.2235 32.1896 40.2654C34.2315 42.3072 37.0009 43.4543 39.8885 43.4543C42.7761 43.4543 45.5455 42.3072 47.5873 40.2654C49.6292 38.2235 50.7763 35.4542 50.7763 32.5665C50.7763 29.6789 49.6292 26.9095 47.5873 24.8677C45.5455 22.8258 42.7761 21.6787 39.8885 21.6787ZM26.0313 32.5665C26.0314 30.3507 26.563 28.1672 27.5813 26.1992C28.5997 24.2313 30.0751 22.5362 31.8839 21.2562C33.6926 19.9763 35.7819 19.1487 37.9766 18.843C40.1712 18.5373 42.4072 18.7623 44.4969 19.4992C46.5866 20.2361 48.4691 21.4634 49.9865 23.0781C51.504 24.6928 52.612 26.6479 53.2178 28.7793C53.8236 30.9107 53.9094 33.1564 53.4681 35.3278C53.0267 37.4992 52.0711 39.5331 50.6813 41.259L57.2694 47.8491C57.4153 47.985 57.5323 48.1489 57.6134 48.331C57.6946 48.5132 57.7382 48.7098 57.7417 48.9091C57.7453 49.1085 57.7086 49.3065 57.6339 49.4913C57.5592 49.6762 57.4481 49.8442 57.3071 49.9851C57.1661 50.1261 56.9982 50.2373 56.8133 50.3119C56.6284 50.3866 56.4304 50.4233 56.2311 50.4198C56.0317 50.4163 55.8351 50.3726 55.653 50.2915C55.4709 50.2103 55.307 50.0933 55.171 49.9475L48.5809 43.3593C46.545 44.9992 44.0867 46.0297 41.49 46.3318C38.8933 46.634 36.2641 46.1954 33.906 45.0668C31.548 43.9382 29.5573 42.1655 28.1638 39.9536C26.7704 37.7417 26.0311 35.1808 26.0313 32.5665Z"
             fill="#95002B"
           />
         </svg>
-        <h1 className="font-bold text-center text-2xl tracking-tight transition-colors first:mt-0 text-pred-600">
+        <h1 className="font-bold text-center text-2xl compact:text-xl tracking-tight transition-colors first:mt-0 text-pred-600">
           Discover New Match
         </h1>
-        <small className="text-pgray-700">
+        <small className="compact:hidden text-center text-pgray-700">
           Start find and Merry to get know
         </small>
-        <small className="text-pgray-700">and connect with new friend!</small>
+        <small className="compact:hidden text-center text-pgray-700">
+          and connect with new friend!
+        </small>
       </div>
-      <hr className="border border-pgray-300" />
-      <div className=" mt-5 ml-3">
-        <div className=" mt-2">
-          <ProfileToChat/>
-        </div>
-
-        <div className="mt-5">
-          <ChatList/>          
-        </div>
+      <hr className="shrink-0 border border-pgray-300" />
+      <div className="mt-5 flex min-h-0 flex-1 flex-col lg:ml-3">
+        <ProfileToChat />
+        <ChatList />
       </div>
     </aside>
   );
+};
+
+SideBar.propTypes = {
+  isDrawer: PropTypes.bool,
+  onNavigate: PropTypes.func,
 };
 
 export default SideBar;

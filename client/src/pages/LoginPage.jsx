@@ -1,35 +1,26 @@
-import {
-  TypographyH1,
-  TypographySmall,
-} from "@/components/base/button/Typography";
+import { TypographyH1, TypographySmall } from "@/components/base/button/Typography";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import boy from "../../public/imgs/boy-complaint-form-page.png";
 
-import {
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/authentication";
 import { Button } from "@/components/ui/button";
 
 export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login, state } = useAuth();
+  const { login } = useAuth();
   const auth = useAuth();
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(username, password);
+    // console.log(username, password);
     login({
       username,
       password,
     });
-    console.log(state);
   };
   return (
     <div className="h-screen overflow-hidden">

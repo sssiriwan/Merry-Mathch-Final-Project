@@ -55,8 +55,8 @@ function PackageAddAction() {
     for (let iconKey in icon) {
       formData.append("icon", icon[iconKey]);
     }
-    const result = await axios.post(
-      "http://localhost:4000/admin/package",
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/admin/package`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },

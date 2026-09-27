@@ -1,13 +1,13 @@
 import { NavbarRegistered } from "@/components/base/Navbar";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CheckoutForm from "./payment/CheckoutForm";
 import { usePackage } from "@/contexts/packageProvider";
 import axios from "axios";
 
 const stripePromise = loadStripe(
-  "pk_test_51NuREbDE5qIJST4wBU3c9FaSJkBtGcgcjUJRKRx4Cqe42PRShSqKQQ7XAzzUGLbJZqZuc5mQvqm4EVgEnGPR9cHJ00dQLkX6zc"
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
 );
 
 const Payment_1 = () => {
@@ -16,10 +16,10 @@ const Payment_1 = () => {
   const { packageId } = usePackage();
   console.log("หน้าจ่ายเงิน",packageData)
 
-  const getPackageData = async () => {
-    const result = await axios.get(`http://localhost:4000/auth/package/${packageId}`);
+  const getPackageData = useCallback(async () => {
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/auth/package/${packageId}`);
     setPackageData(result.data.data[0])
-  }
+  }, [packageId])
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -27,7 +27,7 @@ const Payment_1 = () => {
   });
 
   useEffect(() => {
-    fetch("http://localhost:4000/create-payment-intent", {
+    fetch(`${import.meta.env.VITE_API_URL}/create-payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
@@ -38,7 +38,7 @@ const Payment_1 = () => {
 
   useEffect(() => {
     getPackageData();
-  }, [])
+  }, [getPackageData])
 
   const appearance = {
     theme: "stripe",
@@ -63,7 +63,7 @@ const Payment_1 = () => {
           <div className="w-[358px] h-[244px] bg-pgray-100 flex flex-col justify-center items-center border rounded-3xl border-pgray-400">
             <div className="w-[310px] h-[180px] flex flex-col justify-between">
               <div className="w-[310px] h-[30px] flex items-center">
-                <img src="./icons/package.png" alt="package" />
+                <img src="/icons/package.png" alt="package" />
                 <p className="ml-[12px] text-xl text-pgray-700">
                   Merry Membership
                 </p>
@@ -93,8 +93,8 @@ const Payment_1 = () => {
                     <h2>Credit Card</h2>
                   </div>
                   <div className="w-[100px] h-[28px] flex justify-between items-center">
-                    <img src="./icons/bank_Visa.png" alt="Visa" />
-                    <img src="./icons/bank_MasterCard.png" alt="MasterCar" />
+                    <img src="/icons/bank_Visa.png" alt="Visa" />
+                    <img src="/icons/bank_MasterCard.png" alt="MasterCar" />
                   </div>
                 </div>
               </div>

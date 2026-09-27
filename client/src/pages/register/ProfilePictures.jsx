@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useContext } from "react";
 import ProfileImage from "./ProfileImage";
 import ValindateContext from "./valindatecontext/Valindatecontext";
 
@@ -61,7 +61,7 @@ function ProfilePictures({ avatars, updateAvatars }) {
 
       <div className="input-container relative">
         <div className="flex mt-5 mb-[300px]">
-          {Object.keys(avatars).map((avatarKey, index) => (
+          {Object.keys(avatars).map((avatarKey) => (
             <div
               key={avatarKey}
               className="mr-[24px] relative"

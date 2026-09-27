@@ -1,4 +1,3 @@
-import * as React from "react";
 import boy from "../../public/imgs/boy-complaint-form-page.png";
 import {
   TypographyH1,
@@ -28,18 +27,18 @@ function ComplaintFormPage() {
   const [description, setDescription] = useState("");
   // แก้ ปฎิทิน
   const [date, setDate] = useState("");
-  const [status, setStatus] = useState("New");
+  const [status] = useState("New");
 
   const navigate = useNavigate();
 
   const getMyProfile = async () => {
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
     console.log(result.data.data);
     setUserID(result.data.data.user_id);
   };
 
   const createComplaint = async () => {
-    await axios.post("http://localhost:4000/auth/complaint", {
+    await axios.post(`${import.meta.env.VITE_API_URL}/auth/complaint`, {
       userId,
       issue,
       description,
@@ -72,7 +71,7 @@ function ComplaintFormPage() {
             </CardTitle>
             <CardDescription>
               <TypographyH1>If you have any trouble</TypographyH1>
-              <TypographyH1>Don't be afraid to tell us!</TypographyH1>
+              <TypographyH1>Don&rsquo;t be afraid to tell us!</TypographyH1>
             </CardDescription>
           </CardHeader>
           <CardContent>

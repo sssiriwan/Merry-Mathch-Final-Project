@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
 import { TypographySmall } from "@/components/base/button/Typography";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const ChatCard = (props) => {
   const getProfile = async (item) => {
     //console.log(item);
     setIsLoading(true);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("profiles")
       .select("*,  profile_image(img_1, img_2, img_3,img_4,img_5)")
       .eq("user_id", item);
@@ -31,16 +31,16 @@ const ChatCard = (props) => {
     setIsLoading(false);
   };
 
-  const getLastMessage = async () => {
+  const getLastMessage = useCallback(async () => {
     //console.log("TEST");
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("chat_message")
       .select("*")
       .order("timestampt", { ascending: false })
       .limit(1)
       .eq("matchlist_id", roomId);
     setConversation(data[0].message_content);
-  };
+  }, [roomId]);
 
   //console.log("แชทมาไหม", conversation);
 
@@ -48,7 +48,7 @@ const ChatCard = (props) => {
     //console.log("ทำงานไหม");
     getProfile(userId);
     getLastMessage();
-  }, [userId, roomId]);
+  }, [userId, roomId, getLastMessage]);
 
   return (
     <>
@@ -71,8 +71,8 @@ const ChatCard = (props) => {
 
       {isLoading && (
         <>
-          <div class="h-[500px] flex items-center">
-            <div class="custom-loader"></div>
+          <div className="h-[500px] flex items-center">
+            <div className="custom-loader"></div>
           </div>
         </>
       )}

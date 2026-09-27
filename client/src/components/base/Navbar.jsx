@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonMerryPackageProfile, ButtonPrimary } from "./button/Button";
 import MerryLogo from "./button/MerryLogo";
 import { Button } from "../ui/button";
@@ -22,14 +22,14 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="h-20 flex justify-around items-center shadow-3xl">
+    <nav className="w-full min-h-20 py-3 flex flex-wrap justify-center sm:justify-around items-center gap-x-4 gap-y-3 px-4 sm:px-6 shadow-3xl">
       <MerryLogo />
-      <div className="flex items-center font-bold text-ppurple-600">
+      <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 sm:gap-x-6 lg:gap-x-8 font-bold text-ppurple-600">
         <a href="/#sec2">
-          <span className="mr-8">Why Merry Match?</span>
+          <span>Why Merry Match?</span>
         </a>
         <a href="/#sec3">
-          <span className="mr-8">How to Merry</span>
+          <span>How to Merry</span>
         </a>
         <a href="/login">
           <ButtonPrimary>Login</ButtonPrimary>
@@ -40,7 +40,7 @@ const Navbar = () => {
 };
 
 function NavbarRegistered() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [userImg, setUserImg] = useState("");
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
@@ -59,25 +59,36 @@ function NavbarRegistered() {
 
   const getMyProfile = async () => {
     setIsLoading(true);
-    const result = await axios.get("http://localhost:4000/post/profile");
-    setIsLoading(false);
-    setUserId(result.data.data.user_id);
-    setUserImg(Object.values(result.data.data.profile_image)[0]);
+    try {
+      const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
+      setUserId(result.data.data.user_id);
+      setUserImg(Object.values(result.data.data.profile_image)[0]);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   useEffect(() => {
     getMyProfile();
   }, []);
   const { logout } = useAuth();
   return (
-    <nav className="w-full h-20 flex justify-around items-center shadow-md">
+    <nav className="flex w-full min-h-20 flex-wrap items-center justify-between sm:justify-around gap-x-2 gap-y-2 px-4 py-3 sm:gap-x-4 sm:px-6 shadow-md">
       <MerryLogo />
-      <div className="flex">
-        <Button variant="link" className="font-bold text-[#191C77]">
-          <a href="/matching">Start Matching!</a>
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+        <Button
+          variant="link"
+          className="px-1 text-sm font-bold text-[#191C77] sm:px-4 sm:text-base"
+        >
+          <a href="/matching">
+            <span className="sm:hidden">Match</span>
+            <span className="hidden sm:inline">Start Matching!</span>
+          </a>
         </Button>
         <Button
           variant="link"
-          className="font-bold text-[#191C77]"
+          className="hidden px-4 font-bold text-[#191C77] lg:inline-flex"
           onClick={handleClick}
         >
           {/* ต้องใช้ onclick เหมือน merry  membership หรือป่าว  */}
@@ -88,7 +99,7 @@ function NavbarRegistered() {
         {/* Profile's Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="ml-3">
+            <Avatar>
               <AvatarImage className="object-cover" src={userImg} />
               <AvatarFallback>User Image</AvatarFallback>
             </Avatar>

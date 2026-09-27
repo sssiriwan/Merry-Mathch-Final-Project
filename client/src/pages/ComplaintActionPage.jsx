@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ComplaintAction from "./admin/ComplaintAction";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import axios from "axios";
 
 function ComplaintActionPage() {
   const [name, setName] = useState("");
-  const [userId, setUserID] = useState("");
+  const [, setUserID] = useState("");
   const [issue, setIssue] = useState("");
   const [description, setDescription] = useState("");
   // แก้ ปฎิทิน
@@ -18,9 +18,9 @@ function ComplaintActionPage() {
   const navigate = useNavigate();
   const param = useParams();
 
-  const getComplaint = async () => {
+  const getComplaint = useCallback(async () => {
     const result = await axios.get(
-      `http://localhost:4000/admin/complaint/${param.complainId}`
+      `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`
     );
     console.log(result.data.data);
 
@@ -30,7 +30,7 @@ function ComplaintActionPage() {
     setCreateAt(result.data.data.created_at);
     setStatus(result.data.data.complaint_status);
     setName(result.data.data.users.fullname);
-  };
+  }, [param.complainId]);
 
   function formatDate(inputDate) {
     const date = new Date(inputDate);
@@ -43,7 +43,7 @@ function ComplaintActionPage() {
 
   useEffect(() => {
     getComplaint();
-  }, []);
+  }, [getComplaint]);
 
   const pendingStatus = "h-7 ml-2 rounded-lg bg-pyellow-100 text-black";
   const h4style = "font-semibold text-pgray-700 mb-2";

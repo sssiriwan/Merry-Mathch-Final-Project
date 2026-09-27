@@ -11,25 +11,47 @@ const authRouter = Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const avatarUpload = upload.fields([{name: "avatar", maxCount:5 }]);
+
+authRouter.post("/admin-register", async (req, res) => {
+  try {
+    const user = {
+      username: req.body.username.toLowerCase(),
+      password: req.body.password,
+      role: "Admin",
+      created_at: new Date()
+    }
+    const salt = await bcrypt.genSalt(10)
+    user.password = await bcrypt.hash(user.password, salt)
+    const result = await supabase.from('users').insert([user]).select()
+    delete user.role
+    user.user_id = result.data[0].user_id
+    const { data, error } = await supabase.from('admin').insert([user]).select()
+    return res.json({
+      message: 'Created successfully'
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ error: error.message });
+  }
+})
 authRouter.post("/register", avatarUpload , async (req, res) => {
   try {
     const hobbies = req.body.tags.split(',')
-
     const files = req.files.avatar
     let fileUrl = []
-    for(let i=0; i<files.length; i++) {
-      const fileName = `${Date.now()}`
-      const { data, error } = await supabase.storage.from('avatarImg').upload( fileName, files[i].buffer , {
-        cacheControl: '3600',
-        upsert: false,
-        contentType: files[i].mimetype
-      })
-      // console.log(data.path)
-      const result = await supabase.storage.from('avatarImg').getPublicUrl(data.path)
-      // console.log(result.data)
-      fileUrl.push(result.data.publicUrl)
-      if(error) {
-        console.log(error)
+    if (files && files.length > 0) {
+      for(let i=0; i<files.length; i++) {
+        const fileName = `${Date.now()}-${i}`
+        const { data, error } = await supabase.storage.from('avatarImg').upload( fileName, files[i].buffer , {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: files[i].mimetype
+        })
+        const result = await supabase.storage.from('avatarImg').getPublicUrl(data.path)
+        fileUrl.push(result.data.publicUrl)
+        if(error) {
+          console.log(error)
+        }
       }
     }
     // console.log(fileUrl)
@@ -86,19 +108,23 @@ authRouter.post("/register", avatarUpload , async (req, res) => {
     });
   } catch (error) {
     console.log("catch เออเร่อ",error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
 authRouter.post("/login", async (req, res) => {
   try {
+    console.log(req.body)
+    // const { data, error1 } = await supabase.from("users").select("*")
+    // console.log(data)
     const { data: user, error } = await supabase
       .from("users")
       .select("*")
-      .eq("username", req.body.username);
+      .filter("username", 'ilike', req.body.username);
     if (error) {
-      console.log(error);
+      console.log("ERROR:",error);
     }
-
+    console.log(user)
     if (!user[0]) {
       return res.status(404).json({
         message: "username or email not found",
@@ -115,13 +141,15 @@ authRouter.post("/login", async (req, res) => {
       process.env.SUPABASE_JWT_KEY,
       { expiresIn: "9000000" }
     );
-    console.log(req.user);
+    console.log(token)
+    console.log(user[0])
     return res.json({
       data: user[0],
       token,
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -133,6 +161,7 @@ authRouter.get("/", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+  return res.status(500).json({ error: error.message });
   }
 });
 
@@ -169,6 +198,7 @@ authRouter.post("/complaint", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 });
 

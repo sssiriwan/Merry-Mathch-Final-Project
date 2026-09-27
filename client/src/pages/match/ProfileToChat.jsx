@@ -1,7 +1,6 @@
-import React from "react";
 import { TypographyH3 } from "@/components/base/button/Typography";
 import { supabase } from "@/utils/supabaseClient";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import ProfileChooser from "./ProfileChooser";
 import ProfileChosen from "./ProfileChosen";
@@ -13,19 +12,21 @@ const ProfileToChat = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const getUserProfile = async () => {
+  const getUserProfile = useCallback(async () => {
     setIsLoading(true);
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(
+      `${import.meta.env.VITE_API_URL}/post/profile`,
+    );
     //console.log(result.data.data.profile_id);
 
     setUserId(result.data.data.user_id);
     setIsLoading(false);
-  };
+  }, []);
 
-  const getMatchList = async () => {
+  const getMatchList = useCallback(async () => {
     if (userId) {
       setIsLoading(true);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("match_list")
         .select("*")
         .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
@@ -34,18 +35,18 @@ const ProfileToChat = () => {
       setMatchList(data);
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     getUserProfile();
-  }, []);
+  }, [getUserProfile]);
 
   useEffect(() => {
     getMatchList();
-  }, [userId]);
+  }, [getMatchList]);
 
   return (
-    <>
+    <div className="mt-2 shrink-0">
       <TypographyH3>Merry Match!</TypographyH3>
       {!isLoading && (
         <div className="overflow-x-scroll whitespace-nowrap items-center snap-always snap-x snap-mandatory scroll-pl-6 py-2 ">
@@ -54,8 +55,8 @@ const ProfileToChat = () => {
             if (item.chooser !== userId) {
               console.log("เขาปัดเรา");
               return (
-               // <div className="snap-always snap-start py-2">
-                  <ProfileChooser matchList={item} key={index} />
+                // <div className="snap-always snap-start py-2">
+                <ProfileChooser matchList={item} key={index} />
                 //</div>
               );
             }
@@ -63,9 +64,9 @@ const ProfileToChat = () => {
             if (item.chooser == userId) {
               console.log("เราปัดเขา");
               return (
-               // <div className="snap-always snap-start py-2">
-                  <ProfileChosen matchList={item} key={index} />
-               // </div>
+                // <div className="snap-always snap-start py-2">
+                <ProfileChosen matchList={item} key={index} />
+                // </div>
               );
             }
           })}
@@ -73,13 +74,11 @@ const ProfileToChat = () => {
       )}
 
       {isLoading && (
-        <>
-          <div class="h-[500px] flex items-center">
-            <div class="custom-loader"></div>
-          </div>
-        </>
+        <div className="flex h-[100px] items-center justify-center">
+          <div className="custom-loader"></div>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 export default ProfileToChat;

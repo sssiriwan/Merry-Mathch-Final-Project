@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 function ComplaintDetail({setIssueBar}) {
-  const navigate = useNavigate();
   const param = useParams();
   const [name, setName] = useState("");
-  const [userId, setUserID] = useState("");
+  const [, setUserID] = useState("");
   const [issue, setIssue] = useState("");
   const [description, setDescription] = useState("");
   // แก้ ปฎิทิน
@@ -14,9 +13,9 @@ function ComplaintDetail({setIssueBar}) {
   const [status, setStatus] = useState("");
   const [updateAt, setUpdateAt] = useState("");
 
-  const getComplaint = async () => {
+  const getComplaint = useCallback(async () => {
     const result = await axios.get(
-      `http://localhost:4000/admin/complaint/${param.complainId}`
+      `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`
     );
     console.log(result.data.data);
 
@@ -28,7 +27,7 @@ function ComplaintDetail({setIssueBar}) {
     setName(result.data.data.users.fullname);
     setUpdateAt(result.data.data.updated_at);
     setIssueBar(result.data.data.issue)
-  };
+  }, [param.complainId, setIssueBar]);
   function formatDate(inputDate) {
   const date = new Date(inputDate);
   const day = date.getDate().toString().padStart(2, "0");
@@ -40,7 +39,7 @@ function ComplaintDetail({setIssueBar}) {
 
   useEffect(() => {
     getComplaint();
-  }, []);
+  }, [getComplaint]);
 
   const h4style = "font-semibold text-pgray-700 mb-2";
   const divStyle = "m-5";

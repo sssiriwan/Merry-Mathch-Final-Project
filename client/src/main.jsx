@@ -6,7 +6,6 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/authentication";
 import jwtInterceptor from "./utils/jwtInterceptor.js";
 import { ValindateProvider } from "./pages/register/valindatecontext/Valindatecontext.jsx";
-import { createClient } from '@supabase/supabase-js'
 import { PackageProvider } from "./contexts/packageProvider.jsx";
 import { AgeProvider } from "./contexts/ageContext.jsx";
 import { AdminProvider } from "./contexts/adminPackageContext.jsx";

@@ -1,7 +1,6 @@
-import React from "react";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ButtonSecondary } from "@/components/base/button/Button";
 import { Link } from "react-router-dom";
@@ -25,7 +24,7 @@ function PackageEditPage() {
   const [name, setName] = useState("");
   const [limit, setLimit] = useState(0);
   const [icon, setIcon] = useState({});
-  const [detail, setDetail] = useState([]);
+  const [, setDetail] = useState([]);
   const [price, setPrice] = useState(0);
 
   const [detailList, setDetailList] = useState([]);
@@ -61,9 +60,9 @@ function PackageEditPage() {
     }
   };
 
-  const getCurrentPackage = async () => {
+  const getCurrentPackage = useCallback(async () => {
     const response = await axios.get(
-      `http://localhost:4000/admin/package/${params.packageId}`
+        `${import.meta.env.VITE_API_URL}/admin/package/${params.packageId}`
     );
     setDetailList(Object.values(response.data.data.package_detail))
     const uniqueId = Date.now();
@@ -73,7 +72,7 @@ function PackageEditPage() {
     setIcon(testObject);
     setDetail(response.data.data.package_detail);
     setPrice(response.data.data.price);
-  };
+  }, [params.packageId]);
 
   const handleEditSubmit = async () => {
     const formData = new FormData();
@@ -86,8 +85,8 @@ function PackageEditPage() {
     for (let detailKey of detailList) {
       formData.append('detail', detailKey)
     }
-    const result = await axios.put(
-      `http://localhost:4000/admin/package/${params.packageId}`,
+    await axios.put(
+      `${import.meta.env.VITE_API_URL}/admin/package/${params.packageId}`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -103,7 +102,7 @@ function PackageEditPage() {
   const confirmDelete = async () => {
     try {
       await axios.delete(
-        `http://localhost:4000/admin/package/${params.packageId}`
+      `${import.meta.env.VITE_API_URL}/admin/package/${params.packageId}`
       );
       navigate("/admin");
     } catch (error) {
@@ -123,14 +122,14 @@ function PackageEditPage() {
 
   useEffect(() => {
     getCurrentPackage();
-  }, []);
+  }, [getCurrentPackage]);
 
   return (
     <div className="flex">
       <AdminControlPanel />
       <div className="w-full flex flex-col bg-pgray-200 items-center">
         <div className="w-full flex bg-white h-20 justify-between items-center px-20 border-b">
-          Edit '{name}'
+          Edit &lsquo;{name}&rsquo;
           <div className="flex space-x-2">
             <ButtonSecondary>
               <Link to="/admin">Cancel</Link>
@@ -210,9 +209,9 @@ function PackageEditPage() {
                 <path
                   d="M12.5 4.5V19.5M20 12H5"
                   stroke="#7D2262"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <div className="text-ppurple-600 text-sm">Upload icon</div>

@@ -1,6 +1,6 @@
 import { ButtonDemo } from "@/components/base/button/Button";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import ConfirmationModal from "./ConfirmationModal";
@@ -8,18 +8,18 @@ import ConfirmationModal from "./ConfirmationModal";
 function ComplaintAction() {
   const navigate = useNavigate();
   const param = useParams();
-  const [status, setStatus] = useState("");
+  const [, setStatus] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
-  const getComplaint = async () => {
+  const getComplaint = useCallback(async () => {
     const result = await axios.get(
-      `http://localhost:4000/admin/complaint/${param.complainId}`
+      `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`
     );
     console.log(result.data.data);
 
     setStatus(result.data.data.complaint_status);
-  };
+  }, [param.complainId]);
 
   const handleCancelClick = () => {
     // Show the cancel confirmation modal
@@ -31,8 +31,8 @@ function ComplaintAction() {
       const updateComplaint = {
         status: "Cancel",
       };
-      const result = await axios.put(
-        `http://localhost:4000/admin/complaint/${param.complainId}`,
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`,
         updateComplaint
       );
 
@@ -62,8 +62,8 @@ function ComplaintAction() {
       const updateComplaint = {
         status: "Resolved",
       };
-      const result = await axios.put(
-        `http://localhost:4000/admin/complaint/${param.complainId}`,
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`,
         updateComplaint
       );
 
@@ -84,7 +84,7 @@ function ComplaintAction() {
 
   useEffect(() => {
     getComplaint();
-  }, []);
+  }, [getComplaint]);
 
   return (
     <div>

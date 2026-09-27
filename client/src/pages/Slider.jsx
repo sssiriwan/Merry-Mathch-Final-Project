@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { useAge } from "@/contexts/ageContext";
 
@@ -8,7 +8,7 @@ const MultiRangeSlider = ({ min, max }) => {
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef(null);
-  const { minAge, setMinAge, maxAge, setMaxAge } = useAge();
+  const { setMinAge, setMaxAge } = useAge();
 
   // Convert to percentage
   const getPercent = useCallback(
@@ -38,7 +38,7 @@ const MultiRangeSlider = ({ min, max }) => {
   }, [maxVal, getPercent]);
 
   return (
-    <div>
+    <div className="relative w-full max-w-[280px]">
       <input
         type="range"
         min={min}

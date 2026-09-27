@@ -1,11 +1,10 @@
-import React from "react";
 
 const CardsPayment = () => {
   return (
     <div className="w-[357px] h-[454px] bg-bg-3 flex justify-center items-center border rounded-3xl">
       <div className="w-[277px] h-[374px] flex flex-col justify-between">
         <div className="w-[60px] h-[60px] bg-white flex justify-center items-center rounded-2xl">
-          <img src="./icons/icon_premium.png" alt="premium" />
+          <img src="/icons/icon_premium.png" alt="premium" />
         </div>
         <div className="w-full h-[78px] flex flex-col justify-between">
           <p className="text-3xl font-bold text-white">Premium</p>
@@ -16,13 +15,13 @@ const CardsPayment = () => {
         </div>
         <div className="w-full h-[100px] border-b">
           <div className="flex">
-            <img src="./icons/check_2.png" alt="check" />
+            <img src="/icons/check_2.png" alt="check" />
             <p className="ml-[12px] text-base text-ppurple-100">
               ‘Merry’ more than a daily limited
             </p>
           </div>
           <div className="bt-[16px] flex">
-            <img src="./icons/check_2.png" alt="check" />
+            <img src="/icons/check_2.png" alt="check" />
             <p className="ml-[12px] text-base text-ppurple-100">
               Up to 50 Merry per day
             </p>

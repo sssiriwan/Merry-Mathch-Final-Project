@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function PreviewCard({ clicked, setClicked, userId }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -69,10 +69,10 @@ function PreviewCard({ clicked, setClicked, userId }) {
     return userAge;
   };
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     setIsLoading(true);
     const result = await axios.get(
-      `http://localhost:4000/post/profile/${userId}`
+      `${import.meta.env.VITE_API_URL}/post/profile/${userId}`
     );
     //console.log(result.data.data);
     setIsLoading(false);
@@ -80,33 +80,53 @@ function PreviewCard({ clicked, setClicked, userId }) {
     setHobbies(result.data.data.hobbies);
     setAvatars(result.data.data.profile_image);
     //console.log("รูปจ้ารูป", result.data.data);
-  };
+  }, [userId]);
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   return (
     <div
       id="popup-preview-card"
-      className="w-[1140px] h-[740px] bg-white border rounded-4xl absolute top-1/4 flex justify-center items-center shadow-3xl"
+      className="no-scrollbar relative max-h-[90vh] w-full overflow-y-auto rounded-4xl border bg-white shadow-3xl"
     >
-      <div className="w-[980px] h-[579px] flex justify-between">
-        <div className="shadow-md rounded-4xl w-[478px] h-[526px]">
+      <button
+        onClick={() => setClicked(!clicked)}
+        aria-label="Close profile detail"
+        className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-pgray-200 text-pgray-700 hover:bg-pgray-300"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 4L4 12M4 4L12 12"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
+      <div className="flex flex-col gap-4 p-4 sm:p-6 lg:flex-row lg:justify-center lg:gap-10">
+        <div className="w-full shrink-0 self-start rounded-4xl shadow-md lg:w-[478px]">
           {!isLoading && (
             <>
-              {/* imageArr */}
               <img
                 src={Object.values(avatars)[count]}
-                className="w-[478px] h-[478px] object-cover rounded-4xl"
+                className="aspect-square w-full rounded-4xl object-cover"
               />
-              <div className="flex items-center justify-between px-10">
+              <div className="flex items-center justify-between px-4 py-3 sm:px-10">
                 <div>
                   {count + 1}/{imageArr.length}
                 </div>
-                <div>
+                <div className="flex items-center gap-2">
                   {/* ปุ่มใน รูป <- -> */}
                   <button
                     onClick={handlePrevImage}
+                    aria-label="Previous image"
                     className="rounded-3xl hover:scale-125"
                   >
                     <svg
@@ -124,6 +144,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
                   </button>
                   <button
                     onClick={handleNextImage}
+                    aria-label="Next image"
                     className="rounded-3xl hover:scale-125"
                   >
                     <svg
@@ -144,75 +165,78 @@ function PreviewCard({ clicked, setClicked, userId }) {
             </>
           )}
           {isLoading && (
-            <div class="h-[500px] flex items-center justify-center">
-              <div class="custom-loader"></div>
+            <div className="flex aspect-square w-full items-center justify-center">
+              <div className="custom-loader"></div>
             </div>
           )}
         </div>
         <div
-          className="w-[478px] h-[579px] flex flex-col ml-10"
+          className="flex w-full flex-col lg:ml-10 lg:w-[478px]"
           onClick={() => {
             setClicked(!clicked);
           }}
         >
-          <div className="w-[418px] h-[96px] flex flex-col">
-            <div className="flex">
-              <h1 className=" font-extrabold text-5xl">{profile.fullname}</h1>
-              <h1 className="font-extrabold text-5xl text-pgray-700 ml-4">
+          <div className="flex flex-col">
+            <div className="flex flex-wrap items-baseline gap-x-4">
+              <h1 className="font-extrabold text-4xl sm:text-5xl">
+                {profile.fullname}
+              </h1>
+              <h1 className="font-extrabold text-4xl text-pgray-700 sm:text-5xl">
                 {age(new Date(profile.date_of_birth))}
               </h1>
             </div>
-            <div className="flex mt-3">
+            <div className="mt-3 flex items-center">
               <svg
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="shrink-0"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M11.6276 22.7196L11.6312 22.7208C11.8676 22.824 11.9996 22.8 11.9996 22.8C11.9996 22.8 12.1316 22.824 12.3692 22.7208L12.3716 22.7196L12.3788 22.716L12.4004 22.7064C12.5143 22.6535 12.6268 22.5975 12.7376 22.5384C12.9608 22.4232 13.2728 22.2504 13.646 22.0188C14.39 21.558 15.38 20.8596 16.3748 19.9008C18.362 17.9856 20.3996 14.9916 20.3996 10.8C20.3996 9.69692 20.1823 8.60462 19.7602 7.58548C19.3381 6.56635 18.7193 5.64034 17.9393 4.86033C17.1593 4.08032 16.2333 3.46158 15.2141 3.03944C14.195 2.6173 13.1027 2.40002 11.9996 2.40002C10.8965 2.40002 9.8042 2.6173 8.78507 3.03944C7.76593 3.46158 6.83992 4.08032 6.05991 4.86033C5.2799 5.64034 4.66116 6.56635 4.23902 7.58548C3.81688 8.60462 3.59961 9.69692 3.59961 10.8C3.59961 14.9904 5.63721 17.9856 7.62561 19.9008C8.45811 20.7004 9.37233 21.4103 10.3532 22.0188C10.7331 22.2547 11.124 22.4726 11.5244 22.6716L11.5988 22.7064L11.6204 22.716L11.6276 22.7196ZM11.9996 13.5C12.7157 13.5 13.4024 13.2156 13.9088 12.7092C14.4151 12.2029 14.6996 11.5161 14.6996 10.8C14.6996 10.0839 14.4151 9.39718 13.9088 8.89084C13.4024 8.38449 12.7157 8.10002 11.9996 8.10002C11.2835 8.10002 10.5968 8.38449 10.0904 8.89084C9.58407 9.39718 9.29961 10.0839 9.29961 10.8C9.29961 11.5161 9.58407 12.2029 10.0904 12.7092C10.5968 13.2156 11.2835 13.5 11.9996 13.5Z"
                   fill="#FFB1C8"
                 />
               </svg>
-              <h2 className="ml-3 text-xl text-pgray-700 font-semibold">
+              <h2 className="ml-3 text-lg text-pgray-700 font-semibold sm:text-xl">
                 {profile.location}, {profile.city}
               </h2>
             </div>
           </div>
-          <div className=" my-11 grid gap-4">
-            <div className="flex">
-              <h1 className="w-52">Sexual Identities</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+          <div className="my-8 grid gap-4 sm:my-11">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Sexual Identities</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.sexual_identity}
               </h1>
             </div>
-            <div className="flex">
-              <h1 className="w-52">Sexual Preferences</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Sexual Preferences</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.sexual_preference}
               </h1>
             </div>
-            <div className="flex">
-              <h1 className="w-52">Racial Preferences</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Racial Preferences</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.racial_preference}
               </h1>
             </div>
-            <div className="flex">
-              <h1 className="w-52">Meeting Interests</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Meeting Interests</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.meeting_interest}
               </h1>
             </div>
           </div>
-          <div className="text-pgray-900 mb-10 grid gap-4">
+          <div className="text-pgray-900 mb-8 grid gap-4 sm:mb-10">
             <h1 className="font-bold text-2xl leading-8 tracking-tight">
               About me
             </h1>
-            <p>{profile.about_me}</p>
+            <p className="break-words">{profile.about_me}</p>
           </div>
           <div className="text-pgray-900 grid gap-4">
             <h1 className="font-bold text-2xl leading-8 tracking-tight">

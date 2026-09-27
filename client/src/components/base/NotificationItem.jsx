@@ -1,4 +1,3 @@
-import React from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 const NotificationItem = () => {
@@ -25,7 +24,7 @@ const NotificationItem = () => {
         />
       </div>
       <div className="ml-3 text-pgray-700">
-        <p>'Karl Drogo' Just Merry you!</p>
+        <p>&lsquo;Karl Drogo&rsquo; Just Merry you!</p>
         <p>Click here to see profile</p>
       </div>
     </DropdownMenuItem>

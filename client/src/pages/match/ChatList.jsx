@@ -1,7 +1,6 @@
-import React from "react";
 import { TypographyH3 } from "@/components/base/button/Typography";
 import { supabase } from "@/utils/supabaseClient";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import ChatCard from "./ChatCard";
 import ChatCardChosen from "./ChatCardChosen";
@@ -13,18 +12,20 @@ const ChatList = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const getUserProfile = async () => {
+  const getUserProfile = useCallback(async () => {
     setIsLoading(true);
-    const result = await axios.get("http://localhost:4000/post/profile");
+    const result = await axios.get(
+      `${import.meta.env.VITE_API_URL}/post/profile`,
+    );
     //console.log(result.data.data.profile_id);
     setUserId(result.data.data.user_id);
     setIsLoading(false);
-  };
+  }, []);
 
-  const getMatchList = async () => {
+  const getMatchList = useCallback(async () => {
     if (userId) {
       setIsLoading(true);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("match_list")
         .select("*")
         .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
@@ -34,18 +35,20 @@ const ChatList = () => {
       setMatchList(data);
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     getMatchList();
     getUserProfile();
-  }, [userId]);
+  }, [getMatchList, getUserProfile]);
 
   return (
-    <>
-      <TypographyH3>Chat with Merry Match</TypographyH3>
+    <div className="mt-5 flex min-h-0 flex-1 flex-col">
+      <div className="shrink-0">
+        <TypographyH3>Chat with Merry Match</TypographyH3>
+      </div>
       {!isLoading && (
-        <div className=" h-[350px] flex flex-col items-center overflow-auto">
+        <div className="flex min-h-[72px] w-full flex-1 flex-col items-center overflow-y-auto [&>*]:shrink-0">
           {matchList?.map((item, index) => {
             //mapคนที่เขาปัดเราเขาเป็็น chooser
             if (item.chooser !== userId) {
@@ -62,13 +65,11 @@ const ChatList = () => {
       )}
 
       {isLoading && (
-        <>
-          <div class="h-[500px] flex items-center">
-            <div class="custom-loader"></div>
-          </div>
-        </>
+        <div className="flex min-h-[80px] flex-1 items-center justify-center">
+          <div className="custom-loader"></div>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

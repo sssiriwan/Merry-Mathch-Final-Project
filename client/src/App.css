@@ -7,13 +7,27 @@
   font-family: "Nunito", sans-serif;
   box-sizing: border-box;
 }
+.swiper-button-prev,
+.swiper-button-next {
+  top: auto !important;
+  bottom: -1.25rem !important;
+  left: 50% !important;
+  margin: 0 !important;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: #fff;
+  opacity: 0.9;
+}
 .swiper-button-prev {
-  top: 82% !important;
-  left: 65% !important;
+  transform: translateX(calc(-50% - 2rem)) !important;
 }
 .swiper-button-next {
-  top: 82% !important;
-  left: 67% !important;
+  transform: translateX(calc(-50% + 2rem)) !important;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 .shadowcss {
   position: absolute;
@@ -63,7 +77,8 @@
 
 .slider {
   position: relative;
-  width: 200px;
+  width: 100%;
+  max-width: 280px;
 }
 
 .slider__track,
@@ -117,7 +132,8 @@
   pointer-events: none;
   position: absolute;
   height: 0;
-  width: 200px;
+  width: 100%;
+  max-width: 280px;
   outline: none;
 }
 
@@ -162,4 +178,13 @@
   border-radius: 10px;
   background-clip: content-box;
   background-color: hsla(343, 100%, 20%,0.4);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

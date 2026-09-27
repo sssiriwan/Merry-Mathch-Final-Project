@@ -3,22 +3,27 @@ import { useEffect, useState } from "react";
 import AdminAuthenticatedApp from "./AdminAuthenticatedApp";
 import AuthenticatedApp from "./AuthenticatedApp";
 
-function checkAuthenticateUser() {
-  const [user, setUser] = useState(null);
+function CheckAuthenticateUser() {
+  const [role, setRole] = useState(null);
   const checkUser = async () => {
-    const result = await axios.get("http://localhost:4000/post/check");
-    setUser(result.data.data.role);
+    try {
+      const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/check`);
+      setRole(result.data.data.role);
+    } catch (error) {
+      console.error("Error checking user:", error);
+    }
   };
   useEffect(() => {
     checkUser();
-  });
+  }, []);
 
-  if (user === "Admin") {
+  if (typeof role !== "string") {
+    return null;
+  }
+  if (role.toLowerCase() === "admin") {
     return <AdminAuthenticatedApp />;
   }
-  if (user === "Users") {
-    return <AuthenticatedApp />;
-  }
+  return <AuthenticatedApp />;
 }
 
-export default checkAuthenticateUser;
+export default CheckAuthenticateUser;
