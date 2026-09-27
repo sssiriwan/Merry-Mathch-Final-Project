@@ -4,14 +4,15 @@ import { fedeIn } from "../variants";
 
 const Sec1 = () => {
   return (
-    <section className="w-[1366px] h-[768px] bg-bg-1 flex justify-center items-center">
-      <div className="h-[380px] w-[450px] flex flex-col justify-between items-center">
+    <section className="relative w-full h-[768px] overflow-hidden flex justify-center items-center">
+      <div className="absolute -inset-[24px] bg-bg-1 blur-[10px] md:blur-0" />
+      <div className="relative h-[380px] w-full max-w-[450px] px-6 flex flex-col justify-between items-center">
         <span className="text-6xl text-white font-black text-center">
           <motion.h1
             variants={fedeIn("down", 0.2)}
             initial="hidden"
             whileInView={"show"}
-            viewport={{ one: false, amount: 0.6 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="h1"
           >
             Make the
@@ -22,7 +23,7 @@ const Sec1 = () => {
             variants={fedeIn("down", 0.2)}
             initial="hidden"
             whileInView={"show"}
-            viewport={{ one: false, amount: 0.6 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="h1"
           >
             first ‘Merry’
@@ -33,7 +34,7 @@ const Sec1 = () => {
             variants={fedeIn("down", 0.2)}
             initial="hidden"
             whileInView={"show"}
-            viewport={{ one: false, amount: 0.6 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="h1"
           >
             <p>If you feel lonely, let’s start meeting</p>
@@ -46,7 +47,7 @@ const Sec1 = () => {
             variants={fedeIn("down", 0.2)}
             initial="hidden"
             whileInView={"show"}
-            viewport={{ one: false, amount: 0.6 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="h1"
           >
             <ButtonPrimary>

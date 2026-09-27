@@ -9,9 +9,9 @@ import { useAuth } from "@/contexts/authentication";
 const Home = () => {
   const auth = useAuth();
   return (
-    <div>
+    <div className="w-full overflow-x-clip">
       {auth.isAuthenticated ? <NavbarRegistered /> : <Navbar />}
-      <div className="h-[257vh] bg-putility-400 flex flex-col items-center text-center ">
+      <div className="w-full bg-putility-400 flex flex-col items-center text-center ">
         <Sec1 />
         <Sec2 />
         <Sec3 />

@@ -7,7 +7,7 @@ const Notification = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="bg-pgray-100 flex justify-center items-center ml-1 sm:ml-14">
+        <Avatar className="bg-pgray-100 flex justify-center items-center">
           <svg
             width="20"
             height="20"

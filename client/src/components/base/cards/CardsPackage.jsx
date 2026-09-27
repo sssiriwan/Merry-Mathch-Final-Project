@@ -57,7 +57,7 @@ const CardsPackage = () => {
                 </span>
               </div>
               <div className="w-[277px] flex mt-[16px]">
-                {/* <img src="./icons/check.png" alt="icon_check" /> */}
+                {/* <img src="/icons/check.png" alt="icon_check" /> */}
                 {merryDetailIcon}
                 <span className="ml-[12px] text-base text-pgray-800">Up to {packageItem.package_limit} Merry per day</span>
               </div>
@@ -93,13 +93,13 @@ const CardsPackage = () => {
 //           </div>
 //           <div className="w-[277px] h-[100px] border-t border-pgray-300 p-4">
 //             <div className="flex">
-//               <img src={"./icons/check.png"} alt="icon_check" />
+//               <img src={"/icons/check.png"} alt="icon_check" />
 //               <span className="ml-2 text-base text-pgray-800">
 //                 ‘Merry’ more than a daily limit
 //               </span>
 //             </div>
 //             <div className="flex mt-4">
-//               <img src="./icons/check.png" alt="icon_check" />
+//               <img src="/icons/check.png" alt="icon_check" />
 //               <span className="ml-2 text-base text-pgray-800">Up to 25 Merry per day</span>
 //             </div>
 //           </div>

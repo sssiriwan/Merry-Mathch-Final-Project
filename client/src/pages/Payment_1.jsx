@@ -63,7 +63,7 @@ const Payment_1 = () => {
           <div className="w-[358px] h-[244px] bg-pgray-100 flex flex-col justify-center items-center border rounded-3xl border-pgray-400">
             <div className="w-[310px] h-[180px] flex flex-col justify-between">
               <div className="w-[310px] h-[30px] flex items-center">
-                <img src="./icons/package.png" alt="package" />
+                <img src="/icons/package.png" alt="package" />
                 <p className="ml-[12px] text-xl text-pgray-700">
                   Merry Membership
                 </p>
@@ -93,8 +93,8 @@ const Payment_1 = () => {
                     <h2>Credit Card</h2>
                   </div>
                   <div className="w-[100px] h-[28px] flex justify-between items-center">
-                    <img src="./icons/bank_Visa.png" alt="Visa" />
-                    <img src="./icons/bank_MasterCard.png" alt="MasterCar" />
+                    <img src="/icons/bank_Visa.png" alt="Visa" />
+                    <img src="/icons/bank_MasterCard.png" alt="MasterCar" />
                   </div>
                 </div>
               </div>

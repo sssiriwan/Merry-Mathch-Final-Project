@@ -22,14 +22,14 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="h-20 flex justify-around items-center shadow-3xl">
+    <nav className="w-full min-h-20 py-3 flex flex-wrap justify-center sm:justify-around items-center gap-x-4 gap-y-3 px-4 sm:px-6 shadow-3xl">
       <MerryLogo />
-      <div className="flex items-center font-bold text-ppurple-600">
+      <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 sm:gap-x-6 lg:gap-x-8 font-bold text-ppurple-600">
         <a href="/#sec2">
-          <span className="mr-8">Why Merry Match?</span>
+          <span>Why Merry Match?</span>
         </a>
         <a href="/#sec3">
-          <span className="mr-8">How to Merry</span>
+          <span>How to Merry</span>
         </a>
         <a href="/login">
           <ButtonPrimary>Login</ButtonPrimary>
@@ -74,9 +74,9 @@ function NavbarRegistered() {
   }, []);
   const { logout } = useAuth();
   return (
-    <nav className="flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-1 px-3 py-2 shadow-md sm:h-20 sm:justify-around sm:gap-x-4 sm:px-6">
+    <nav className="flex w-full min-h-20 flex-wrap items-center justify-between sm:justify-around gap-x-2 gap-y-2 px-4 py-3 sm:gap-x-4 sm:px-6 shadow-md">
       <MerryLogo />
-      <div className="flex items-center gap-1 sm:gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
         <Button
           variant="link"
           className="px-1 text-sm font-bold text-[#191C77] sm:px-4 sm:text-base"
@@ -88,7 +88,7 @@ function NavbarRegistered() {
         </Button>
         <Button
           variant="link"
-          className="hidden px-4 font-bold text-[#191C77] sm:inline-flex"
+          className="hidden px-4 font-bold text-[#191C77] lg:inline-flex"
           onClick={handleClick}
         >
           {/* ต้องใช้ onclick เหมือน merry  membership หรือป่าว  */}
@@ -99,7 +99,7 @@ function NavbarRegistered() {
         {/* Profile's Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="ml-3">
+            <Avatar>
               <AvatarImage className="object-cover" src={userImg} />
               <AvatarFallback>User Image</AvatarFallback>
             </Avatar>
