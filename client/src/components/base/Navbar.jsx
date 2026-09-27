@@ -59,25 +59,36 @@ function NavbarRegistered() {
 
   const getMyProfile = async () => {
     setIsLoading(true);
-    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
-    setIsLoading(false);
-    setUserId(result.data.data.user_id);
-    setUserImg(Object.values(result.data.data.profile_image)[0]);
+    try {
+      const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
+      setUserId(result.data.data.user_id);
+      setUserImg(Object.values(result.data.data.profile_image)[0]);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   useEffect(() => {
     getMyProfile();
   }, []);
   const { logout } = useAuth();
   return (
-    <nav className="w-full h-20 flex justify-around items-center shadow-md">
+    <nav className="flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-1 px-3 py-2 shadow-md sm:h-20 sm:justify-around sm:gap-x-4 sm:px-6">
       <MerryLogo />
-      <div className="flex">
-        <Button variant="link" className="font-bold text-[#191C77]">
-          <a href="/matching">Start Matching!</a>
+      <div className="flex items-center gap-1 sm:gap-3">
+        <Button
+          variant="link"
+          className="px-1 text-sm font-bold text-[#191C77] sm:px-4 sm:text-base"
+        >
+          <a href="/matching">
+            <span className="sm:hidden">Match</span>
+            <span className="hidden sm:inline">Start Matching!</span>
+          </a>
         </Button>
         <Button
           variant="link"
-          className="font-bold text-[#191C77]"
+          className="hidden px-4 font-bold text-[#191C77] sm:inline-flex"
           onClick={handleClick}
         >
           {/* ต้องใช้ onclick เหมือน merry  membership หรือป่าว  */}

@@ -38,7 +38,7 @@ const MultiRangeSlider = ({ min, max }) => {
   }, [maxVal, getPercent]);
 
   return (
-    <div>
+    <div className="relative w-full max-w-[280px]">
       <input
         type="range"
         min={min}

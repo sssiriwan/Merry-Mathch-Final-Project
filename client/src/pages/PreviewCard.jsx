@@ -88,25 +88,45 @@ function PreviewCard({ clicked, setClicked, userId }) {
   return (
     <div
       id="popup-preview-card"
-      className="w-[1140px] h-[740px] bg-white border rounded-4xl absolute top-1/4 flex justify-center items-center shadow-3xl"
+      className="relative max-h-[90vh] w-full overflow-y-auto rounded-4xl border bg-white shadow-3xl"
     >
-      <div className="w-[980px] h-[579px] flex justify-between">
-        <div className="shadow-md rounded-4xl w-[478px] h-[526px]">
+      <button
+        onClick={() => setClicked(!clicked)}
+        aria-label="Close profile detail"
+        className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-pgray-200 text-pgray-700 hover:bg-pgray-300"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 4L4 12M4 4L12 12"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
+      <div className="flex flex-col gap-4 p-4 sm:p-6 lg:flex-row lg:justify-center lg:gap-10">
+        <div className="w-full shrink-0 rounded-4xl shadow-md lg:w-[478px]">
           {!isLoading && (
             <>
-              {/* imageArr */}
               <img
                 src={Object.values(avatars)[count]}
-                className="w-[478px] h-[478px] object-cover rounded-4xl"
+                className="aspect-square w-full rounded-4xl object-cover"
               />
-              <div className="flex items-center justify-between px-10">
+              <div className="flex items-center justify-between px-4 py-3 sm:px-10">
                 <div>
                   {count + 1}/{imageArr.length}
                 </div>
-                <div>
+                <div className="flex items-center gap-2">
                   {/* ปุ่มใน รูป <- -> */}
                   <button
                     onClick={handlePrevImage}
+                    aria-label="Previous image"
                     className="rounded-3xl hover:scale-125"
                   >
                     <svg
@@ -124,6 +144,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
                   </button>
                   <button
                     onClick={handleNextImage}
+                    aria-label="Next image"
                     className="rounded-3xl hover:scale-125"
                   >
                     <svg
@@ -144,31 +165,34 @@ function PreviewCard({ clicked, setClicked, userId }) {
             </>
           )}
           {isLoading && (
-            <div class="h-[500px] flex items-center justify-center">
-              <div class="custom-loader"></div>
+            <div className="flex aspect-square w-full items-center justify-center">
+              <div className="custom-loader"></div>
             </div>
           )}
         </div>
         <div
-          className="w-[478px] h-[579px] flex flex-col ml-10"
+          className="flex w-full flex-col lg:ml-10 lg:w-[478px]"
           onClick={() => {
             setClicked(!clicked);
           }}
         >
-          <div className="w-[418px] h-[96px] flex flex-col">
-            <div className="flex">
-              <h1 className=" font-extrabold text-5xl">{profile.fullname}</h1>
-              <h1 className="font-extrabold text-5xl text-pgray-700 ml-4">
+          <div className="flex flex-col">
+            <div className="flex flex-wrap items-baseline gap-x-4">
+              <h1 className="font-extrabold text-4xl sm:text-5xl">
+                {profile.fullname}
+              </h1>
+              <h1 className="font-extrabold text-4xl text-pgray-700 sm:text-5xl">
                 {age(new Date(profile.date_of_birth))}
               </h1>
             </div>
-            <div className="flex mt-3">
+            <div className="mt-3 flex items-center">
               <svg
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="shrink-0"
               >
                 <path
                   fill-rule="evenodd"
@@ -177,42 +201,42 @@ function PreviewCard({ clicked, setClicked, userId }) {
                   fill="#FFB1C8"
                 />
               </svg>
-              <h2 className="ml-3 text-xl text-pgray-700 font-semibold">
+              <h2 className="ml-3 text-lg text-pgray-700 font-semibold sm:text-xl">
                 {profile.location}, {profile.city}
               </h2>
             </div>
           </div>
-          <div className=" my-11 grid gap-4">
-            <div className="flex">
-              <h1 className="w-52">Sexual Identities</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+          <div className="my-8 grid gap-4 sm:my-11">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Sexual Identities</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.sexual_identity}
               </h1>
             </div>
-            <div className="flex">
-              <h1 className="w-52">Sexual Preferences</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Sexual Preferences</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.sexual_preference}
               </h1>
             </div>
-            <div className="flex">
-              <h1 className="w-52">Racial Preferences</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Racial Preferences</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.racial_preference}
               </h1>
             </div>
-            <div className="flex">
-              <h1 className="w-52">Meeting Interests</h1>
-              <h1 className=" font-semibold text-pgray-700 text-xl">
+            <div className="flex flex-wrap gap-x-4">
+              <h1 className="w-full sm:w-52">Meeting Interests</h1>
+              <h1 className="font-semibold text-pgray-700 text-lg sm:text-xl">
                 {profile.meeting_interest}
               </h1>
             </div>
           </div>
-          <div className="text-pgray-900 mb-10 grid gap-4">
+          <div className="text-pgray-900 mb-8 grid gap-4 sm:mb-10">
             <h1 className="font-bold text-2xl leading-8 tracking-tight">
               About me
             </h1>
-            <p>{profile.about_me}</p>
+            <p className="break-words">{profile.about_me}</p>
           </div>
           <div className="text-pgray-900 grid gap-4">
             <h1 className="font-bold text-2xl leading-8 tracking-tight">

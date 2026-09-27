@@ -15,7 +15,9 @@ const ChatList = () => {
 
   const getUserProfile = async () => {
     setIsLoading(true);
-    const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
+    const result = await axios.get(
+      `${import.meta.env.VITE_API_URL}/post/profile`,
+    );
     //console.log(result.data.data.profile_id);
     setUserId(result.data.data.user_id);
     setIsLoading(false);
@@ -42,10 +44,12 @@ const ChatList = () => {
   }, [userId]);
 
   return (
-    <>
-      <TypographyH3>Chat with Merry Match</TypographyH3>
+    <div className="mt-5 flex min-h-0 flex-1 flex-col">
+      <div className="shrink-0">
+        <TypographyH3>Chat with Merry Match</TypographyH3>
+      </div>
       {!isLoading && (
-        <div className=" h-[350px] flex flex-col items-center overflow-auto">
+        <div className="flex min-h-[72px] w-full flex-1 flex-col items-center overflow-y-auto [&>*]:shrink-0">
           {matchList?.map((item, index) => {
             //mapคนที่เขาปัดเราเขาเป็็น chooser
             if (item.chooser !== userId) {
@@ -62,13 +66,11 @@ const ChatList = () => {
       )}
 
       {isLoading && (
-        <>
-          <div class="h-[500px] flex items-center">
-            <div class="custom-loader"></div>
-          </div>
-        </>
+        <div className="flex min-h-[80px] flex-1 items-center justify-center">
+          <div className="custom-loader"></div>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

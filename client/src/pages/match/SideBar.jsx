@@ -1,19 +1,26 @@
 import React from "react";
+import PropTypes from "prop-types";
 import ProfileToChat from "./ProfileToChat";
 import ChatList from "./ChatList";
 import { useNavigate } from "react-router-dom";
 
-const SideBar = () => {
+const SideBar = ({ isDrawer = false, onNavigate }) => {
   const navigate = useNavigate();
   return (
-    <aside className="w-[290px] py-7 border-r-2 border-pgray-100">
-      <div 
-      className=" cursor-pointer border-ppurple-500 bg-pgray-100 hover:bg-pgray-300 hover:ring-pred-300 ring-2 hover:ring-inset border flex flex-col justify-center items-center py-4 mx-5 rounded-2xl mb-7"
-      onClick={() => {
-        navigate(`/matching`);
-      }}
+    <aside
+      className={`${
+        isDrawer ? "flex" : "hidden lg:flex"
+      } w-full shrink-0 flex-col overflow-hidden border-b-2 border-pgray-100 px-4 py-5 lg:w-[clamp(230px,18vw,330px)] lg:border-b-0 lg:border-r-2 lg:px-0 lg:py-7 [&_h3]:text-lg [&_h3]:leading-6`}
+    >
+      <div
+        className=" shrink-0 cursor-pointer border-ppurple-500 bg-pgray-100 hover:bg-pgray-300 hover:ring-pred-300 ring-2 hover:ring-inset border flex flex-col justify-center items-center py-4 mx-2 lg:mx-4 rounded-2xl mb-7 short:mb-4 compact:mb-3 compact:py-2 text-center"
+        onClick={() => {
+          navigate(`/matching`);
+          onNavigate?.();
+        }}
       >
         <svg
+          className="compact:h-8 compact:w-auto"
           width="62"
           height="59"
           viewBox="0 0 62 59"
@@ -31,26 +38,28 @@ const SideBar = () => {
             fill="#95002B"
           />
         </svg>
-        <h1 className="font-bold text-center text-2xl tracking-tight transition-colors first:mt-0 text-pred-600">
+        <h1 className="font-bold text-center text-2xl compact:text-xl tracking-tight transition-colors first:mt-0 text-pred-600">
           Discover New Match
         </h1>
-        <small className="text-pgray-700">
+        <small className="compact:hidden text-center text-pgray-700">
           Start find and Merry to get know
         </small>
-        <small className="text-pgray-700">and connect with new friend!</small>
+        <small className="compact:hidden text-center text-pgray-700">
+          and connect with new friend!
+        </small>
       </div>
-      <hr className="border border-pgray-300" />
-      <div className=" mt-5 ml-3">
-        <div className=" mt-2">
-          <ProfileToChat/>
-        </div>
-
-        <div className="mt-5">
-          <ChatList/>          
-        </div>
+      <hr className="shrink-0 border border-pgray-300" />
+      <div className="mt-5 flex min-h-0 flex-1 flex-col lg:ml-3">
+        <ProfileToChat />
+        <ChatList />
       </div>
     </aside>
   );
+};
+
+SideBar.propTypes = {
+  isDrawer: PropTypes.bool,
+  onNavigate: PropTypes.func,
 };
 
 export default SideBar;
