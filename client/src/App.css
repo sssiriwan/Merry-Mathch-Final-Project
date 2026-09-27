@@ -179,3 +179,12 @@
   background-clip: content-box;
   background-color: hsla(343, 100%, 20%,0.4);
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

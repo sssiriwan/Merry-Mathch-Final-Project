@@ -37,6 +37,11 @@ export const Matching = () => {
   } = useAge();
   const navigate = useNavigate();
 
+  const images = Object.values(profileImg ?? {}).filter(
+    (image) => image != null,
+  );
+  const centerSlideIndex = Math.floor(images.length / 2);
+
   const cardWidth =
     "!w-[min(78vw,300px,max(120px,calc(100vh_-_244px)))] sm:!w-[min(340px,40vh,max(140px,calc(100vh_-_300px)))] md:!w-[min(420px,46vh,max(160px,calc(100vh_-_300px)))] lg:!w-[min(520px,58vh,max(200px,calc(100vh_-_240px)))] xl:!w-[min(600px,64vh,max(240px,calc(100vh_-_240px)))]";
 
@@ -233,45 +238,43 @@ export const Matching = () => {
             </div>
           ) : (
             <div className="w-full">
-              <Swiper
-                slidesPerView={"auto"}
-                centeredSlides={true}
-                navigation={true}
-                spaceBetween={24}
-                modules={[Pagination, Navigation]}
-                className="mySwiper relative w-full"
-              >
-                {!isLoading && (
-                  <>
-                    {Object.values(profileImg).map((image) => {
-                      return (
-                        image != null && (
-                          <SwiperSlide
-                            className={`${cardWidth} aspect-square !h-auto`}
-                            key={image}
-                          >
-                            <img
-                              src={image}
-                              className="h-full w-full rounded-3xl object-cover"
-                            />
-                            <div className="shadowcss"></div>
-                          </SwiperSlide>
-                        )
-                      );
-                    })}
-                  </>
-                )}
-                {isLoading && (
-                  <div className="flex h-[200px] items-center justify-center">
-                    <div className="custom-loader"></div>
-                  </div>
-                )}
-              </Swiper>
+              {isLoading ? (
+                <div className="flex h-[200px] items-center justify-center">
+                  <div className="custom-loader"></div>
+                </div>
+              ) : (
+                <Swiper
+                  key={profile.user_id}
+                  initialSlide={centerSlideIndex}
+                  onSwiper={(swiper) => swiper.slideTo(centerSlideIndex, 0)}
+                  slidesPerView={"auto"}
+                  centeredSlides={true}
+                  navigation={true}
+                  spaceBetween={24}
+                  modules={[Pagination, Navigation]}
+                  className="mySwiper relative w-full"
+                >
+                  {images.map((image, index) => {
+                    return (
+                      <SwiperSlide
+                        className={`${cardWidth} aspect-square !h-auto`}
+                        key={`${profile.user_id}-${index}`}
+                      >
+                        <img
+                          src={image}
+                          className="h-full w-full rounded-3xl object-cover"
+                        />
+                        <div className="shadowcss"></div>
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
+              )}
             </div>
           )}
           <div className="pointer-events-none absolute inset-x-0 bottom-3 z-20 flex justify-center px-3 sm:bottom-4">
             <div
-              className={`pointer-events-auto flex items-center gap-2 ${cardWidth}`}
+              className={`pointer-events-auto -translate-x-20 -translate-y-4 flex items-center gap-2 ${cardWidth}`}
             >
               <h1 className="truncate font-bold text-2xl text-white sm:text-3xl">
                 {profile && profile.fullname}
@@ -315,13 +318,13 @@ export const Matching = () => {
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex flex-col items-center">
           {profile && (
-            <div className="pointer-events-auto mt-6 flex w-full shrink-0 items-center justify-center gap-5 py-3 short:mt-2 short:py-0 sm:mt-8 sm:gap-6 sm:py-4">
+            <div className="pointer-events-auto mt-6 flex w-full shrink-0 items-center justify-center gap-3 py-3 short:mt-2 short:py-0 sm:mt-8 sm:gap-4 sm:py-4">
               <Button
                 onClick={unmatchSomeone}
                 aria-label="Pass"
-                className="h-12 w-12 rounded-2xl bg-white short:h-11 short:w-11 sm:h-16 sm:w-16"
+                className="h-8 w-8 rounded-2xl bg-white p-0 short:h-8 short:w-8 sm:h-12 sm:w-12"
               >
-                <div className="flex h-7 w-7 items-center justify-center sm:h-10 sm:w-10">
+                <div className="flex h-5 w-5 items-center justify-center sm:h-8 sm:w-8">
                   <svg
                     width="50"
                     height="50"
@@ -386,9 +389,9 @@ export const Matching = () => {
               <Button
                 onClick={matchSomeone}
                 aria-label="Merry"
-                className="h-12 w-12 rounded-2xl bg-white short:h-11 short:w-11 sm:h-16 sm:w-16"
+                className="h-8 w-8 rounded-2xl bg-white p-0 short:h-8 short:w-8 sm:h-12 sm:w-12"
               >
-                <div className="flex h-8 w-8 items-center justify-center pt-1 pl-1 sm:h-14 sm:w-14">
+                <div className="flex h-6 w-6 items-center justify-center pt-1 pl-1 sm:h-9 sm:w-9">
                   <svg
                     width="64"
                     height="60"

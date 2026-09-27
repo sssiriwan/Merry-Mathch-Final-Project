@@ -88,7 +88,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
   return (
     <div
       id="popup-preview-card"
-      className="relative max-h-[90vh] w-full overflow-y-auto rounded-4xl border bg-white shadow-3xl"
+      className="no-scrollbar relative max-h-[90vh] w-full overflow-y-auto rounded-4xl border bg-white shadow-3xl"
     >
       <button
         onClick={() => setClicked(!clicked)}
@@ -111,7 +111,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
         </svg>
       </button>
       <div className="flex flex-col gap-4 p-4 sm:p-6 lg:flex-row lg:justify-center lg:gap-10">
-        <div className="w-full shrink-0 rounded-4xl shadow-md lg:w-[478px]">
+        <div className="w-full shrink-0 self-start rounded-4xl shadow-md lg:w-[478px]">
           {!isLoading && (
             <>
               <img
