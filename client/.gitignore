@@ -28,3 +28,4 @@ dist-ssr
 .env.SUPABASE_URL
 .env.SUPABASE_PASSWORD
 .vercel
+.env*
