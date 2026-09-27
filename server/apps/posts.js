@@ -123,8 +123,40 @@ postRouter.get("/profile/:userId", async (req, res) => {
   }
 });
 
+const AVATAR_SLOTS = ["img_1", "img_2", "img_3", "img_4", "img_5"];
+const AVATAR_BUCKET = "avatarImg";
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+const ACCEPTED_AVATAR_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+];
+
+// แปลง public URL ของ supabase storage ให้เป็น path ภายใน bucket เพื่อใช้ลบไฟล์
+const toStoragePath = (publicUrl) => {
+  if (typeof publicUrl !== "string" || publicUrl.length === 0) {
+    return null;
+  }
+  const marker = `/storage/v1/object/public/${AVATAR_BUCKET}/`;
+  const idx = publicUrl.indexOf(marker);
+  if (idx === -1) {
+    return null;
+  }
+  return publicUrl.slice(idx + marker.length);
+};
+
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.fieldname === "avatars" && !ACCEPTED_AVATAR_TYPES.includes(file.mimetype)) {
+      return cb(new Error("รองรับเฉพาะไฟล์รูปภาพ (JPG, PNG, WEBP, GIF)"));
+    }
+    return cb(null, true);
+  },
+  limits: { fileSize: MAX_AVATAR_SIZE, files: 5 },
+});
 const avatarUpload = upload.fields([
   { name: "avatars", maxCount: 5 },
   { name: "tags", maxCount: 10 },
@@ -132,23 +164,24 @@ const avatarUpload = upload.fields([
 // API ใช้ update ข้อมูล profile
 postRouter.put("/profile", avatarUpload, async (req, res) => {
   try {
-  let fileUrl = [];
   const files = req.files.avatars;
+  const fileUrl = [];
   if (files) {
     for (let i = 0; i < files.length; i++) {
       const fileName = `${Date.now()}-${i}`;
       const { data, error } = await supabase.storage
-        .from("avatarImg")
+        .from(AVATAR_BUCKET)
         .upload(fileName, files[i].buffer, {
           cacheControl: 3600,
           upsert: false,
           contentType: files[i].mimetype,
         });
-      const result = supabase.storage.from("avatarImg").getPublicUrl(data.path);
-      fileUrl.push(result.data.publicUrl);
       if (error) {
-        console.log(error);
+        console.log("อัปโหลดรูปไม่สำเร็จ:", error);
+        continue;
       }
+      const result = supabase.storage.from(AVATAR_BUCKET).getPublicUrl(data.path);
+      fileUrl.push(result.data.publicUrl);
     }
   }
   const updatedProfile = {
@@ -194,18 +227,89 @@ postRouter.put("/profile", avatarUpload, async (req, res) => {
     .eq("user_id", req.user.id)
     .select();
 
-  if (fileUrl.length > 0) {
-    const userImg = await supabase
+  // ซิงก์รูปโปรไฟล์: รักษาลำดับตามที่ client ส่งมา และลบเฉพาะรูปที่ถูกเอาออกจริง
+  if ("image_order" in req.body) {
+    const currentRes = await supabase
       .from("profile_image")
-      .update({
-        img_1: fileUrl[4],
-        img_2: fileUrl[3],
-        img_3: fileUrl[2],
-        img_4: fileUrl[1],
-        img_5: fileUrl[0],
-      })
+      .select(AVATAR_SLOTS.join(","))
       .eq("user_id", req.user.id)
-      .select();
+      .maybeSingle();
+    const currentRow = currentRes.data || {};
+    const currentUrls = AVATAR_SLOTS.map((slot) => currentRow[slot]).filter(
+      (url) => typeof url === "string" && url.length > 0
+    );
+
+    // image_order = [{ type: "keep", url }, { type: "new", index }, ...]
+    let order = [];
+    try {
+      order = JSON.parse(req.body.image_order || "[]");
+    } catch (parseError) {
+      console.log("รูปแบบ image_order ไม่ถูกต้อง:", parseError);
+    }
+    if (!Array.isArray(order)) {
+      order = [];
+    }
+
+    const nextUrls = new Array(AVATAR_SLOTS.length).fill(null);
+    const usedNewFiles = new Set();
+    order.slice(0, AVATAR_SLOTS.length).forEach((entry, position) => {
+      if (entry && entry.type === "keep" && typeof entry.url === "string" && entry.url.length > 0) {
+        nextUrls[position] = entry.url;
+      } else if (entry && entry.type === "new" && Number.isInteger(entry.index)) {
+        const uploaded = fileUrl[entry.index];
+        if (uploaded) {
+          nextUrls[position] = uploaded;
+          usedNewFiles.add(entry.index);
+        }
+      }
+    });
+
+    // ไฟล์ใหม่ที่ client ไม่ได้ระบุตำแหน่ง ให้เก็บต่อท้ายตามลำดับ
+    fileUrl.forEach((url, index) => {
+      if (usedNewFiles.has(index)) {
+        return;
+      }
+      const freeSlot = nextUrls.indexOf(null);
+      if (freeSlot !== -1) {
+        nextUrls[freeSlot] = url;
+      }
+    });
+
+    const updatePayload = {};
+    AVATAR_SLOTS.forEach((slot, index) => {
+      updatePayload[slot] = nextUrls[index];
+    });
+
+    const userImg = currentRes.data
+      ? await supabase
+          .from("profile_image")
+          .update(updatePayload)
+          .eq("user_id", req.user.id)
+          .select()
+      : await supabase
+          .from("profile_image")
+          .insert([{ user_id: req.user.id, ...updatePayload }])
+          .select();
+
+    if (userImg.error) {
+      console.log("อัพเดทรูปโปรไฟล์ไม่สำเร็จ:", userImg.error);
+    }
+
+    // ลบไฟล์รูปเก่าที่ถูกถอดออกจากโปรไฟล์ออกจาก storage ด้วย
+    const keptUrls = new Set(nextUrls.filter(Boolean));
+    const removedPaths = currentUrls
+      .filter((url) => !keptUrls.has(url))
+      .map(toStoragePath)
+      .filter(Boolean);
+
+    if (removedPaths.length > 0) {
+      const { error: removeError } = await supabase.storage
+        .from(AVATAR_BUCKET)
+        .remove(removedPaths);
+      if (removeError) {
+        console.log("ลบไฟล์รูปเก่าไม่สำเร็จ:", removeError);
+      }
+    }
   }
   const { data, error } = await supabase
     .from("profiles")

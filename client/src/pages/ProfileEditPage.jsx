@@ -8,16 +8,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 
 import PreviewCard from "./PreviewCard";
 import "../App.css";
 
 function ProfileEditPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
+  const { toast } = useToast();
   const [clicked, setClicked] = useState(false);
   const [profile, setProfile] = useState({
     user_id: "",
@@ -33,19 +34,45 @@ function ProfileEditPage() {
   });
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [avatars, setAvatars] = useState({});
+  // รูปโปรไฟล์เรียงตามลำดับที่แสดงผล { id, url, file }
+  // file = null สำหรับรูปที่มีอยู่แล้วบน server, มีค่าเมื่อเป็นรูปที่เพิ่งเลือก
+  const [images, setImages] = useState([]);
+  const [dragIndex, setDragIndex] = useState(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
   // const [maxTags, setMaxTags] = useState(10);
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState({});
 
   const maxTags = 10; // จำนวนแท็กสูงสุดที่อนุญาต
+  const maxUploads = 5;
+  const maxFileSize = 5 * 1024 * 1024;
+  const acceptedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+  // เก็บ object URL ที่สร้างไว้ เพื่อ revoke เมื่อรูปถูกลบหรือออกจากหน้า
+  const objectUrlsRef = useRef(new Set());
+
+  const createObjectUrl = (file) => {
+    const objectUrl = URL.createObjectURL(file);
+    objectUrlsRef.current.add(objectUrl);
+    return objectUrl;
+  };
+
+  const revokeObjectUrl = (objectUrl) => {
+    if (objectUrl && objectUrlsRef.current.has(objectUrl)) {
+      URL.revokeObjectURL(objectUrl);
+      objectUrlsRef.current.delete(objectUrl);
+    }
+  };
+
+  useEffect(() => {
+    const objectUrls = objectUrlsRef.current;
+    return () => {
+      objectUrls.forEach((objectUrl) => URL.revokeObjectURL(objectUrl));
+      objectUrls.clear();
+    };
+  }, []);
 
   const tagKeys = Object.keys(tags);
-  const imageKeys = Object.keys(avatars);
-
-  const countTags = () => {
-    return maxTags - tagKeys.length;
-  };
 
   // ในส่วนของการลบแท็ก
   const removeTag = (tagToRemove) => {
@@ -68,14 +95,25 @@ function ProfileEditPage() {
     }
   };
 
-  const handleRemoveImage = (event, avatarKey) => {
-    event.preventDefault();
-    const newAvatars = { ...avatars };
-    delete newAvatars[avatarKey];
-    setAvatars(newAvatars);
+  const handleRemoveImage = (imageId) => {
+    const target = images.find((image) => image.id === imageId);
+    if (target && target.file) {
+      revokeObjectUrl(target.url);
+    }
+    setImages((prev) => prev.filter((image) => image.id !== imageId));
   };
 
   const handleUpdateProfile = async () => {
+    if (images.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "กรุณาเพิ่มรูปโปรไฟล์",
+        description: "ต้องมีรูปภาพอย่างน้อย 1 รูปก่อนบันทึก",
+      });
+      return;
+    }
+
+    setIsSaving(true);
     try {
       const formData = new FormData();
 
@@ -93,16 +131,28 @@ function ProfileEditPage() {
       formData.append("meeting_interest", profile.meeting_interest);
       formData.append("about_me", profile.about_me);
 
-      // Append avatars to formData
-      for (const avatarKey in avatars) {
-        if (avatars.hasOwnProperty(avatarKey)) {
-          formData.append(`avatars`, avatars[avatarKey]);
+      // ส่งลำดับรูปที่ผู้ใช้จัดเรียง เพื่อให้ server เก็บตามลำดับเดียวกัน
+      let newFileIndex = 0;
+      const imageOrder = images.map((image) => {
+        if (image.file) {
+          const entry = { type: "new", index: newFileIndex };
+          newFileIndex += 1;
+          return entry;
         }
-      }
+        return { type: "keep", url: image.url };
+      });
+      formData.append("image_order", JSON.stringify(imageOrder));
+
+      // Append เฉพาะไฟล์รูปใหม่ (รูปเดิมส่งเป็น url ใน image_order แล้ว)
+      images.forEach((image) => {
+        if (image.file) {
+          formData.append("avatars", image.file, image.file.name);
+        }
+      });
 
       // Append tags to formData
       for (const tagKey in tags) {
-        if (tags.hasOwnProperty(tagKey)) {
+        if (Object.prototype.hasOwnProperty.call(tags, tagKey)) {
           formData.append(`tags`, tags[tagKey]);
         }
       }
@@ -118,35 +168,132 @@ function ProfileEditPage() {
       );
 
       console.log(result);
+      // ดึงข้อมูลโปรไฟล์ล่าสุดมาแสดงผลใหม่ เพื่อให้ได้ url จริงจาก storage
+      // ถ้าดึงไม่สำเร็จก็ถือว่าการอัปเดตสำเร็จแล้ว ไม่ต้องแจ้ง error
+      try {
+        await getMyProfile({ silent: true });
+      } catch (refreshError) {
+        console.error("Error refreshing profile:", refreshError);
+      }
+      toast({
+        variant: "success",
+        title: "Profile updated",
+        description: "Your changes have been saved successfully.",
+      });
     } catch (error) {
       // Handle any errors here
       console.error("Error updating profile:", error);
+      toast({
+        variant: "destructive",
+        title: "Update failed",
+        description:
+          error?.response?.data?.error ||
+          "Could not update your profile. Please try again.",
+      });
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  const maxUploads = 5;
+  const addFiles = (fileList) => {
+    const incoming = Array.from(fileList || []);
+    if (incoming.length === 0) {
+      return;
+    }
+
+    const notImage = incoming.filter(
+      (file) => !acceptedTypes.includes(file.type)
+    );
+    const tooLarge = incoming.filter(
+      (file) =>
+        acceptedTypes.includes(file.type) && file.size > maxFileSize
+    );
+    const valid = incoming.filter(
+      (file) =>
+        acceptedTypes.includes(file.type) && file.size <= maxFileSize
+    );
+
+    if (notImage.length > 0) {
+      toast({
+        variant: "destructive",
+        title: "รองรับเฉพาะไฟล์รูปภาพ",
+        description: "กรุณาเลือกไฟล์ JPG, PNG, WEBP หรือ GIF",
+      });
+    }
+    if (tooLarge.length > 0) {
+      toast({
+        variant: "destructive",
+        title: "ไฟล์รูปใหญ่เกินไป",
+        description: "ขนาดไฟล์ต้องไม่เกิน 5 MB ต่อรูป",
+      });
+    }
+
+    const room = maxUploads - images.length;
+    if (room <= 0) {
+      toast({
+        variant: "destructive",
+        title: "อัปโหลดได้สูงสุด 5 รูป",
+        description: "ลบรูปเดิมออกก่อนเพื่อเพิ่มรูปใหม่",
+      });
+      return;
+    }
+    if (valid.length === 0) {
+      return;
+    }
+
+    const added = valid.slice(0, room);
+    if (valid.length > room) {
+      toast({
+        variant: "destructive",
+        title: `เพิ่มได้อีก ${room} รูป`,
+        description: "เนื่องจากจำกัดไว้ที่ 5 รูปต่อโปรไฟล์",
+      });
+    }
+
+    setImages((prev) => [
+      ...prev,
+      ...added.map((file) => ({
+        id: `new-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        url: createObjectUrl(file),
+        file,
+      })),
+    ]);
+  };
 
   const handleFileChange = (event) => {
-    const files = event.target.files;
-    const newAvatars = { ...avatars };
-    for (let i = 0; i < files.length; i++) {
-      if (Object.keys(newAvatars).length < maxUploads) {
-        const uniqueId = Date.now() + i;
-        newAvatars[uniqueId] = files[i];
-        // สร้าง URL แบบออบเจกต์สำหรับไฟล์ใหม่
-        const objectURL = URL.createObjectURL(files[i]);
-        newAvatars[uniqueId].objectURL = objectURL;
-      }
-    }
-
-    setAvatars(newAvatars);
+    addFiles(event.target.files);
+    // รีเซ็ตค่าเพื่อให้เลือกไฟล์เดิมซ้ำได้
+    event.target.value = "";
   };
 
-  const getMyProfile = async () => {
-    setIsLoading(true);
+  const handleDropFiles = (e) => {
+    e.preventDefault();
+    if (e.dataTransfer?.files?.length > 0) {
+      addFiles(e.dataTransfer.files);
+    }
+    setDragIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const getMyProfile = async ({ silent = false } = {}) => {
+    if (!silent) {
+      setIsLoading(true);
+    }
     const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/profile`);
-    setIsLoading(false);
-    setAvatars(result.data.data.profile_image);
+    if (!silent) {
+      setIsLoading(false);
+    }
+    const profileImage = result.data.data.profile_image || {};
+    setImages(
+      ["img_1", "img_2", "img_3", "img_4", "img_5"]
+        .map((slot) => profileImage[slot])
+        .filter((url) => typeof url === "string" && url.length > 0)
+        .map((url, index) => ({
+          id: `existing-${index}-${url}`,
+          url,
+          file: null,
+        }))
+    );
     setTags(result.data.data.hobbies);
     setProfile(result.data.data);
     setUsername(result.data.data.users.username);
@@ -157,24 +304,46 @@ function ProfileEditPage() {
   }, []);
 
 
-  const handleDrop = (e) => {
+  const handleDragStartImage = (index) => (e) => {
+    e.stopPropagation();
+    setDragIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    // Firefox ต้องมีข้อมูลใน dataTransfer ถึงจะเริ่ม drag ได้
+    e.dataTransfer.setData("text/plain", String(index));
+  };
+
+  const handleDragOverImage = (index) => (e) => {
     e.preventDefault();
-    const droppedAvatarKey = e.dataTransfer.getData("text/plain");
-    const targetAvatarKey = e.currentTarget.getAttribute("data-key");
-
-    const newAvatars = { ...avatars };
-    console.log("ลาก", newAvatars)
-    const droppedFile = newAvatars[droppedAvatarKey];
-
-    newAvatars[droppedAvatarKey] = avatars[targetAvatarKey];
-    newAvatars[targetAvatarKey] = droppedFile;
-
-    setAvatars(newAvatars);
+    e.stopPropagation();
+    e.dataTransfer.dropEffect = "move";
+    if (index !== dragIndex) {
+      setDragOverIndex(index);
+    }
   };
 
-  const handleDragStartImage = (e, avatarKey) => {
-    e.dataTransfer.setData("text/plain", avatarKey);
+  const handleDropImage = (index) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const raw = dragIndex ?? e.dataTransfer.getData("text/plain");
+    const from = Number(raw);
+    setDragIndex(null);
+    setDragOverIndex(null);
+    if (!Number.isInteger(from) || from === index || from < 0) {
+      return;
+    }
+    setImages((prev) => {
+      const next = [...prev];
+      const [moved] = next.splice(from, 1);
+      next.splice(index, 0, moved);
+      return next;
+    });
   };
+
+  const handleDragEndImage = () => {
+    setDragIndex(null);
+    setDragOverIndex(null);
+  };
+
   return (
     <div className="grid place-items-center">
       <NavbarRegistered />
@@ -191,7 +360,7 @@ function ProfileEditPage() {
             <article className="flex items-end justify-between mt-14">
               <div className="text-pbeige-700">
                 <TypographySmall>PROFILE</TypographySmall>
-                <TypographyH1>Let's make profile</TypographyH1>
+                <TypographyH1>Let&apos;s make profile</TypographyH1>
                 <TypographyH1>to let others know you</TypographyH1>
               </div>
               <div className="w-[260px] flex justify-between">
@@ -202,8 +371,8 @@ function ProfileEditPage() {
                 >
                   Preview Profile
                 </ButtonSecondary>
-                <ButtonDemo onClick={handleUpdateProfile}>
-                  Update Profile
+                <ButtonDemo onClick={handleUpdateProfile} disabled={isSaving}>
+                  {isSaving ? "Saving..." : "Update Profile"}
                 </ButtonDemo>
               </div>
             </article>
@@ -417,7 +586,7 @@ function ProfileEditPage() {
                   {/* <ListText onChange={updateTags} tags={formValues.tags.split(",")} /> */}
                   <div className="mr-[150px] mb-[40px] mt-[40px]">
                     <div className="content">
-                      <p>Hobbies / Interests (Maximum 10)</p>
+                      <p>Hobbies / Interests (Maximum {maxTags})</p>
                       <div className="border border-gray-300 rounded-md p-2 flex flex-wrap w-[930px]">
                         {tagKeys.map((tagKey, index) => {
                           return (
@@ -471,55 +640,73 @@ function ProfileEditPage() {
             </section>
 
             <section>
-              <div className="font-bold text-2xl text-ppurple-500 mt-14">
-                <h1>Profile pictures</h1>
+              <div className="flex items-center justify-between mt-14">
+                <div className="font-bold text-2xl text-ppurple-500">
+                  <h1>Profile pictures</h1>
+                </div>
+                <div className="text-pgray-800">
+                  {images.length}/{maxUploads} photos
+                </div>
               </div>
               <div className="font-[400] text-[16px] text-pgray-800">
-                Upload at least photos. {/* {countTags()} */}
+                Upload at least 1 photo (max {maxUploads}). The first photo is
+                your main photo. Drag to reorder or drop files here.
               </div>
 
               <div className="input-container relative">
-                <div className="flex mt-5 mb-[200px]">
-                  {Object.keys(avatars).map((avatarKey, index) => {
-                    const avatar = avatars[avatarKey];
-                    return (
-                      //avatar != null &&
-                      <div
-                        key={index}
-                        className="mr-[24px] relative"
-                        data-key={avatarKey}
-                        draggable='true'
-                        onDragStart={(e) => handleDragStartImage(e, avatarKey)}
-                        onDrop={handleDrop}
-                        onDragOver={(e) => {
-                          e.preventDefault();
-                        }}
+                <div
+                  className="flex flex-nowrap mt-5 mb-[200px]"
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={handleDropFiles}
+                >
+                  {images.map((image, index) => (
+                    <div
+                      key={image.id}
+                      className={`mr-[24px] relative w-40 h-40 shrink-0 transition-opacity ${
+                        dragIndex === index ? "opacity-40" : "opacity-100"
+                      } ${
+                        dragOverIndex === index
+                          ? "ring-4 ring-ppurple-300 rounded-2xl"
+                          : ""
+                      }`}
+                      draggable
+                      onDragStart={handleDragStartImage(index)}
+                      onDragOver={handleDragOverImage(index)}
+                      onDrop={handleDropImage(index)}
+                      onDragEnd={handleDragEndImage}
+                    >
+                      <img
+                        className="w-40 h-40 object-cover rounded-2xl pointer-events-none"
+                        src={image.url}
+                        alt={`Profile photo ${index + 1}`}
+                        draggable={false}
+                      />
+                      {index === 0 && (
+                        <span className="absolute left-2 top-2 bg-ppurple-600 text-white text-xs px-2 py-0.5 rounded-full">
+                          Main
+                        </span>
+                      )}
+                      {image.file && (
+                        <span className="absolute left-2 bottom-2 bg-pgreen-500 text-white text-xs px-2 py-0.5 rounded-full">
+                          New
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        aria-label={`Remove profile photo ${index + 1}`}
+                        className="image-remove-button bg-[#AF2758] text-white rounded-full px-3 py-1 absolute -top-2 -right-2"
+                        onClick={() => handleRemoveImage(image.id)}
                       >
-                        <img
-                          className="w-40 h-40 object-cover rounded-2xl"
-                          src={
-                            avatar instanceof Blob
-                              ? URL.createObjectURL(avatar)
-                              : avatar
-                          }
-                        />
-                        <button
-                          className="image-remove-button bg-[#AF2758] text-white rounded-full px-3 py-1 absolute -top-2 -right-2"
-                          onClick={(event) =>
-                            handleRemoveImage(event, avatarKey)
-                          }
-                        >
-                          x
-                        </button>
-                      </div>
-                    );
-                  })}
-                  {[...Array(maxUploads - Object.keys(avatars).length)].map(
+                        x
+                      </button>
+                    </div>
+                  ))}
+                  {[...Array(Math.max(maxUploads - images.length, 0))].map(
                     (_, index) => {
                       return (
                         <label
                           key={index}
-                          className={`button-avatar mr-[24px] bg-pgray-200 w-[167px] h-[167px] rounded-[12px] flex flex-col justify-center items-center relative `}
+                          className="button-avatar mr-[24px] shrink-0 bg-pgray-200 w-40 h-40 rounded-[12px] flex flex-col justify-center items-center relative cursor-pointer hover:bg-pgray-300"
                         >
                           <div className="text-ppurple-600 text-lg">
                             <svg
@@ -540,11 +727,13 @@ function ProfileEditPage() {
                           </div>
                           <div className="text-ppurple-600 text-lg">Upload</div>
                           <input
-                            id="avatar"
+                            id={`avatar-${index}`}
                             name="avatar"
                             type="file"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
+                            multiple
                             onChange={handleFileChange}
-                            hidden
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                           />
                         </label>
                       );
@@ -553,12 +742,13 @@ function ProfileEditPage() {
                 </div>
               </div>
             </section>
+
           </section>
         </>
       )}
       {isLoading && (
-        <div class="h-[500px] flex items-center">
-          <div class="custom-loader"></div>
+        <div className="h-[500px] flex items-center">
+          <div className="custom-loader"></div>
         </div>
       )}
       <Footer />

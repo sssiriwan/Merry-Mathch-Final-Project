@@ -12,6 +12,8 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
+    // โปรเจกต์ใช้ JSX ล้วนไม่มี PropTypes/TypeScript จึงไม่ต้องตรวจ prop-types
+    'react/prop-types': 'off',
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
