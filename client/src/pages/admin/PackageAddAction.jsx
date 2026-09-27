@@ -55,7 +55,7 @@ function PackageAddAction() {
     for (let iconKey in icon) {
       formData.append("icon", icon[iconKey]);
     }
-    const result = await axios.post(
+    await axios.post(
       `${import.meta.env.VITE_API_URL}/admin/package`,
       formData,
       {

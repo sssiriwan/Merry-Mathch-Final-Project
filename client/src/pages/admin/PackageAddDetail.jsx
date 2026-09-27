@@ -120,9 +120,9 @@ function PackageAddDetail() {
           <path
             d="M12.5 4.5V19.5M20 12H5"
             stroke="#7D2262"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
         <div className="text-ppurple-600 text-sm">Upload icon</div>

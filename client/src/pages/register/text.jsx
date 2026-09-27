@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ListText = ({ onChange, tags }) => {
-  const [maxTags, setMaxTags] = useState(10);
+  const [maxTags] = useState(10);
   //   const [tags, setTags] = useState(["Top", "Unique", "Coding"]);
   const [inputValue, setInputValue] = useState("");
 

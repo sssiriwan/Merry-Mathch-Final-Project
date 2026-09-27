@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "../../../node_modules/framer-motion";
 import { fedeIn } from "../variants";
 

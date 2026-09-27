@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar, { NavbarRegistered } from "@/components/base/Navbar";
 import Footer from "@/components/base/Footer";
 import { useAuth } from "@/contexts/authentication";

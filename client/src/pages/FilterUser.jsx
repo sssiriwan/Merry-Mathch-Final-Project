@@ -1,6 +1,6 @@
 import "../App.css";
 import PropTypes from "prop-types";
-import { useState } from "react";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import MultiRangeSlider from "@/pages/Slider";
 import { useAge } from "@/contexts/ageContext";

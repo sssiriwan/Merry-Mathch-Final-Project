@@ -5,7 +5,7 @@ import {
   TypographySmall,
 } from "@/components/base/button/Typography";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MerryCard from "./match/MerryCard";
 import MerryCardChosen from "./match/MerryCardChosen";
 
@@ -17,24 +17,24 @@ function MerryList() {
 
   // const [status, setStatus] = useState()
 
-  const checkUser = async () => {
+  const checkUser = useCallback(async () => {
     const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/check`);
     setUserId(result.data.data.id);
-  };
+  }, []);
 
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     const result = await axios.get(`${import.meta.env.VITE_API_URL}/post/match-list`);
     // console.log(result.data.data);
     setUser(result.data.data);
     // setStatus(result.data.data.status)
-  };
+  }, []);
 
-  const handleGetdata = async () => {
+  const handleGetdata = useCallback(async () => {
     setIsLading(true);
     await getUser();
     await checkUser();
     setIsLading(false);
-  };
+  }, [getUser, checkUser]);
 
   const callbackValue = async (item) => {
     console.log("AAA", item);
@@ -43,7 +43,7 @@ function MerryList() {
 
   useEffect(() => {
     handleGetdata();
-  }, []);
+  }, [handleGetdata]);
 
   if (isLoading)
     return (
@@ -59,7 +59,7 @@ function MerryList() {
         <article className="flex items-end justify-between my-20">
           <div className="text-pbeige-700">
             <TypographySmall>MERRY LIST</TypographySmall>
-            <TypographyH1>Let's know each other</TypographyH1>
+            <TypographyH1>Let&rsquo;s know each other</TypographyH1>
             <TypographyH1>with Merry!</TypographyH1>
           </div>
           <div className="w-[260px] flex flex-col items-end">

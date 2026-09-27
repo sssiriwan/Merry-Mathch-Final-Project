@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ComplaintDetail from "./admin/ComplaintDetail";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import { Button } from "@/components/ui/button";
@@ -13,18 +13,18 @@ function ComplaintDetailPage() {
   const [issue, setIssueBar] = useState("")
   const [status, setStatus] = useState("");
 
-  const getComplaint = async () => {
+  const getComplaint = useCallback(async () => {
     const result = await axios.get(
       `${import.meta.env.VITE_API_URL}/admin/complaint/${param.complainId}`
     );
     console.log(result.data.data);
 
     setStatus(result.data.data.complaint_status);
-  };
+  }, [param.complainId]);
 
   useEffect(() => {
     getComplaint();
-  }, []);
+  }, [getComplaint]);
 
   return (
     <div className="flex">

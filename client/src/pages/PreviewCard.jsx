@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function PreviewCard({ clicked, setClicked, userId }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +69,7 @@ function PreviewCard({ clicked, setClicked, userId }) {
     return userAge;
   };
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     setIsLoading(true);
     const result = await axios.get(
       `${import.meta.env.VITE_API_URL}/post/profile/${userId}`
@@ -80,10 +80,10 @@ function PreviewCard({ clicked, setClicked, userId }) {
     setHobbies(result.data.data.hobbies);
     setAvatars(result.data.data.profile_image);
     //console.log("รูปจ้ารูป", result.data.data);
-  };
+  }, [userId]);
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   return (
     <div
@@ -195,8 +195,8 @@ function PreviewCard({ clicked, setClicked, userId }) {
                 className="shrink-0"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M11.6276 22.7196L11.6312 22.7208C11.8676 22.824 11.9996 22.8 11.9996 22.8C11.9996 22.8 12.1316 22.824 12.3692 22.7208L12.3716 22.7196L12.3788 22.716L12.4004 22.7064C12.5143 22.6535 12.6268 22.5975 12.7376 22.5384C12.9608 22.4232 13.2728 22.2504 13.646 22.0188C14.39 21.558 15.38 20.8596 16.3748 19.9008C18.362 17.9856 20.3996 14.9916 20.3996 10.8C20.3996 9.69692 20.1823 8.60462 19.7602 7.58548C19.3381 6.56635 18.7193 5.64034 17.9393 4.86033C17.1593 4.08032 16.2333 3.46158 15.2141 3.03944C14.195 2.6173 13.1027 2.40002 11.9996 2.40002C10.8965 2.40002 9.8042 2.6173 8.78507 3.03944C7.76593 3.46158 6.83992 4.08032 6.05991 4.86033C5.2799 5.64034 4.66116 6.56635 4.23902 7.58548C3.81688 8.60462 3.59961 9.69692 3.59961 10.8C3.59961 14.9904 5.63721 17.9856 7.62561 19.9008C8.45811 20.7004 9.37233 21.4103 10.3532 22.0188C10.7331 22.2547 11.124 22.4726 11.5244 22.6716L11.5988 22.7064L11.6204 22.716L11.6276 22.7196ZM11.9996 13.5C12.7157 13.5 13.4024 13.2156 13.9088 12.7092C14.4151 12.2029 14.6996 11.5161 14.6996 10.8C14.6996 10.0839 14.4151 9.39718 13.9088 8.89084C13.4024 8.38449 12.7157 8.10002 11.9996 8.10002C11.2835 8.10002 10.5968 8.38449 10.0904 8.89084C9.58407 9.39718 9.29961 10.0839 9.29961 10.8C9.29961 11.5161 9.58407 12.2029 10.0904 12.7092C10.5968 13.2156 11.2835 13.5 11.9996 13.5Z"
                   fill="#FFB1C8"
                 />

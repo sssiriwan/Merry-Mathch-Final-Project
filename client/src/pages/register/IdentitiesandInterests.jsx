@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import ValindateContext from "./valindatecontext/Valindatecontext";
 
 import ListText from "./text";

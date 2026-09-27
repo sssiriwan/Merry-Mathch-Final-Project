@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/utils/supabaseClient";
 import { TypographySmall } from "@/components/base/button/Typography";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ const ChatCardChosen = (props) => {
   const getProfile = async (item) => {
     //console.log(item);
     setIsLoading(true);
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("profiles")
       .select(
         "*, users(email, username, user_id),hobbies(hob_1,hob_2,hob_3,hob_4,hob_5,hob_6,hob_7,hob_8,hob_9,hob_10), profile_image(img_1, img_2, img_3,img_4,img_5)"
@@ -32,16 +32,16 @@ const ChatCardChosen = (props) => {
     setIsLoading(false);
   };
 
-  const getLastMessage = async () => {
+  const getLastMessage = useCallback(async () => {
     //console.log("TEST");
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("chat_message")
       .select("*")
       .order("timestampt", { ascending: false })
       .limit(1)
       .eq("matchlist_id", roomId);
     setConversation(data[0].message_content);
-  };
+  }, [roomId]);
 
   //console.log("แชทมาไหม", conversation);
 
@@ -49,7 +49,7 @@ const ChatCardChosen = (props) => {
     //console.log("ทำงานไหม");
     getProfile(userId);
     getLastMessage();
-  }, [userId, roomId]);
+  }, [userId, roomId, getLastMessage]);
 
   return (
     <>
@@ -72,8 +72,8 @@ const ChatCardChosen = (props) => {
 
       {isLoading && (
         <>
-          <div class="h-[500px] flex items-center">
-            <div class="custom-loader"></div>
+          <div className="h-[500px] flex items-center">
+            <div className="custom-loader"></div>
           </div>
         </>
       )}

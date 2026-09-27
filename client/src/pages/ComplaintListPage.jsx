@@ -1,23 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AdminControlPanel from "./admin/AdminControlPanel";
 import BadgeDemo from "@/components/base/button/Badge";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // Convert date format from (created_at) column into dd/mm/yy form
@@ -26,13 +12,11 @@ function ComplaintListPage() {
   const [filteredComplaints, setFilteredComplaints] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState("");
+  const [, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const getDataFromSearchBar = async () => {
+  const getDataFromSearchBar = useCallback(async () => {
     try {
       setIsLoading(true);
       console.log(selectedStatus);
@@ -45,7 +29,7 @@ function ComplaintListPage() {
     } catch (error) {
       console.log("เออเร่อจาก complainList", error);
     }
-  };
+  }, [searchInput, selectedStatus]);
 
   const handleRowClick = async (complaint) => {
     // Update the status of the complaint to Pending
@@ -54,7 +38,7 @@ function ComplaintListPage() {
         const updateComplaint = {
           status: "Pending",
         };
-        const result = await axios.put(
+        await axios.put(
           `${import.meta.env.VITE_API_URL}/admin/complaint/${complaint.complaint_id}`,
           updateComplaint
         );
@@ -89,7 +73,7 @@ function ComplaintListPage() {
   useEffect(() => {
     // fetchComplaints();
     getDataFromSearchBar();
-  }, [searchInput, selectedStatus]);
+  }, [searchInput, selectedStatus, getDataFromSearchBar]);
 
   return (
     <div className="flex">
@@ -130,8 +114,8 @@ function ComplaintListPage() {
         </div>
 
         {/* Table */}
-        <div class=" min-h-screen flex flex-col justify-start items-center">
-          <div class="w-5/6 bg-white mt-12 rounded-2xl shadow-lg">
+        <div className=" min-h-screen flex flex-col justify-start items-center">
+          <div className="w-5/6 bg-white mt-12 rounded-2xl shadow-lg">
             <Table>
               <TableHeader>
                 <TableRow className="text-base">

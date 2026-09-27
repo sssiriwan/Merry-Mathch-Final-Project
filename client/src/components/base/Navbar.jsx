@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonMerryPackageProfile, ButtonPrimary } from "./button/Button";
 import MerryLogo from "./button/MerryLogo";
 import { Button } from "../ui/button";
@@ -40,7 +40,7 @@ const Navbar = () => {
 };
 
 function NavbarRegistered() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [userImg, setUserImg] = useState("");
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();

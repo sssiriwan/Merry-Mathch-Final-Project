@@ -1,7 +1,7 @@
 import { NavbarRegistered } from "@/components/base/Navbar";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CheckoutForm from "./payment/CheckoutForm";
 import { usePackage } from "@/contexts/packageProvider";
 import axios from "axios";
@@ -16,10 +16,10 @@ const Payment_1 = () => {
   const { packageId } = usePackage();
   console.log("หน้าจ่ายเงิน",packageData)
 
-  const getPackageData = async () => {
+  const getPackageData = useCallback(async () => {
     const result = await axios.get(`${import.meta.env.VITE_API_URL}/auth/package/${packageId}`);
     setPackageData(result.data.data[0])
-  }
+  }, [packageId])
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -38,7 +38,7 @@ const Payment_1 = () => {
 
   useEffect(() => {
     getPackageData();
-  }, [])
+  }, [getPackageData])
 
   const appearance = {
     theme: "stripe",

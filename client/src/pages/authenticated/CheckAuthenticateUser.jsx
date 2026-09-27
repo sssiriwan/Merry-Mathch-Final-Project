@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import AdminAuthenticatedApp from "./AdminAuthenticatedApp";
 import AuthenticatedApp from "./AuthenticatedApp";
 
-function checkAuthenticateUser() {
+function CheckAuthenticateUser() {
   const [role, setRole] = useState(null);
   const checkUser = async () => {
     try {
@@ -26,4 +26,4 @@ function checkAuthenticateUser() {
   return <AuthenticatedApp />;
 }
 
-export default checkAuthenticateUser;
+export default CheckAuthenticateUser;

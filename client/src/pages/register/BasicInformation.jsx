@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { useContext } from "react";
 import ValindateContext from "./valindatecontext/Valindatecontext";
 
-function BasicInformation({ formValues, onChange, handleNext }) {
+function BasicInformation({ formValues, onChange }) {
   const {
     errorDate,
     errorUsername,

@@ -33,6 +33,9 @@ const CommandDialog = ({
 }
 
 const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
+  // cmdk-input-wrapper เป็น attribute สำหรับ hook สไตล์ของ shadcn
+  // (ใช้จับคู่กับ selector [&_[cmdk-input-wrapper]_svg] ด้านบน) ไม่ใช่พิมพ์ผิด
+  // eslint-disable-next-line react/no-unknown-property
   <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
     <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input

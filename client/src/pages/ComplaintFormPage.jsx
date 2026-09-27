@@ -1,4 +1,3 @@
-import * as React from "react";
 import boy from "../../public/imgs/boy-complaint-form-page.png";
 import {
   TypographyH1,
@@ -28,7 +27,7 @@ function ComplaintFormPage() {
   const [description, setDescription] = useState("");
   // แก้ ปฎิทิน
   const [date, setDate] = useState("");
-  const [status, setStatus] = useState("New");
+  const [status] = useState("New");
 
   const navigate = useNavigate();
 
@@ -72,7 +71,7 @@ function ComplaintFormPage() {
             </CardTitle>
             <CardDescription>
               <TypographyH1>If you have any trouble</TypographyH1>
-              <TypographyH1>Don't be afraid to tell us!</TypographyH1>
+              <TypographyH1>Don&rsquo;t be afraid to tell us!</TypographyH1>
             </CardDescription>
           </CardHeader>
           <CardContent>

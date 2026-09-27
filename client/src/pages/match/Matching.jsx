@@ -1,8 +1,7 @@
-import React from "react";
 import "@/App.css";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -21,20 +20,9 @@ export const Matching = () => {
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [allProfile, setAllProfile] = useState(null);
+  const [, setAllProfile] = useState(null);
   //console.log(profileImg);
-  const {
-    minAge,
-    setMinAge,
-    maxAge,
-    setMaxAge,
-    female,
-    setFemale,
-    male,
-    setMale,
-    nonBi,
-    setNonBi,
-  } = useAge();
+  const { minAge, maxAge, female, male, nonBi } = useAge();
   const navigate = useNavigate();
 
   const images = Object.values(profileImg ?? {}).filter(
@@ -45,7 +33,7 @@ export const Matching = () => {
   const cardWidth =
     "!w-[min(78vw,300px,max(120px,calc(100vh_-_244px)))] sm:!w-[min(340px,40vh,max(140px,calc(100vh_-_300px)))] md:!w-[min(420px,46vh,max(160px,calc(100vh_-_300px)))] lg:!w-[min(520px,58vh,max(200px,calc(100vh_-_240px)))] xl:!w-[min(600px,64vh,max(240px,calc(100vh_-_240px)))]";
 
-  const getAndFilter = async () => {
+  const getAndFilter = useCallback(async () => {
     setIsLoading(true);
     //เช็คคนที่เราปัดไปแล้ว
     // const checkMatch = await supabase
@@ -113,14 +101,14 @@ export const Matching = () => {
         setIsLoading(false);
       }
     }
-  };
+  }, [maxAge, minAge, male, female, nonBi, userId, count]);
 
-  const getUserProfile = async () => {
+  const getUserProfile = useCallback(async () => {
     const result = await axios.get(
       `${import.meta.env.VITE_API_URL}/post/profile`,
     );
     setUserId(result.data.data.user_id);
-  };
+  }, []);
 
   const matchSomeone = async () => {
     //console.log(profile.user_id)
@@ -133,7 +121,7 @@ export const Matching = () => {
       .select();
     if (checkMatch.data.length == 0) {
       console.log("จะแมชคนนี้", profile.user_id);
-      const { data, error } = await supabase.from("match_list").insert({
+      await supabase.from("match_list").insert({
         chooser: userId,
         chosen_one: profile.user_id,
         status: "merry",
@@ -146,7 +134,7 @@ export const Matching = () => {
         status: "match",
         updated_at: new Date(),
       };
-      const { data, error } = await supabase
+      await supabase
         .from("match_list")
         .update(updateStatus)
         .eq("matchlist_id", checkMatch.data[0].matchlist_id);
@@ -176,7 +164,7 @@ export const Matching = () => {
     //getData();
     getUserProfile();
     getAndFilter();
-  }, [count, userId, maxAge, minAge, female, male, nonBi]);
+  }, [getUserProfile, getAndFilter]);
 
   return (
     <section className="relative flex min-h-0 w-full flex-1 flex-col items-center overflow-x-hidden overflow-y-auto bg-putility-400">
@@ -220,8 +208,8 @@ export const Matching = () => {
                   fill="#FF1659"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M39.8885 21.6787C37.0009 21.6787 34.2315 22.8258 32.1896 24.8677C30.1478 26.9095 29.0007 29.6789 29.0007 32.5665C29.0007 35.4542 30.1478 38.2235 32.1896 40.2654C34.2315 42.3072 37.0009 43.4543 39.8885 43.4543C42.7761 43.4543 45.5455 42.3072 47.5873 40.2654C49.6292 38.2235 50.7763 35.4542 50.7763 32.5665C50.7763 29.6789 49.6292 26.9095 47.5873 24.8677C45.5455 22.8258 42.7761 21.6787 39.8885 21.6787ZM26.0313 32.5665C26.0314 30.3507 26.563 28.1672 27.5813 26.1992C28.5997 24.2313 30.0751 22.5362 31.8839 21.2562C33.6926 19.9763 35.7819 19.1487 37.9766 18.843C40.1712 18.5373 42.4072 18.7623 44.4969 19.4992C46.5866 20.2361 48.4691 21.4634 49.9865 23.0781C51.504 24.6928 52.612 26.6479 53.2178 28.7793C53.8236 30.9107 53.9094 33.1564 53.4681 35.3278C53.0267 37.4992 52.0711 39.5331 50.6813 41.259L57.2694 47.8491C57.4153 47.985 57.5323 48.1489 57.6134 48.331C57.6946 48.5132 57.7382 48.7098 57.7417 48.9091C57.7453 49.1085 57.7086 49.3065 57.6339 49.4913C57.5592 49.6762 57.4481 49.8442 57.3071 49.9851C57.1661 50.1261 56.9982 50.2373 56.8133 50.3119C56.6284 50.3866 56.4304 50.4233 56.2311 50.4198C56.0317 50.4163 55.8351 50.3726 55.653 50.2915C55.4709 50.2103 55.307 50.0933 55.171 49.9475L48.5809 43.3593C46.545 44.9992 44.0867 46.0297 41.49 46.3318C38.8933 46.634 36.2641 46.1954 33.906 45.0668C31.548 43.9382 29.5573 42.1655 28.1638 39.9536C26.7704 37.7417 26.0311 35.1808 26.0313 32.5665Z"
                   fill="#95002B"
                 />
@@ -230,10 +218,10 @@ export const Matching = () => {
                 Discover Your Merry List
               </h1>
               <small className="text-center text-pgray-700">
-                Start chatting with the people you've matched.
+                Start chatting with the people you&rsquo;ve matched.
               </small>
               <small className="text-center text-pgray-700">
-                Hope you find the person you're looking for.
+                Hope you find the person you&rsquo;re looking for.
               </small>
             </div>
           ) : (
@@ -304,8 +292,8 @@ export const Matching = () => {
                       fill="white"
                     />
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M0.531497 8.47203C0.41398 8.16668 0.41398 7.82858 0.531497 7.52323C1.11328 6.01482 2.13826 4.71798 3.47146 3.80347C4.80467 2.88896 6.38358 2.39967 8.0003 2.40002C11.4059 2.40002 14.3147 4.52802 15.4691 7.52803C15.5867 7.83283 15.5859 8.17123 15.4691 8.47683C14.8873 9.98523 13.8623 11.2821 12.5291 12.1966C11.1959 13.1111 9.61701 13.6004 8.0003 13.6C4.5947 13.6 1.6859 11.472 0.531497 8.47203ZM11.2003 8.00003C11.2003 8.84872 10.8632 9.66265 10.263 10.2628C9.66292 10.8629 8.84899 11.2 8.0003 11.2C7.1516 11.2 6.33767 10.8629 5.73755 10.2628C5.13744 9.66265 4.8003 8.84872 4.8003 8.00003C4.8003 7.15133 5.13744 6.3374 5.73755 5.73728C6.33767 5.13717 7.1516 4.80002 8.0003 4.80002C8.84899 4.80002 9.66292 5.13717 10.263 5.73728C10.8632 6.3374 11.2003 7.15133 11.2003 8.00003Z"
                       fill="white"
                     />
@@ -337,10 +325,10 @@ export const Matching = () => {
                       <path
                         d="M12.502 37.4999L37.502 12.4999M12.502 12.4999L37.502 37.4999"
                         stroke="#646D89"
-                        stroke-width="5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        shape-rendering="crispEdges"
+                        strokeWidth="5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        shapeRendering="crispEdges"
                       />
                     </g>
                     <defs>
@@ -351,10 +339,10 @@ export const Matching = () => {
                         width="54"
                         height="54"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                       >
                         <feFlood
-                          flood-opacity="0"
+                          floodOpacity="0"
                           result="BackgroundImageFix"
                         />
                         <feColorMatrix
@@ -414,10 +402,10 @@ export const Matching = () => {
                         width="64"
                         height="59.0013"
                         filterUnits="userSpaceOnUse"
-                        color-interpolation-filters="sRGB"
+                        colorInterpolationFilters="sRGB"
                       >
                         <feFlood
-                          flood-opacity="0"
+                          floodOpacity="0"
                           result="BackgroundImageFix"
                         />
                         <feColorMatrix

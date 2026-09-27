@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { usePackage } from "@/contexts/packageProvider";
@@ -38,8 +38,8 @@ const CardsPackage = () => {
     <div className="flex-wrap grid grid-cols-3 place-items-center">
       
       {packages.map((packageItem) => (
-        <div className="w-[357px] h-[438px] m-5 border border-pgray-400 rounded-4xl flex justify-center items-center">
-        <div key={packageItem.package_id}>
+        <div key={packageItem.package_id} className="w-[357px] h-[438px] m-5 border border-pgray-400 rounded-4xl flex justify-center items-center">
+        <div>
           <div className="w-[277px] h-[358px] flex flex-col justify-between">
             <div className="w-[60px] h-[60px] flex justify-center items-center bg-pgray-100 rounded-2xl">
               <img src={packageItem.package_icon} alt="icon_vector" />

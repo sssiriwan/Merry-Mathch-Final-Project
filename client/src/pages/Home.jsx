@@ -1,4 +1,3 @@
-import React from "react";
 import Sec1 from "./home-sec/sec-1";
 import Sec2 from "./home-sec/sec-2";
 import Sec3 from "./home-sec/sec-3";

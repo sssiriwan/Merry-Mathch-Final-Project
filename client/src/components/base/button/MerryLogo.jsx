@@ -4,7 +4,7 @@ function MerryLogo() {
       <svg
         width="188"
         height="63"
-        viewimg="0 0 188 63"
+        viewBox="0 0 188 63"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="h-8 w-auto sm:h-[63px] sm:w-[188px]"

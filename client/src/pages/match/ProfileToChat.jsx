@@ -1,7 +1,6 @@
-import React from "react";
 import { TypographyH3 } from "@/components/base/button/Typography";
 import { supabase } from "@/utils/supabaseClient";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import ProfileChooser from "./ProfileChooser";
 import ProfileChosen from "./ProfileChosen";
@@ -13,7 +12,7 @@ const ProfileToChat = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const getUserProfile = async () => {
+  const getUserProfile = useCallback(async () => {
     setIsLoading(true);
     const result = await axios.get(
       `${import.meta.env.VITE_API_URL}/post/profile`,
@@ -22,12 +21,12 @@ const ProfileToChat = () => {
 
     setUserId(result.data.data.user_id);
     setIsLoading(false);
-  };
+  }, []);
 
-  const getMatchList = async () => {
+  const getMatchList = useCallback(async () => {
     if (userId) {
       setIsLoading(true);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("match_list")
         .select("*")
         .or(`chooser.eq.${userId},chosen_one.eq.${userId}`)
@@ -36,15 +35,15 @@ const ProfileToChat = () => {
       setMatchList(data);
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     getUserProfile();
-  }, []);
+  }, [getUserProfile]);
 
   useEffect(() => {
     getMatchList();
-  }, [userId]);
+  }, [getMatchList]);
 
   return (
     <div className="mt-2 shrink-0">
